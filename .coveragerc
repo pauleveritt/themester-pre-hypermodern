@@ -1,0 +1,12 @@
+[run]
+source =
+    themester
+
+[paths]
+source =
+    src/themester
+    */site-packages/themester
+
+[report]
+show_missing = true
+precision = 2
