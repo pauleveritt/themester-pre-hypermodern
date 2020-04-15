@@ -1,15 +1,40 @@
 import pytest
+from viewdom.h import H
+
+from themester.views import View
 
 
 @pytest.fixture
-def scanned_module():
+def scanned_modules():
     from .examples.views import (
-        views01,
+        hello,
+        context,
+        named,
     )
-    return views01,
+    return hello, context, named,
 
 
-def test_views01():
-    from themester.views import View
-    v = View()
-    assert 9 == v
+def test_views_hello(registry):
+    container = registry.create_container()
+    view = container.get(View)
+    actual = view()
+    expected = H(tag='div', props={}, children=['Hello ', 'DefaultView'])
+    assert actual == expected
+
+
+def test_views_context(registry):
+    from .examples.views.context import Customer
+    context = Customer()
+    container = registry.create_container(context=context)
+    view = container.get(View)
+    actual = view()
+    expected = H(tag='div', props={}, children=['Hello ', 'Customer'])
+    assert actual == expected
+
+
+def test_views_named(registry):
+    container = registry.create_container()
+    view = container.get(View, name='somename')
+    actual = view()
+    expected = H(tag='div', props={}, children=['Hello ', 'Named'])
+    assert actual == expected
