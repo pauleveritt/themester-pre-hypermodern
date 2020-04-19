@@ -24,8 +24,8 @@ def register_view(
     """ Imperative form of the view decorator """
 
     def view_factory(container: ServiceContainer):
-        injector = Injector(container)
-        view_instance = injector(target)
+        injector = Injector(target)
+        view_instance = injector(container)
         return view_instance
 
     if name is None:
