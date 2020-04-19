@@ -2,25 +2,6 @@ from typing import Tuple
 
 import pytest
 
-from themester.resources import Root
-
-
-@pytest.fixture
-def sample_tree() -> Root:
-    from themester.resources import Root, Collection, Resource
-    root = Root()
-    f1 = Collection('f1', root)
-    root['f1'] = f1
-    d1 = Resource('d1', root)
-    root['d1'] = d1
-    d2 = Resource('d2', f1)
-    f1['d2'] = d2
-    f3 = Collection('f3', f1)
-    f1['f3'] = f3
-    d3 = Resource('d3', f3)
-    f3['d3'] = d3
-    return root
-
 
 @pytest.mark.parametrize(
     'base, to, expected',
