@@ -6,7 +6,7 @@ from themester.views import View
 
 @pytest.fixture
 def scanned_modules():
-    from .examples.views import (
+    from .views import (
         hello,
         context,
         named,
@@ -23,7 +23,7 @@ def test_views_hello(registry):
 
 
 def test_views_context(registry):
-    from .examples.views.context import Customer
+    from .views.context import Customer
     context = Customer()
     container = registry.create_container(context=context)
     view = container.get(View)

@@ -8,6 +8,8 @@ from venusian import Scanner, attach
 from wired import ServiceContainer, ServiceRegistry
 from wired.dataclasses import Injector
 
+from themester.resources import Resource
+
 
 class View:
     pass
@@ -16,7 +18,7 @@ class View:
 def register_view(
         registry: ServiceRegistry,
         target: Callable = None,
-        context: Optional[Any] = None,
+        context: Optional[Resource] = None,
         name: Optional[str] = None,
 ):
     """ Imperative form of the view decorator """
