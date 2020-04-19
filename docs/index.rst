@@ -17,3 +17,4 @@ Installation follows the normal Python packaging approach:
 
     renderers
     views
+    url
