@@ -1,0 +1,21 @@
+{% extends "!layout.html" %}
+
+{% block doctype %}
+    <!DOCTYPE html>
+{% endblock %}
+
+{% block extrahead %}
+    {{ super() }}
+    <link rel="author" href="http://author1" data-testid="extrahead"/>
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+    <div data-testid="block-content">content1</div>
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+    <div data-testid="block-footer">footer1</div>
+{% endblock %}
+

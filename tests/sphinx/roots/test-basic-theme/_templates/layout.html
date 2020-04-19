@@ -1,0 +1,59 @@
+{%- extends "!layout.html" %}
+
+{% block content %}
+    {{ super() }}
+    <h1>Sphinx Basic Theme Helper Functions</h1>
+    <p>Let's test some of the functions from https://www.sphinx-doc.org/en/master/templating.html#helper-functions</p>
+
+    <div data-testid="helper-pathto">{{ pathto('hellopage') }}</div>
+    <div data-testid="helper-pathto1">{{ pathto('_static/python-logo.png', 1) }}</div>
+    <div data-testid="helper-hasdoc">{{ hasdoc('hellopage') }}</div>
+    <div data-testid="helper-sidebar">{{ sidebar() }}</div>
+
+    <h1>Sphinx Basic Theme Global Variables</h1>
+    <p>From the list at https://www.sphinx-doc.org/en/master/templating.html#global-variables</p>
+    <div data-testid="global-builder">{{ builder }}</div>
+    <div data-testid="global-css_files">{{ css_files }}</div>
+    <div data-testid="global-copyright">{{ copyright }}</div>
+    <div data-testid="global-docstitle">{{ docstitle }}</div>
+    <div data-testid="global-embedded">{{ embedded }}</div>
+    <div data-testid="global-favicon">{{ favicon }}</div>
+    <div data-testid="global-file_suffix">{{ file_suffix }}</div>
+    <div data-testid="global-has_source">{{ has_source }}</div>
+    <div data-testid="global-html5_doctype">{{ html5_doctype }}</div>
+    <div data-testid="global-language">{{ language }}</div>
+    <div data-testid="global-last_updated">{{ last_updated }}</div>
+    <div data-testid="global-logo">{{ logo }}</div>
+    <div data-testid="global-master_doc">{{ master_doc }}</div>
+    <div data-testid="global-pagename">{{ pagename }}</div>
+    <div data-testid="global-project">{{ project }}</div>
+    <div data-testid="global-release">{{ release }}</div>
+    <div data-testid="global-rellinks">{{ rellinks }}</div>
+    <div data-testid="global-script_files">{{ script_files }}</div>
+    <div data-testid="global-shorttitle">{{ shorttitle }}</div>
+    <div data-testid="global-show_copyright">{{ showcopyright }}</div>
+    <div data-testid="global-show_source">{{ show_source }}</div>
+    <div data-testid="global-sourcelink_suffix">{{ sourcelink_suffix }}</div>
+    <div data-testid="global-show_sphinx">{{ show_sphinx }}</div>
+    <div data-testid="global-sphinx_version">{{ sphinx_version }}</div>
+    <div data-testid="global-style">{{ style }}</div>
+    <div data-testid="global-title">{{ title }}</div>
+    <div data-testid="global-use_opensearch">{{ use_opensearch }}</div>
+    <div data-testid="global-version">{{ version }}</div>
+
+    <h1>Sphinx Basic Theme Page Variables</h1>
+    <p>Per page</p>
+    <div data-testid="page-body">{{ body }}</div>
+    <div data-testid="page-display_toc">{{ display_toc }}</div>
+    <div data-testid="page-meta">{{ meta }}</div>
+    <div data-testid="page-metatags">{{ metatags }}</div>
+    <div data-testid="page-next">{{ next }}</div>
+    <div data-testid="page-page_source_suffix">{{ page_source_suffix }}</div>
+    <div data-testid="page-parents">{{ parents }}</div>
+    <div data-testid="page-prev">{{ prev }}</div>
+    <div data-testid="page-sourcename">{{ sourcename }}</div>
+    <div data-testid="page-title">{{ title }}</div>
+    <div data-testid="page-toc">{{ toc }}</div>
+    <div data-testid="page-toctree">{{ toctree() }}</div>
+
+{% endblock %}

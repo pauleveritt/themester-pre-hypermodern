@@ -1,0 +1,27 @@
+{% extends "!layout.html" %}
+
+{% block linktags %}
+    {{ super() }}
+    <div data-testid="block-linktags">linktags1</div>
+{% endblock %}
+
+{% block document %}
+    {{ super() }}
+    <div data-testid="block-document">document1</div>
+{% endblock %}
+
+{% block sidebar1 %}
+    {{ super() }}
+    <div data-testid="block-sidebar1">sidebar1</div>
+{% endblock %}
+
+{% block sidebar2 %}
+    {{ super() }}
+    <div data-testid="block-sidebar2">sidebar2</div>
+{% endblock %}
+
+{% block sidebarlogo %}
+    {{ super() }}
+    <div data-testid="block-sidebarlogo">sidebarlogo1</div>
+{% endblock %}
+

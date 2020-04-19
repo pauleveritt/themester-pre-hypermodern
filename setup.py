@@ -26,6 +26,8 @@ tests_require = [
     'tox',
     'black',
     'flake8',
+    'Sphinx',
+    'beautifulsoup4',
 ]
 
 setup(
@@ -46,6 +48,11 @@ setup(
     install_requires=requires,
     extras_require={'docs': docs_require, 'tests': tests_require},
     zip_safe=False,
+    entry_points={
+        'sphinx.html_themes': [
+            'themester = themester',
+        ]
+    },
     keywords=','.join(
         [
             'web',
