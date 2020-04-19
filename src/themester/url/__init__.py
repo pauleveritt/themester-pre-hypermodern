@@ -1,4 +1,7 @@
+from dataclasses import dataclass
 from typing import List, Optional, Union
+
+from wired.dataclasses import factory, Context, injected
 
 from themester.resources import Resource, Root
 
@@ -106,6 +109,27 @@ def resource_path(resource: Resource) -> str:
     return path
 
 
+@factory()
+@dataclass
+class URL:
+    """ Convenience factory for paths relative to the context resource.
+
+     This factory presumes:
+     - The container has a context.
+     - The container has a Root singleton (or factory.)
+     """
+
+    root: Root
+    context: Resource = injected(Context)
+
+    def static_url(self, asset_path: str) -> str:
+        path = relative_static_path(self.context, asset_path)
+        return path
+
+    def relative_path(self, target: Resource) -> str:
+        return relative_path(self.root, self.context, target)
+
+
 __all__ = [
     'find_resource',
     'normalize_path',
@@ -114,4 +138,5 @@ __all__ = [
     'relative_static_path',
     'relative_uri',
     'resource_path',
+    'URL',
 ]

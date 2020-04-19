@@ -220,3 +220,23 @@ def test_static_relative_path(
     current = find_resource(sample_tree, current_path)
     result: str = relative_static_path(current, 'static/foo.css')
     assert result == expected
+
+
+def test_factory_static_url(sample_tree):
+    from themester.url import URL
+    context = sample_tree['f1']
+    url = URL(root=sample_tree, context=context)
+    assert '../foo.css' == url.static_url('/foo.css')
+    assert 'foo.css' == url.static_url('/f1/foo.css')
+    assert 'f3/foo.css' == url.static_url('/f1/f3/foo.css')
+    assert '../f3/foo.css' == url.static_url('/f3/foo.css')
+
+
+def test_factory_relative_path(sample_tree):
+    from themester.url import URL
+    context = sample_tree['f1']
+    url = URL(root=sample_tree, context=context)
+    assert '../' == url.relative_path(sample_tree)
+    assert '' == url.relative_path(sample_tree['f1'])
+    assert '../d1/' == url.relative_path(sample_tree['d1'])
+    assert 'f3/' == url.relative_path(sample_tree['f1']['f3'])
