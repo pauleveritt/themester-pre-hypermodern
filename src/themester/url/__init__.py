@@ -119,8 +119,8 @@ class URL:
      - The container has a Root singleton (or factory.)
      """
 
-    root: Root
     context: Resource = injected(Context)
+    root: Root = injected(Root)
 
     def static_url(self, asset_path: str) -> str:
         path = relative_static_path(self.context, asset_path)
