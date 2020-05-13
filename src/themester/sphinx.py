@@ -14,12 +14,10 @@ from themester.resources import Resource, Root
 
 @dataclass
 class DummyView:
-    # resource: Resource = injected(Context)
-    container: ServiceContainer
+    resource_name: str = injected(Context, attr='name')
 
     def __call__(self):
-        name = self.container.context.name
-        return html('<div>Hello {name}</div>')
+        return html('<div>Hello {self.resource_name}</div>')
 
 
 class ThemesterBridge(BuiltinTemplateLoader):
