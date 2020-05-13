@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 
 from viewdom import html
-from wired.dataclasses import injected, Context, factory
+from wired.dataclasses import injected, Context
 
-from themester import View
-from themester.resources import Resource
+from themester.views import view
 
 
-@factory(for_=View, context=Resource)
+@view()
 @dataclass
 class DummyView:
     resource_name: str = injected(Context, attr='name')

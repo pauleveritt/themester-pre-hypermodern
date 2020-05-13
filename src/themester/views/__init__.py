@@ -2,7 +2,7 @@
 Like a component, but with for_=View only.
 """
 
-from typing import Callable, Optional, Any, Type
+from typing import Callable, Optional, Type
 
 from venusian import Scanner, attach
 from wired import ServiceContainer, ServiceRegistry
@@ -39,7 +39,7 @@ def register_view(
 
 
 class view:
-    def __init__(self, context: Optional[Type] = None, name: Optional[str] = None):
+    def __init__(self, context: Optional[Type] = Resource, name: Optional[str] = None):
         self.context = context
         self.name = name
 
