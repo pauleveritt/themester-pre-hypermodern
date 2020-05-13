@@ -22,11 +22,14 @@ class DummyView:
 
 class ThemesterBridge(BuiltinTemplateLoader):
 
-    def render(self, template, context):
-        container: ServiceContainer = context['container']
-        view = container.get(View)
+    def render(self, template, context) -> str:
+        # Get the container and the view
+        render_container: ServiceContainer = context['render_container']
+        view = render_container.get(View)
+
+        # Render a vdom then a string
         vdom = view()
-        response = render(vdom, container=container)
+        response = render(vdom, container=render_container)
         return response
 
 
@@ -37,12 +40,15 @@ def builder_init(app: Sphinx):
     registry = ServiceRegistry()
     app.wired_registry = registry
 
-    # Resource tree with a root and one document
+    # Resource tree with a root and one document, then put in the
+    # registry as a singleton
     root = Root()
     f1 = Resource(name='f1', parent=root)
     root['f1'] = f1
     registry.register_singleton(root, Root)
-    app.wired_root = root
+
+    # Create a "base" container and stash on the Sphinx app
+    app.site_container = registry.create_container()
 
     # Register a view and renderer
     register_dataclass(registry, DummyView, View, context=Resource)
@@ -52,11 +58,11 @@ def builder_init(app: Sphinx):
 def inject_page(app, pagename, templatename, context, doctree):
     """ Store a resource-bound container in Sphinx context """
 
-    registry: ServiceRegistry = app.wired_registry
-    root: Root = app.wired_root
+    site_container: ServiceContainer = app.site_container
+    root: Root = site_container.get(Root)
     resource = root['f1']
-    container = registry.create_container(context=resource)
-    context['container'] = container
+    render_container = site_container.bind(context=resource)
+    context['render_container'] = render_container
 
 
 def setup(app: Sphinx):
