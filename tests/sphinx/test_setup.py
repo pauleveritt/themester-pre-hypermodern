@@ -8,7 +8,5 @@ pytestmark = pytest.mark.sphinx('html', testroot='setup')
 class TestSetupFunction:
 
     def test_index(self, page):
-        assert 9 == page
-        element: Tag = page.select('.footer a')[1]
-        content = element.contents[0].strip()
-        assert 'Alabaster' in content
+        element: Tag = page.select_one('div')
+        assert 'Hello f1' == element.text

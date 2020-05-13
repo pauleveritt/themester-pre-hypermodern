@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from sphinx.application import Sphinx
 from sphinx.jinja2glue import BuiltinTemplateLoader
+from venusian import Scanner
 from viewdom import html
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
@@ -50,8 +51,12 @@ def builder_init(app: Sphinx):
     # Create a "base" container and stash on the Sphinx app
     app.site_container = registry.create_container()
 
+    # Go through the configuration and register stuff
+    themester_plugins = app.config['themester_plugins']
+    scanner = Scanner(registry=registry)
+    [scanner.scan(plugin) for plugin in themester_plugins]
+
     # Register a view and renderer
-    register_dataclass(registry, DummyView, View, context=Resource)
     register_dataclass(registry, VDOMRenderer, Renderer)
 
 
@@ -66,13 +71,9 @@ def inject_page(app, pagename, templatename, context, doctree):
 
 
 def setup(app: Sphinx):
+    app.add_config_value('themester_plugins', {}, 'env')
     app.connect('builder-inited', builder_init)
-
-    # Not using any of the Sphinx HTML builder machinery
-    # nor Jinja2
-    bridge = 'themester.sphinx.ThemesterBridge'
-    app.config.template_bridge = bridge
-
+    app.config.template_bridge = 'themester.sphinx.ThemesterBridge'
     app.connect('html-page-context', inject_page)
 
     return dict(parallel_read_safe=True)
