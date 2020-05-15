@@ -18,7 +18,7 @@ class View:
 def register_view(
         registry: ServiceRegistry,
         target: Callable = None,
-        context: Optional[Resource] = None,
+        context: Optional[Resource] = Resource,
         name: Optional[str] = None,
 ):
     """ Imperative form of the view decorator """
@@ -39,7 +39,11 @@ def register_view(
 
 
 class view:
-    def __init__(self, context: Optional[Type] = Resource, name: Optional[str] = None):
+    def __init__(
+            self,
+            context: Optional[Type] = Resource,
+            name: Optional[str] = None
+    ):
         self.context = context
         self.name = name
 

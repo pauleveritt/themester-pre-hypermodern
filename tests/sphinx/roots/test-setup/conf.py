@@ -1,6 +1,7 @@
 import sys
 
 sys.path.append('.')
+import resources  # noqa
 import views  # noqa
 
 extensions = ['themester']
@@ -11,4 +12,4 @@ html_title = ''
 exclude_patterns = ['_build']
 current_module = sys.modules[__name__]
 
-themester_plugins = [views, ]
+themester_plugins = [resources, views ]

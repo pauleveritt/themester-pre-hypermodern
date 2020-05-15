@@ -10,7 +10,7 @@ from wired.dataclasses import register_dataclass, injected, Context
 
 from themester import View
 from themester.renderer import Renderer, VDOMRenderer
-from themester.resources import Resource, Root
+from themester.resources import Root
 
 
 @dataclass
@@ -37,26 +37,24 @@ class ThemesterBridge(BuiltinTemplateLoader):
 def builder_init(app: Sphinx):
     """ Wire up some global stuff after Sphinx startup """
 
-    # Make a registry and store in Sphinx environment
+    # Make a registry with a Scanner and store in Sphinx environment
     registry = ServiceRegistry()
+    scanner = Scanner(registry=registry)
+    registry.register_singleton(scanner, Scanner)
     app.wired_registry = registry
-
-    # Resource tree with a root and one document, then put in the
-    # registry as a singleton
-    root = Root()
-    f1 = Resource(name='f1', parent=root)
-    root['f1'] = f1
-    registry.register_singleton(root, Root)
 
     # Create a "base" container and stash on the Sphinx app
     app.site_container = registry.create_container()
 
     # Go through the configuration and register stuff
     themester_plugins = app.config['themester_plugins']
-    scanner = Scanner(registry=registry)
-    [scanner.scan(plugin) for plugin in themester_plugins]
+    for plugin in themester_plugins:
+        try:
+            plugin.wired_setup(registry)
+        except AttributeError:
+            # No wired_setup so scan it insted
+            scanner.scan(plugin)
 
-    # Register a view and renderer
     register_dataclass(registry, VDOMRenderer, Renderer)
 
 
