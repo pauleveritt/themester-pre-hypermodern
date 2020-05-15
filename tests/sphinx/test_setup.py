@@ -8,5 +8,7 @@ pytestmark = pytest.mark.sphinx('html', testroot='setup')
 class TestSetupFunction:
 
     def test_index(self, page):
-        element: Tag = page.select_one('div')
-        assert 'Hello f1' == element.text
+        heading: Tag = page.select_one('h1')
+        assert 'index' == heading.text
+        body: Tag = page.select_one('div')
+        assert 'Hello World' in body.text

@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+from typing import Optional, Dict
+
 from sphinx.application import Sphinx
 from sphinx.jinja2glue import BuiltinTemplateLoader
 from venusian import Scanner
@@ -10,6 +13,16 @@ from themester.renderer import Renderer, VDOMRenderer
 from themester.resources import Root
 
 
+@dataclass(frozen=True)
+class PageContext:
+    """ Gather up info from Sphinx HTML page context """
+
+    pagename: str
+    body: str
+    prev: Optional[Dict[str, str]]
+    next: Optional[Dict[str, str]]
+
+
 class ThemesterBridge(BuiltinTemplateLoader):
 
     def render(self, template, context) -> str:
@@ -17,7 +30,7 @@ class ThemesterBridge(BuiltinTemplateLoader):
         render_container: ServiceContainer = context['render_container']
         view = render_container.get(View)
 
-        # Render a vdom then a string
+        # Render a vdom then return a string
         vdom = view()
         response = render(vdom, container=render_container)
         return response
@@ -52,9 +65,23 @@ def inject_page(app, pagename, templatename, context, doctree):
 
     site_container: ServiceContainer = app.site_container
     root: Root = site_container.get(Root)
-    resource = root['f1']
+    resource = root[pagename]
     render_container = site_container.bind(context=resource)
     context['render_container'] = render_container
+
+    prev = context.get('prev')
+    next = context.get('next')
+    body = context.get('body', '')
+
+    # Gather the Sphinx per-page render info into an object that
+    # can be retrieved from the container
+    page_context = PageContext(
+        pagename=pagename,
+        body=body,
+        prev=prev,
+        next=next
+    )
+    render_container.register_singleton(page_context, PageContext)
 
 
 def setup(app: Sphinx):
