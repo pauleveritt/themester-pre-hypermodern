@@ -1,24 +1,13 @@
-from dataclasses import dataclass
-
 from sphinx.application import Sphinx
 from sphinx.jinja2glue import BuiltinTemplateLoader
 from venusian import Scanner
-from viewdom import html
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
-from wired.dataclasses import register_dataclass, injected, Context
+from wired.dataclasses import register_dataclass
 
 from themester import View
 from themester.renderer import Renderer, VDOMRenderer
 from themester.resources import Root
-
-
-@dataclass
-class DummyView:
-    resource_name: str = injected(Context, attr='name')
-
-    def __call__(self):
-        return html('<div>Hello {self.resource_name}</div>')
 
 
 class ThemesterBridge(BuiltinTemplateLoader):
