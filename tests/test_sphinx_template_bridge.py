@@ -1,15 +1,9 @@
 import pytest
 from wired import ServiceRegistry
 
-from themester import View
 from themester.sphinx.template_bridge import ThemesterBridge
-
-
-class RenderView(View):
-
-    def __call__(self) -> str:
-        from viewdom import html
-        return html('<div>hello</div>')
+from themester.testing.views import FixtureView
+from themester.views import View
 
 
 @pytest.fixture
@@ -19,16 +13,12 @@ def render_themester_bridge() -> ThemesterBridge:
 
 
 @pytest.fixture
-def render_view() -> View:
-    return RenderView()
-
-
-@pytest.fixture
-def render_context(render_view):
+def render_context():
     registry = ServiceRegistry()
     render_container = registry.create_container()
-    render_container.register_singleton(render_view, View)
-    rc = dict(View=render_view)
+    fixture_view = FixtureView()
+    render_container.register_singleton(fixture_view, View)
+    rc = dict(View=fixture_view)
     c = dict(render_container=render_container)
     return c
 

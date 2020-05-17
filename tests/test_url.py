@@ -71,9 +71,9 @@ def test_normalize_path(path: str, expected: str):
     ]
 
 )
-def test_find_resource(sample_tree, path: str, expected: str):
+def test_find_resource(themester_site_deep, path: str, expected: str):
     from themester.url import find_resource
-    resource = find_resource(sample_tree, path)
+    resource = find_resource(themester_site_deep, path)
     assert expected == resource.name
 
 
@@ -103,14 +103,14 @@ def test_find_resource(sample_tree, path: str, expected: str):
     )
 )
 def test_parents(
-        sample_tree, this_path: str, expected: Tuple[str],
+        themester_site_deep, this_path: str, expected: Tuple[str],
 ):
     from themester.url import (
         find_resource,
         parents,
         resource_path,
     )
-    resource = find_resource(sample_tree, this_path)
+    resource = find_resource(themester_site_deep, this_path)
     results = parents(resource)
     result = tuple(
         (
@@ -137,13 +137,13 @@ def test_parents(
     )
 )
 def test_resource_path(
-        sample_tree, target_path: str, expected: str,
+        themester_site_deep, target_path: str, expected: str,
 ):
     from themester.url import (
         find_resource,
         resource_path,
     )
-    resource = find_resource(sample_tree, target_path)
+    resource = find_resource(themester_site_deep, target_path)
     path = resource_path(resource)
     assert expected == path
 
@@ -167,16 +167,16 @@ def test_resource_path(
     ]
 )
 def test_relative_path(
-        sample_tree, current_path: str, target_path: str,
+        themester_site_deep, current_path: str, target_path: str,
         expected: str,
 ):
     from themester.url import (
         find_resource,
         relative_path,
     )
-    current = find_resource(sample_tree, current_path)
-    target = find_resource(sample_tree, target_path)
-    result: str = relative_path(sample_tree, current, target)
+    current = find_resource(themester_site_deep, current_path)
+    target = find_resource(themester_site_deep, target_path)
+    result: str = relative_path(themester_site_deep, current, target)
     assert result == expected
 
 
@@ -192,32 +192,32 @@ def test_relative_path(
     ]
 )
 def test_static_relative_path(
-        sample_tree, current_path: str, expected: str,
+        themester_site_deep, current_path: str, expected: str,
 ):
     from themester.url import (
         find_resource,
         relative_static_path,
     )
-    current = find_resource(sample_tree, current_path)
+    current = find_resource(themester_site_deep, current_path)
     result: str = relative_static_path(current, 'static/foo.css')
     assert result == expected
 
 
-def test_factory_static_url(sample_tree):
+def test_factory_static_url(themester_site_deep):
     from themester.url import URL
-    context = sample_tree['f1']
-    url = URL(root=sample_tree, context=context)
+    context = themester_site_deep['f1']
+    url = URL(root=themester_site_deep, context=context)
     assert '../foo.css' == url.static_url('/foo.css')
     assert 'foo.css' == url.static_url('/f1/foo.css')
     assert 'f3/foo.css' == url.static_url('/f1/f3/foo.css')
     assert '../f3/foo.css' == url.static_url('/f3/foo.css')
 
 
-def test_factory_relative_path(sample_tree):
+def test_factory_relative_path(themester_site_deep):
     from themester.url import URL
-    context = sample_tree['f1']
-    url = URL(root=sample_tree, context=context)
-    assert '../' == url.relative_path(sample_tree)
-    assert '' == url.relative_path(sample_tree['f1'])
-    assert '../d1/' == url.relative_path(sample_tree['d1'])
-    assert 'f3/' == url.relative_path(sample_tree['f1']['f3'])
+    context = themester_site_deep['f1']
+    url = URL(root=themester_site_deep, context=context)
+    assert '../' == url.relative_path(themester_site_deep)
+    assert '' == url.relative_path(themester_site_deep['f1'])
+    assert '../d1/' == url.relative_path(themester_site_deep['d1'])
+    assert 'f3/' == url.relative_path(themester_site_deep['f1']['f3'])
