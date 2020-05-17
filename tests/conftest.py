@@ -6,6 +6,8 @@ from wired import ServiceRegistry
 
 from themester.resources import Root, Collection, Resource
 
+pytest_plugins = 'themester.testing.fixtures'
+
 
 @pytest.fixture
 def registry(scanned_modules: Sequence[ModuleType]) -> ServiceRegistry:
