@@ -34,6 +34,7 @@ class ThemesterApp(App):
         # can get them there instead of always needing this app instance
         scanner = Scanner(registry=self.registry)
 
+        self.registry.register_singleton(self, App)
         self.registry.register_singleton(root, Root)
         self.registry.register_singleton(scanner, Scanner)
         if config:

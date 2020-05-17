@@ -3,6 +3,7 @@ from venusian import Scanner
 from wired import ServiceContainer, ServiceRegistry
 
 from themester import Config, Root
+from themester.protocols import App
 from themester.testing.fixtures import ThemesterApp
 
 
@@ -11,6 +12,8 @@ def test_themester_app_default(themester_site):
     assert isinstance(ta.registry, ServiceRegistry)
     assert isinstance(ta.container, ServiceContainer)
 
+    app: ThemesterApp = ta.container.get(App)
+    assert app.registry == ta.registry
     root: Root = ta.container.get(Root)
     assert root == themester_site
     # Make sure the root/config attributes not on the dataclass instance,
@@ -25,7 +28,6 @@ def test_themester_app_config(themester_site, themester_config):
     ta = ThemesterApp(root=themester_site, config=themester_config)
     ta_config = ta.container.get(Config)
     assert ta_config == themester_config
-
 
 def test_themester_app_setup_plugin(themester_site):
     from themester.testing import views
