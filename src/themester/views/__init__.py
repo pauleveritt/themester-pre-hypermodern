@@ -9,10 +9,7 @@ from wired import ServiceContainer, ServiceRegistry
 from wired.dataclasses.injector import Injector
 
 from themester.resources import Resource
-
-
-class View:
-    pass
+from .protocols import View
 
 
 def register_view(

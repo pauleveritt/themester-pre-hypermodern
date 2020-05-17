@@ -1,4 +1,5 @@
 import pytest
+from venusian import Scanner
 
 from themester.app import ThemesterApp
 from .resources import Site, Document, Collection
@@ -28,3 +29,9 @@ def themester_site_deep() -> Site:
 @pytest.fixture
 def themester_app(themester_site) -> ThemesterApp:
     return ThemesterApp(root=themester_site)
+
+
+@pytest.fixture
+def themester_scanner(themester_app) -> Scanner:
+    scanner: Scanner = themester_app.container.get(Scanner)
+    return scanner
