@@ -9,10 +9,12 @@ from __future__ import annotations
 from typing import Protocol, Optional
 
 from viewdom.h import H
+from wired import ServiceContainer, ServiceRegistry
 
 
 class App(Protocol):
-    pass
+    container: ServiceContainer
+    registry: ServiceRegistry
 
 
 class Config(Protocol):

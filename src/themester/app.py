@@ -14,10 +14,11 @@ from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
 from themester import Config, Root, View
+from themester.protocols import App
 
 
 @dataclass
-class ThemesterApp:
+class ThemesterApp(App):
     root: InitVar[Root]
     config: InitVar[Optional[Config]]
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
