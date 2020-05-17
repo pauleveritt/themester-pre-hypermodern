@@ -1,9 +1,7 @@
 import pytest
-from wired import ServiceRegistry
 
+from themester.app import ThemesterApp
 from themester.sphinx.template_bridge import ThemesterBridge
-from themester.testing.views import FixtureView
-from themester.views import View
 
 
 @pytest.fixture
@@ -13,23 +11,20 @@ def render_themester_bridge() -> ThemesterBridge:
 
 
 @pytest.fixture
-def render_context():
-    registry = ServiceRegistry()
-    render_container = registry.create_container()
-    fixture_view = FixtureView()
-    render_container.register_singleton(fixture_view, View)
-    rc = dict(View=fixture_view)
-    c = dict(render_container=render_container)
+def render_context(themester_app: ThemesterApp):
+    from themester.testing import views
+    themester_app.setup_plugin(views)
+    c = dict(render_container=themester_app.container)
     return c
 
 
-def test_render_construction(render_themester_bridge):
+def test_themester_bridge_construction(render_themester_bridge):
     assert render_themester_bridge
     assert render_themester_bridge.newest_template_mtime() == 0
     with pytest.raises(NotImplementedError):
         render_themester_bridge.render_string('', {})
 
 
-def test_render_render(render_themester_bridge, render_context):
+def test_themester_bridge_render(render_themester_bridge, render_context):
     actual = render_themester_bridge.render('', render_context)
-    assert actual == '<div>hello</div>'
+    assert actual == '<div>View: Fixture View</div>'

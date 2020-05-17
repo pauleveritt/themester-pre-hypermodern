@@ -3,10 +3,9 @@ from typing import Dict, List
 from sphinx.application import TemplateBridge
 from sphinx.builders import Builder
 from sphinx.theming import Theme
-from viewdom_wired import render
 from wired import ServiceContainer
 
-from themester import View
+from themester.protocols import App
 
 
 class ThemesterBridge(TemplateBridge):
@@ -20,13 +19,10 @@ class ThemesterBridge(TemplateBridge):
         return
 
     def render(self, template: str, context: Dict) -> str:
-        # Get the container and the view
+        # The container is prepared upstream inside inject_context
         render_container: ServiceContainer = context['render_container']
-        view = render_container.get(View)
-
-        # Render a vdom then return a string
-        vdom = view()
-        response = render(vdom, container=render_container)
+        app: App = render_container.get(App)
+        response = app.render(container=render_container)
         return response
 
     def newest_template_mtime(self) -> float:

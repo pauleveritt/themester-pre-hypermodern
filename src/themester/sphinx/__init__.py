@@ -3,8 +3,6 @@ from venusian import Scanner
 from wired import ServiceRegistry, ServiceContainer
 from wired.dataclasses import register_dataclass
 
-from themester.renderer import Renderer, VDOMRenderer
-from themester.resources import Root
 from themester.sphinx import views
 from themester.sphinx.models import PageContext
 
