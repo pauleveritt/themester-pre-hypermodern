@@ -8,8 +8,7 @@ from venusian import Scanner, attach
 from wired import ServiceContainer, ServiceRegistry
 from wired.dataclasses.injector import Injector
 
-from themester.resources import Resource
-from .protocols import View
+from themester import Resource, View
 
 
 def register_view(
@@ -21,8 +20,8 @@ def register_view(
     """ Imperative form of the view decorator """
 
     def view_factory(container: ServiceContainer):
-        injector = Injector(target)
-        view_instance = injector(container)
+        injector = Injector(container)
+        view_instance = injector(target)
         return view_instance
 
     if name is None:

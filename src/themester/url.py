@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 
 from wired.dataclasses import factory, Context, injected
 
-from themester.resources import Resource, Root
+from themester import Resource, Root
 
 SEP = "/"
 
