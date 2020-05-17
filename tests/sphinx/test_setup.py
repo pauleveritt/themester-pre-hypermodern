@@ -1,4 +1,3 @@
-from bs4.element import Tag
 import pytest
 
 pytestmark = pytest.mark.sphinx('html', testroot='setup')
@@ -6,9 +5,12 @@ pytestmark = pytest.mark.sphinx('html', testroot='setup')
 
 @pytest.mark.parametrize('page', ['index.html', ], indirect=True)
 class TestSetupFunction:
+    """ Minimum test for a minimum site.
+
+     This site has no views, resources, no anything. It just uses the
+     Themester built-in views.
+
+     """
 
     def test_index(self, page):
-        heading: Tag = page.select_one('h1')
-        assert 'index' == heading.text
-        body: Tag = page.select_one('div')
-        assert 'Hello World' in body.text
+        assert 'Hello World' in page
