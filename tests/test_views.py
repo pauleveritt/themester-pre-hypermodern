@@ -24,6 +24,7 @@ def test_views_hello():
     container = registry.create_container(context=ViewsContext())
     view = container.get(View)
     actual = view()
+    assert actual.tag == 'div'
     expected = H(tag='div', props={}, children=['Hello ', 'DefaultView'])
     assert actual == expected
 

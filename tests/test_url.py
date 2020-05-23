@@ -2,6 +2,10 @@ from typing import Tuple
 
 import pytest
 
+pytest_plugins = [
+    'themester.testing.fixtures',
+]
+
 
 @pytest.mark.parametrize(
     'base, to, expected',
