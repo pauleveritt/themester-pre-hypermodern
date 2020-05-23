@@ -1,1 +1,3 @@
-pytest_plugins = ['themester.testing.fixtures', ]
+pytest_plugins = [
+    'themester.testing.fixtures',
+]
