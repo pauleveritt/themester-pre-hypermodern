@@ -44,7 +44,7 @@ setup(
     packages=find_packages('src', exclude=['tests']),
     package_dir={'': 'src'},
     include_package_data=True,
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     install_requires=requires,
     extras_require={'docs': docs_require, 'tests': tests_require},
     zip_safe=False,
