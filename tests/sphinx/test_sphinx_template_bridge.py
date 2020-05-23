@@ -3,6 +3,10 @@ import pytest
 from themester.app import ThemesterApp
 from themester.sphinx.template_bridge import ThemesterBridge
 
+pytest_plugins = [
+    'themester.testing.fixtures',
+]
+
 
 @pytest.fixture
 def render_themester_bridge() -> ThemesterBridge:

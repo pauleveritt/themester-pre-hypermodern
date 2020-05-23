@@ -54,20 +54,27 @@ class ThemesterApp(App):
         s(scanner)
 
     def render(self,
+               container: Optional[ServiceContainer] = None,
                context: Optional[Union[Resource, Any]] = None,
                view_name: Optional[str] = None,
                ) -> str:
         """ Render a vdom via a view from a container """
 
+        # If a container was passed in, use it as the basis for a render
+        # container. Otherwise, use the site container and bind to it.
+        this_container = container if container is not None else self.container
+
         # If we were passed in a context, make a container with it,
         # bound to the site container. Otherwise, use the site container.
-        if context is None:
-            this_container = self.container
-        else:
-            this_container = self.container.bind(context=context)
+        if context is not None:
+            this_container = this_container.bind(context=context)
+
+        # Sometimes we want to use named views
         if view_name:
             this_view = this_container.get(View, name=view_name)
         else:
             this_view = this_container.get(View)
+
+        # Now render a vdom
         this_vdom = this_view()
         return render(this_vdom, container=this_container)

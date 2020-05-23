@@ -94,6 +94,35 @@ def test_themester_app_render_context(themester_app):
     assert actual == expected
 
 
+def test_themester_app_render_container(themester_app):
+    """ Provide a per-render container
+
+     The ``TemplateBridge`` wants Sphinx's ``inject_page`` to make a
+     container with everything that's needed, perhaps as
+     ``container.register_singleton``.
+     """
+
+    expected = 'Hello containerview'
+
+    @dataclass
+    class ContainerView:
+
+        def __call__(self):
+            return expected
+
+    register_view(themester_app.registry, ContainerView, context=Customer)
+
+    # Fail with no context
+    # with pytest.raises(LookupError):
+    #     themester_app.render()
+
+    # Succeed with context
+    customer = Customer()
+    container = themester_app.container.bind(context=customer)
+    actual = themester_app.render(container=container)
+    assert actual == expected
+
+
 def test_themester_app_render_named(themester_app):
     """ Register a view with a name, then get the view by name """
 
