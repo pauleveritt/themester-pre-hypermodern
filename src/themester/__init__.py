@@ -7,9 +7,12 @@ from .protocols import (
     View,
 )
 
+from .sphinx import setup
+
 __all__ = [
     'Config',
     'Resource',
     'Root',
-    'View'
+    'View',
+    'setup'
 ]

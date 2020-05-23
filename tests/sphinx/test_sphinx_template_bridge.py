@@ -20,9 +20,10 @@ def render_context(themester_app: ThemesterApp):
 
 def test_themester_bridge_construction(render_themester_bridge):
     assert render_themester_bridge
-    assert render_themester_bridge.newest_template_mtime() == 0
-    with pytest.raises(NotImplementedError):
-        render_themester_bridge.render_string('', {})
+    # Bring these back when we stop using BuiltinTemplateLoader
+    # assert render_themester_bridge.newest_template_mtime() == 0
+    # with pytest.raises(NotImplementedError):
+    #     render_themester_bridge.render_string('', {})
 
 
 def test_themester_bridge_render(render_themester_bridge, render_context):

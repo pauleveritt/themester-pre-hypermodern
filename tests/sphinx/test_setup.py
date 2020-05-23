@@ -13,4 +13,4 @@ class TestSetupFunction:
      """
 
     def test_index(self, page):
-        assert 'Hello World' in page
+        assert 'themester-body' in str(page)

@@ -3,49 +3,55 @@ from venusian import Scanner
 from wired import ServiceRegistry, ServiceContainer
 from wired.dataclasses import register_dataclass
 
+from themester import Root
+from themester.app import ThemesterApp
 from themester.sphinx import views
+from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext
+from themester.testing.config import ThemesterConfig
+from themester.testing.resources import Site
 
 
 def builder_init(app: Sphinx):
     """ Wire up some global stuff after Sphinx startup """
 
-    # Make a registry with a Scanner and store in Sphinx environment
-    registry = ServiceRegistry()
-    scanner = Scanner(registry=registry)
-    registry.register_singleton(scanner, Scanner)
-    app.wired_registry = registry
-
-    # Register any default, Themester views, etc.
-    views.wired_setup(registry)
+    site = Site()
+    config: SphinxConfig = app.config.themester_config
+    themester_app = ThemesterApp(root=site, config=config)
+    themester_app.setup_plugin(views)
+    scanner = themester_app.container.get(Scanner)
+    app.themester_app = themester_app
 
     # Go through the configuration and register stuff
     themester_plugins = app.config['themester_plugins']
     for plugin in themester_plugins:
         try:
-            plugin.wired_setup(registry)
+            themester_app.setup_plugin(plugin)
         except AttributeError:
             # No wired_setup so scan it instead
             scanner.scan(plugin)
-
-    # Create a "base" container and stash on the Sphinx app
-    app.site_container = registry.create_container()
-
-    register_dataclass(registry, VDOMRenderer, Renderer)
+    #
+    # # Create a "base" container and stash on the Sphinx app
+    # app.site_container = registry.create_container()
+    #
+    # register_dataclass(registry, VDOMRenderer, Renderer)
 
 
 def inject_page(app, pagename, templatename, context, doctree):
     """ Store a resource-bound container in Sphinx context """
 
+    themester_app: ThemesterApp = app.themester_app
+    themester_config: ThemesterConfig = app.config.themester_config
+    themester_root = themester_app.container.get(Root)
+
     # If this is a Sphinx site that wants to do resource-oriented
-    # pages, get the root then the resource.
-    site_container: ServiceContainer = app.site_container
-    root: Root = site_container.get(Root, default=None)
-    if root:
-        resource = root[pagename]
+    # pages, get the current resource.
+    if themester_config.use_resources:
+        resource = themester_root[pagename]
     else:
-        resource = None
-    render_container = site_container.bind(context=resource)
+        resource = themester_root
+
+    render_container = themester_app.container.bind(context=resource)
     context['render_container'] = render_container
 
     prev = context.get('prev')
@@ -64,6 +70,7 @@ def inject_page(app, pagename, templatename, context, doctree):
 
 
 def setup(app: Sphinx):
+    app.add_config_value('themester_config', SphinxConfig(), 'env')
     app.add_config_value('themester_plugins', [], 'env')
     app.connect('builder-inited', builder_init)
     app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'
