@@ -14,7 +14,7 @@ from themester import Resource, View
 def register_view(
         registry: ServiceRegistry,
         target: Callable = None,
-        context: Optional[Resource] = Resource,
+        context: Optional[Type] = Resource,
         name: Optional[str] = None,
 ):
     """ Imperative form of the view decorator """
