@@ -6,6 +6,10 @@ from themester import Config, Root
 from themester.protocols import App
 from themester.testing.fixtures import ThemesterApp
 
+pytest_plugins = [
+    'themester.testing.fixtures',
+]
+
 
 def test_themester_app_default(themester_site):
     ta = ThemesterApp(root=themester_site, config=None)
@@ -29,6 +33,7 @@ def test_themester_app_config(themester_site, themester_config):
     ta_config = ta.container.get(Config)
     assert ta_config == themester_config
 
+
 def test_themester_app_setup_plugin(themester_site):
     from themester.testing import views
     from themester import View
@@ -39,7 +44,8 @@ def test_themester_app_setup_plugin(themester_site):
     assert view.name == 'Fixture View'
 
 
-def test_themester_app_setup_render_nocontainer(themester_site):
+def test_themester_app_setup_render_nocontext(themester_site):
+    """ Use the app's ``site container`` """
     from themester.testing import views
     ta = ThemesterApp(root=themester_site, config=None)
     ta.setup_plugin(views)
@@ -47,10 +53,10 @@ def test_themester_app_setup_render_nocontainer(themester_site):
     assert actual == '<div>View: Fixture View</div>'
 
 
-def test_themester_app_setup_render_container(themester_site):
+def test_themester_app_setup_render_context(themester_site):
+    """ The more-common case, make a container for this rendering """
     from themester.testing import views
     ta = ThemesterApp(root=themester_site, config=None)
     ta.setup_plugin(views)
-    container = ta.registry.create_container(context=themester_site)
-    actual = ta.render(container)
+    actual = ta.render(context=themester_site)
     assert actual == '<div>View: Fixture View</div>'

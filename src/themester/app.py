@@ -7,14 +7,14 @@ The ``ThemesterApp`` has all the contracts a system needs to fulfill.
 """
 
 from dataclasses import dataclass, field, InitVar
-from typing import Optional
+from typing import Optional, Any, Union
 
 from venusian import Scanner
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
 from themester import Config, Root, View
-from themester.protocols import App
+from themester.protocols import App, Resource
 
 
 @dataclass
@@ -40,6 +40,12 @@ class ThemesterApp(App):
         if config:
             self.registry.register_singleton(config, Config)
 
+    def scan(self, module):
+        """ Get the scanner and scan a module """
+
+        scanner: Scanner = self.container.get(Scanner)
+        scanner.scan(module)
+
     def setup_plugin(self, module):
         """ Call a plugin's setup function """
 
@@ -47,12 +53,21 @@ class ThemesterApp(App):
         s = getattr(module, 'wired_setup')
         s(scanner)
 
-    def render(self, container: Optional[ServiceContainer] = None) -> str:
+    def render(self,
+               context: Optional[Union[Resource, Any]] = None,
+               view_name: Optional[str] = None,
+               ) -> str:
         """ Render a vdom via a view from a container """
 
-        # Make a container using the root if there isn't a
-        # passed-in container
-        this_container = container if container else self.container
-        this_view = this_container.get(View)
+        # If we were passed in a context, make a container with it,
+        # bound to the site container. Otherwise, use the site container.
+        if context is None:
+            this_container = self.container
+        else:
+            this_container = self.container.bind(context=context)
+        if view_name:
+            this_view = this_container.get(View, name=view_name)
+        else:
+            this_view = this_container.get(View)
         this_vdom = this_view()
         return render(this_vdom, container=this_container)
