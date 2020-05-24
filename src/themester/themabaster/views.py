@@ -4,12 +4,8 @@ from viewdom import html
 from viewdom.h import H
 
 from themester.views import view
-from .components import MyLayout  # noqa
+from .components.layouts import SiteLayout  # noqa
 
-EXPECTED = '<div>Hello My Site</div>'
-
-
-# start-after
 
 @view()
 @dataclass
@@ -17,6 +13,4 @@ class HelloLayout:
     name: str = 'Layout'
 
     def __call__(self) -> H:
-        return html('<{MyLayout} />')
-
-# result = '<div>Hello My Site/div>'
+        return html('<{SiteLayout}><div>One Child</div><//>')

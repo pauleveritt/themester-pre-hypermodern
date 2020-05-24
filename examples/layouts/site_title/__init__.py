@@ -1,3 +1,7 @@
+"""
+The view overrides the value of the site title.
+"""
+
 import pytest
 
 pytest_plugins = [

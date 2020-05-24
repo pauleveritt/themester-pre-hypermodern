@@ -1,8 +1,3 @@
-"""
-Minimum possible layout.
-
-"""
-
 from dataclasses import dataclass
 
 from viewdom import html

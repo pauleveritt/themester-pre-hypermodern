@@ -1,3 +1,7 @@
+"""
+Minimum possible layout.
+"""
+
 import pytest
 
 pytest_plugins = [

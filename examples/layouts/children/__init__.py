@@ -1,3 +1,7 @@
+"""
+View passes in children which are inserted into the layout.
+"""
+
 import pytest
 
 pytest_plugins = [
