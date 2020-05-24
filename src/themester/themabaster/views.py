@@ -9,7 +9,7 @@ from .components.layouts import SiteLayout  # noqa
 
 @view()
 @dataclass
-class HelloLayout:
+class RootView:
     name: str = 'Layout'
 
     def __call__(self) -> H:

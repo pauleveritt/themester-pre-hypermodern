@@ -8,4 +8,4 @@ class LayoutConfig(Protocol):
 
 class Layout(Protocol):
     """ All the contracts for any theme implementing this layout """
-    config: LayoutConfig
+    site_name: str

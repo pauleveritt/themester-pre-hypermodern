@@ -9,16 +9,13 @@ This theme is resource-driven but only lightly.
 """
 from venusian import Scanner
 
-from .components.layouts import SiteLayout
-from .views import HelloLayout
+from .components import layouts
+from . import views
 
 
 def wired_setup(scanner: Scanner):
-    scanner.scan(HelloLayout)
     for module in (
-            SiteLayout,
-            HelloLayout
+            layouts,
+            views,
     ):
         scanner.scan(module)
-
-    return
