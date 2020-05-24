@@ -48,6 +48,25 @@ def test_views_context():
     assert actual == expected
 
 
+def test_views_no_context():
+    from themester.views import View, register_view
+
+    @dataclass
+    class ContextView:
+        name: str = 'ContextView'
+
+        def __call__(self) -> str:
+            return html('<div>Hello {self.name}</div>')
+
+    registry = ServiceRegistry()
+    register_view(registry, ContextView)
+    container = registry.create_container()
+    view = container.get(View)
+    actual = view()
+    expected = H(tag='div', props={}, children=['Hello ', 'ContextView'])
+    assert actual == expected
+
+
 def test_views_named():
     from themester.views import View, register_view
 
