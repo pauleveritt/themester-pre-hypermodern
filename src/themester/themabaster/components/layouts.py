@@ -15,9 +15,9 @@ from wired.dataclasses import injected
 from ..protocols import Layout, LayoutConfig
 
 
-@component()
+@component(for_=Layout)
 @dataclass
-class SiteLayout(Layout):
+class SiteLayout:
     children: Iterable[H]
     site_name: str = injected(LayoutConfig, attr='site_name')
 
