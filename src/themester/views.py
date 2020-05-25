@@ -8,7 +8,7 @@ from venusian import Scanner, attach
 from wired import ServiceContainer, ServiceRegistry
 from wired.dataclasses.injector import Injector
 
-from themester import Resource, View
+from themester.protocols import View
 
 
 def register_view(

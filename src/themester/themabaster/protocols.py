@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from typing import Protocol, Optional
+from typing import Protocol, Optional, Union, Tuple, Mapping
 
 from viewdom_wired import Children
+
+# TODO Add support for extra attrs
+CSSFile = Union[str, Tuple[str, Mapping]]
 
 
 class HTML(Protocol):
