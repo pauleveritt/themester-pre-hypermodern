@@ -9,7 +9,7 @@ from __future__ import annotations
 from types import ModuleType
 from typing import Protocol, Optional
 
-from viewdom.h import H
+from viewdom import H
 from wired import ServiceContainer, ServiceRegistry
 
 

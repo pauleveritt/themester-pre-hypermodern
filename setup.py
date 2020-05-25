@@ -15,6 +15,7 @@ requires = [
     'viewdom_wired',
     'venusian',
     'wired',
+    'markupsafe'
 ]
 
 docs_require = [

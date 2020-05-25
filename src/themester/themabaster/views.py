@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from viewdom import html
-from viewdom.h import H
+from viewdom import H
 
 from themester.views import view
 from .protocols import Layout  # noqa

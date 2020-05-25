@@ -3,7 +3,7 @@ from typing import List
 
 from venusian import Scanner
 from viewdom import html
-from viewdom.h import H
+from viewdom import H
 
 from themester import testing
 from themester.views import view, View
