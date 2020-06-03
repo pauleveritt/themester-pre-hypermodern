@@ -15,6 +15,8 @@ from .components import (
     site_layout,
     title,
 )
+from .components.cssfiles.protocols import CSSFiles
+from .components.jsfiles.protocols import JSFiles
 from . import views
 
 
@@ -26,3 +28,8 @@ def wired_setup(scanner: Scanner):
             views,
     ):
         scanner.scan(module)
+
+__all__= [
+    'CSSFiles',
+    'JSFiles',
+]
