@@ -1,18 +1,19 @@
 import pytest
+
 from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster import CSSFiles
-from themester.themabaster.components.cssfiles import DefaultCSSFiles
+from themester.themabaster import JSFiles
+from themester.themabaster.components.jsfiles import DefaultJSFiles
 
 
 @pytest.fixture
 def this_props(themester_site_deep):
     this_resource = themester_site_deep['f1']['d2']
     props = dict(
-        site_files=('c', 'd'),
-        page_files=('p', 'q'),
+        site_files=('a', 'b'),
+        page_files=('x', 'y'),
         resource=this_resource,
     )
     return props
@@ -20,18 +21,18 @@ def this_props(themester_site_deep):
 
 @pytest.fixture
 def this_component(this_props):
-    ci = DefaultCSSFiles(**this_props)
+    ci = DefaultJSFiles(**this_props)
     return ci
+
+
+def test_protocol():
+    assert JSFiles
 
 
 @pytest.fixture
 def these_modules():
-    from themester.themabaster.components import cssfiles
-    return cssfiles,
-
-
-def test_protocol():
-    assert CSSFiles
+    from themester.themabaster.components import jsfiles
+    return jsfiles,
 
 
 def test_construction(this_component, this_props):
@@ -41,20 +42,20 @@ def test_construction(this_component, this_props):
 
 def test_vdom(this_vdom):
     assert 4 == len(this_vdom)
-    assert '../../../c' == this_vdom[0].props['href']
+    assert '../../../a' == this_vdom[0].props['src']
 
 
 def test_render(this_html):
-    links = this_html.select('link')
-    assert 4 == len(links)
-    assert '../../../c' == links[0].attrs['href']
+    srcs = this_html.select('script')
+    assert 4 == len(srcs)
+    assert '../../../a' == srcs[0].attrs['src']
 
 
 def test_app_render(this_container, this_props):
     del this_props['resource']
-    this_vdom = html('<{CSSFiles} ...{this_props}/>')
+    this_vdom = html('<{JSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    links = this_html.select('link')
-    assert 4 == len(links)
-    assert '../../../c' == links[0].attrs['href']
+    scripts = this_html.select('script')
+    assert 4 == len(scripts)
+    assert '../../../a' == scripts[0].attrs['src']
