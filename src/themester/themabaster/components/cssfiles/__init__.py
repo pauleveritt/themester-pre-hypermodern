@@ -16,7 +16,7 @@ def CSSFile(href: str) -> VDOM:
 
 
 @component(for_=CSSFiles)
-@dataclass
+@dataclass(frozen=True)
 class DefaultCSSFiles:
     site_files: Tuple[str, ...]
     page_files: Optional[Tuple[str, ...]]

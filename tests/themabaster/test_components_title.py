@@ -33,7 +33,7 @@ def these_modules():
 
 
 def test_protocol():
-    from themester.themabaster.protocols import Title
+    from themester.themabaster import Title
     assert Title
 
 

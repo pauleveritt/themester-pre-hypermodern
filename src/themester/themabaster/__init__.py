@@ -16,6 +16,7 @@ from .components import (
     title,
 )
 from .components.cssfiles.protocols import CSSFiles
+from .components.head.protocols import Head
 from .components.jsfiles.protocols import JSFiles
 from .components.title.protocols import Title
 from .protocols import LayoutConfig
@@ -33,6 +34,7 @@ def wired_setup(scanner: Scanner):
 
 __all__= [
     'CSSFiles',
+    'Head',
     'JSFiles',
     'LayoutConfig',
     'Title',

@@ -16,7 +16,7 @@ def JSFile(src: str) -> VDOM:
 
 
 @component(for_=JSFiles)
-@dataclass
+@dataclass(frozen=True)
 class DefaultJSFiles:
     site_files: Tuple[str, ...]
     page_files: Optional[Tuple[str, ...]]

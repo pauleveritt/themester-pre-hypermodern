@@ -11,7 +11,7 @@ from themester.themabaster.protocols import LayoutConfig
 
 
 @component(for_=Title)
-@dataclass
+@dataclass(frozen=True)
 class DefaultTitle:
     page_title: str
     site_name: Optional[str] = injected(LayoutConfig, attr='site_name')
