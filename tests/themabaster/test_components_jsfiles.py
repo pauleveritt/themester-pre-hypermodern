@@ -1,5 +1,4 @@
 import pytest
-
 from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
@@ -17,6 +16,12 @@ def this_props(themester_site_deep):
         resource=this_resource,
     )
     return props
+
+
+@pytest.fixture
+def this_resource(themester_site_deep):
+    this_resource = themester_site_deep['f1']['d2']
+    return this_resource
 
 
 @pytest.fixture
@@ -51,7 +56,7 @@ def test_render(this_html):
     assert '../../../a' == srcs[0].attrs['src']
 
 
-def test_app_render(this_container, this_props):
+def test_wired_render(this_container, this_props):
     del this_props['resource']
     this_vdom = html('<{JSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

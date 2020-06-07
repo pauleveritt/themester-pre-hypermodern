@@ -1,18 +1,34 @@
+"""
+Fixtures to construct parts of themester for tests in pluggable ways.
+
+Quickly construct an app using defaults. Override those defaults with
+local fixtures of the same name.
+"""
+from types import ModuleType
+from typing import Tuple, Optional, Mapping
+
 import pytest
+from bs4 import BeautifulSoup
 from venusian import Scanner
+from viewdom import render, VDOM
+from wired import ServiceContainer
 
 from themester.app import ThemesterApp
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
+from .. import themabaster, Resource
+from ..themabaster.protocols import LayoutConfig
 
 
 @pytest.fixture
 def themester_site() -> Site:
+    """ A very simple site root with no child resources """
     return Site()
 
 
 @pytest.fixture
 def themester_site_deep() -> Site:
+    """ A nested site root with documents and collections """
     site = Site()
     f1 = Collection(name='f1', parent=site)
     site['f1'] = f1
@@ -28,8 +44,10 @@ def themester_site_deep() -> Site:
 
 
 @pytest.fixture
-def themester_app(themester_site) -> ThemesterApp:
-    return ThemesterApp(root=themester_site, config=None)
+def themester_app(themester_site, themester_config) -> ThemesterApp:
+    """ An app that depends on a root and a config """
+
+    return ThemesterApp(root=themester_site, config=themester_config)
 
 
 @pytest.fixture
@@ -40,5 +58,61 @@ def themester_scanner(themester_app) -> Scanner:
 
 @pytest.fixture
 def themester_config() -> ThemesterConfig:
+    """ Dead-simple configuration """
     tc = ThemesterConfig(site_name='Themester SiteConfig')
     return tc
+
+
+@pytest.fixture
+def these_modules() -> Tuple[ModuleType]:
+    """ A tuple with imported modules for themester to scan """
+    return tuple()
+
+
+@pytest.fixture
+def themabaster_app(themester_app, themabaster_config):
+    """ Wire in the themabaster components, views, layout, etc. """
+
+    themester_app.setup_plugin(themabaster)
+    themester_app.registry.register_singleton(themabaster_config, LayoutConfig)
+    return themester_app
+
+
+@pytest.fixture
+def this_vdom(this_component) -> VDOM:
+    """ Use a local ``this_component`` fixture and render to a VDOM """
+    vdom = this_component()
+    return vdom
+
+
+@pytest.fixture
+def this_html(this_vdom) -> BeautifulSoup:
+    rendered = render(this_vdom)
+    html = BeautifulSoup(rendered, 'html.parser')
+    return html
+
+@pytest.fixture
+def this_props(this_resource) -> Mapping:
+    """ Should be implemented by local fixture. Used to construct component. """
+    props = dict()
+    return props
+
+
+@pytest.fixture
+def this_resource() -> Optional[Resource]:
+    """ Use None unless a local test provides a fixture """
+    return None
+
+
+@pytest.fixture
+def this_container(
+        themester_app,
+        themester_scanner,
+        this_props,  # Should have local override
+        these_modules,  # # Should have local override
+        this_resource,  # Should have local override
+) -> ServiceContainer:
+    """ Scan for modules and return a context-bound container """
+    [themester_scanner.scan(this_module) for this_module in these_modules]
+    this_container = themester_app.container.bind(context=this_resource)
+    return this_container

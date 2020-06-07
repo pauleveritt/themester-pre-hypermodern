@@ -22,9 +22,15 @@ def head_title():
     return ht
 
 
-def test_component_head_default(document):
+@pytest.fixture
+def default_args():
+    da = dict(baseurl='http://foo.com/', css_files=(), file_suffix='html', js_files=())
+    return da
+
+
+def test_component_head_default(document, default_args):
     """ Test both the vdom and rendered for this component """
-    c = DefaultHead(resource=document, css_files=())
+    c = DefaultHead(resource=document, **default_args)
     assert c.metatags == ()
     vdom = c()
     tag, props, children = vdom
@@ -38,9 +44,9 @@ def test_component_head_default(document):
     assert len(selection) == 2
 
 
-def test_component_head_title(document, head_title):
+def test_component_head_title(default_args, document, head_title):
     """ Pass in a <title> """
-    c = DefaultHead(resource=document, css_files=(), title=head_title)
+    c = DefaultHead(resource=document, title=head_title, **default_args)
     assert c.metatags == ()
     vdom = c()
     tag, props, children = vdom
@@ -54,13 +60,13 @@ def test_component_head_title(document, head_title):
     assert selection == head_title.page_title + ' - ' + head_title.site_name
 
 
-def test_component_head_metatags(document):
+def test_component_head_metatags(default_args, document):
     """ Pass in some <meta> tags """
     charset = 'utf-8'
     metas = (
         html('<meta name="foo" content="bar"/>'),
     )
-    c = DefaultHead(resource=document, css_files=(), metatags=metas)
+    c = DefaultHead(resource=document, metatags=metas, **default_args)
     vdom = c()
     tag, props, children = vdom
     assert tag == 'head'
@@ -73,10 +79,10 @@ def test_component_head_metatags(document):
     assert selection.attrs['content'] == 'bar'
 
 
-def test_component_head_css_files(document):
+def test_component_head_css_files(default_args, document):
     """ Use the config to pass in some css_files """
-    css_files = ('foo.css', 'bar.css')
-    c = DefaultHead(resource=document, css_files=css_files)
+    default_args['css_files'] = ('foo.css', 'bar.css')
+    c = DefaultHead(resource=document, **default_args)
     vdom = c()
     tag, props, children = vdom
     assert tag == 'head'
@@ -88,3 +94,20 @@ def test_component_head_css_files(document):
     selection = result.select('link')
     assert selection[0].attrs['href'] == '../../../foo.css'
     assert selection[1].attrs['href'] == '../../../bar.css'
+
+
+def test_component_head_js_files(default_args, document):
+    """ Use the config to pass in some css_files """
+    default_args['js_files'] = ('foo.js', 'bar.js')
+    c = DefaultHead(resource=document, **default_args)
+    vdom = c()
+    tag, props, children = vdom
+    assert tag == 'head'
+    assert props == {}
+    # TODO Re-enable when we omit None and [] from html()
+    # assert children == [None, [metas[0], metas[1]]]
+    rendered = render(vdom)
+    result = BeautifulSoup(rendered, 'html.parser')
+    selection = result.select('script')
+    assert selection[0].attrs['src'] == '../../../foo.js'
+    assert selection[1].attrs['src'] == '../../../bar.js'

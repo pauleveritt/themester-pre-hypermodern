@@ -8,8 +8,13 @@ from themester.themabaster.components.cssfiles import DefaultCSSFiles
 
 
 @pytest.fixture
-def this_props(themester_site_deep):
+def this_resource(themester_site_deep):
     this_resource = themester_site_deep['f1']['d2']
+    return this_resource
+
+
+@pytest.fixture
+def this_props(this_resource):
     props = dict(
         site_files=('c', 'd'),
         page_files=('p', 'q'),
@@ -50,7 +55,7 @@ def test_render(this_html):
     assert '../../../c' == links[0].attrs['href']
 
 
-def test_app_render(this_container, this_props):
+def test_wired_render(this_container, this_props):
     del this_props['resource']
     this_vdom = html('<{CSSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

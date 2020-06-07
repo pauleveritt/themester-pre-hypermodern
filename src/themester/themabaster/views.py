@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-from viewdom import html
-from viewdom import H
+from viewdom import html, VDOM
 
 from themester.views import view
 from .protocols import Layout  # noqa
@@ -11,5 +10,5 @@ from .protocols import Layout  # noqa
 @dataclass
 class RootView:
 
-    def __call__(self) -> H:
+    def __call__(self) -> VDOM:
         return html('<{Layout}><div>One Child</div><//>')

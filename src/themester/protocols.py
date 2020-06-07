@@ -9,7 +9,7 @@ from __future__ import annotations
 from types import ModuleType
 from typing import Protocol, Optional
 
-from viewdom import H
+from viewdom import VDOM
 from wired import ServiceContainer, ServiceRegistry
 
 
@@ -41,5 +41,5 @@ class Root(Resource, dict):
 
 
 class View(Protocol):
-    def __call__(self) -> H:
+    def __call__(self) -> VDOM:
         ...
