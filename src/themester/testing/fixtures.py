@@ -17,6 +17,7 @@ from themester.app import ThemesterApp
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
+from ..themabaster.config import ThemabasterConfig
 from ..themabaster.protocols import LayoutConfig
 
 
@@ -70,6 +71,13 @@ def these_modules() -> Tuple[ModuleType]:
 
 
 @pytest.fixture
+def themabaster_config() -> ThemabasterConfig:
+    """ Dead-simple configuration """
+    tc = ThemabasterConfig(site_name='Themester SiteConfig')
+    return tc
+
+
+@pytest.fixture
 def themabaster_app(themester_app, themabaster_config):
     """ Wire in the themabaster components, views, layout, etc. """
 
@@ -90,6 +98,7 @@ def this_html(this_vdom) -> BeautifulSoup:
     rendered = render(this_vdom)
     html = BeautifulSoup(rendered, 'html.parser')
     return html
+
 
 @pytest.fixture
 def this_props(this_resource) -> Mapping:

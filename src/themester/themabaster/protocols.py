@@ -27,6 +27,7 @@ class Title(Component, Protocol):
     page_title: str
     site_name: str
 
+
 class Head(Protocol):
     """ A container for the head element and its children """
     children: Children

@@ -3,9 +3,6 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster import CSSFiles
-from themester.themabaster.components.cssfiles import DefaultCSSFiles
-
 
 @pytest.fixture
 def this_resource(themester_site_deep):
@@ -25,6 +22,7 @@ def this_props(this_resource):
 
 @pytest.fixture
 def this_component(this_props):
+    from themester.themabaster.components.cssfiles import DefaultCSSFiles
     ci = DefaultCSSFiles(**this_props)
     return ci
 
@@ -36,6 +34,7 @@ def these_modules():
 
 
 def test_protocol():
+    from themester.themabaster import CSSFiles
     assert CSSFiles
 
 
@@ -56,6 +55,7 @@ def test_render(this_html):
 
 
 def test_wired_render(this_container, this_props):
+    from themester.themabaster import CSSFiles  # noqa
     del this_props['resource']
     this_vdom = html('<{CSSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)
