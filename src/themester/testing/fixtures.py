@@ -18,7 +18,8 @@ from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
 from ..themabaster.config import ThemabasterConfig
-from ..themabaster.protocols import LayoutConfig
+from ..themabaster.pagecontext import DefaultPageContext
+from ..themabaster.protocols import LayoutConfig, PageContext
 
 
 @pytest.fixture
@@ -31,15 +32,15 @@ def themester_site() -> Site:
 def themester_site_deep() -> Site:
     """ A nested site root with documents and collections """
     site = Site()
-    f1 = Collection(name='f1', parent=site)
+    f1 = Collection(name='f1', parent=site, title='F1')
     site['f1'] = f1
-    d1 = Document(name='d1', parent=site)
+    d1 = Document(name='d1', parent=site, title='D1')
     site['d1'] = d1
-    d2 = Document(name='d2', parent=f1)
+    d2 = Document(name='d2', parent=f1, title='D2')
     f1['d2'] = d2
-    f3 = Collection(name='f3', parent=f1)
+    f3 = Collection(name='f3', parent=f1, title='F3')
     f1['f3'] = f3
-    d3 = Document(name='d3', parent=f3)
+    d3 = Document(name='d3', parent=f3, title='D3')
     f3['d3'] = d3
     return site
 
@@ -73,7 +74,10 @@ def these_modules() -> Tuple[ModuleType]:
 @pytest.fixture
 def themabaster_config() -> ThemabasterConfig:
     """ Dead-simple configuration """
-    tc = ThemabasterConfig(site_name='Themester SiteConfig')
+    tc = ThemabasterConfig(
+        site_name='Themester SiteConfig',
+        css_files=('site_first.css', 'site_second.css',)
+    )
     return tc
 
 
@@ -101,6 +105,17 @@ def this_html(this_vdom) -> BeautifulSoup:
 
 
 @pytest.fixture
+def this_pagecontext() -> PageContext:
+    pc = DefaultPageContext(
+        body='<h1>Some Body</h1>',
+        css_files=('page_first.css', 'page_second.css'),
+        js_files=('page_first.js', 'page_second.js'),
+        page_title='Some Page',
+    )
+    return pc
+
+
+@pytest.fixture
 def this_props(this_resource) -> Mapping:
     """ Should be implemented by local fixture. Used to construct component. """
     props = dict()
@@ -117,6 +132,7 @@ def this_resource() -> Optional[Resource]:
 def this_container(
         themester_app,
         themester_scanner,
+        this_pagecontext,  # Should have local override
         this_props,  # Should have local override
         these_modules,  # # Should have local override
         this_resource,  # Should have local override
@@ -124,4 +140,7 @@ def this_container(
     """ Scan for modules and return a context-bound container """
     [themester_scanner.scan(this_module) for this_module in these_modules]
     this_container = themester_app.container.bind(context=this_resource)
+
+    # For this per-page container, register the PageContext
+    this_container.register_singleton(this_pagecontext, PageContext)
     return this_container

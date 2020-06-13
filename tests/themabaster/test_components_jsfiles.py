@@ -35,7 +35,7 @@ def these_modules():
 
 
 def test_protocol():
-    from themester.themabaster import JSFiles
+    from themester.themabaster.protocols import JSFiles
     assert JSFiles
 
 
@@ -56,7 +56,7 @@ def test_render(this_html):
 
 
 def test_wired_render(this_container, this_props):
-    from themester.themabaster import JSFiles  # noqa
+    from themester.themabaster.protocols import JSFiles  # noqa
     del this_props['resource']
     this_vdom = html('<{JSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

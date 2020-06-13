@@ -4,6 +4,7 @@ Example resource types for use in fixtures and tests
 
 """
 from dataclasses import dataclass
+from typing import Optional
 
 from themester import Resource, Root
 
@@ -25,6 +26,7 @@ class Collection(Resource, dict):
 
     parent: Resource
     name: str
+    title: Optional[str] = None
 
     def __post_init__(self):
         super(dict).__init__()
@@ -36,3 +38,4 @@ class Document(Resource):
 
     parent: Resource
     name: str
+    title: Optional[str] = None

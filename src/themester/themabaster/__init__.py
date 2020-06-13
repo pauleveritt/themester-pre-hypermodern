@@ -9,33 +9,25 @@ This theme is resource-driven but only lightly.
 """
 from venusian import Scanner
 
+from . import views
 from .components import (
+    cssfiles,
+    jsfiles,
     head,
-    html,
-    site_layout,
+    # html,
+    # site_layout,
     title,
 )
-from .components.cssfiles.protocols import CSSFiles
-from .components.head.protocols import Head
-from .components.jsfiles.protocols import JSFiles
-from .components.title.protocols import Title
-from .protocols import LayoutConfig
-from . import views
 
 
 def wired_setup(scanner: Scanner):
     for module in (
+            cssfiles,
+            jsfiles,
             head,
-            html,
-            site_layout,
+            # html,
+            # site_layout,
+            title,
             views,
     ):
         scanner.scan(module)
-
-__all__= [
-    'CSSFiles',
-    'Head',
-    'JSFiles',
-    'LayoutConfig',
-    'Title',
-]
