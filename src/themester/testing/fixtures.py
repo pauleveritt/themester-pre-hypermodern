@@ -5,7 +5,7 @@ Quickly construct an app using defaults. Override those defaults with
 local fixtures of the same name.
 """
 from types import ModuleType
-from typing import Tuple, Optional, Mapping
+from typing import Tuple, Optional, Mapping, Dict, Any
 
 import pytest
 from bs4 import BeautifulSoup
@@ -66,7 +66,7 @@ def themester_config() -> ThemesterConfig:
 
 
 @pytest.fixture
-def these_modules() -> Tuple[ModuleType]:
+def these_modules() -> Tuple[ModuleType, ...]:
     """ A tuple with imported modules for themester to scan """
     return tuple()
 
@@ -105,7 +105,7 @@ def this_html(this_vdom) -> BeautifulSoup:
 
 
 @pytest.fixture
-def this_pagecontext() -> PageContext:
+def this_pagecontext():
     pc = DefaultPageContext(
         body='<h1>Some Body</h1>',
         css_files=('page_first.css', 'page_second.css'),
@@ -116,9 +116,9 @@ def this_pagecontext() -> PageContext:
 
 
 @pytest.fixture
-def this_props(this_resource) -> Mapping:
+def this_props(this_resource) -> Dict[str, Any]:
     """ Should be implemented by local fixture. Used to construct component. """
-    props = dict()
+    props: Dict[str, Any] = dict()
     return props
 
 

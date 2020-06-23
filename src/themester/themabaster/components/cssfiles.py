@@ -3,7 +3,6 @@ from typing import Tuple
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected, Context
 
 from themester import Resource
 from themester.themabaster.protocols import CSSFiles
@@ -19,7 +18,7 @@ def CSSFile(href: str) -> VDOM:
 @component(for_=CSSFiles)
 @dataclass(frozen=True)
 class DefaultCSSFiles:
-    resource: Resource = injected(Context)
+    resource: Resource
     site_files: Tuple[str, ...] = tuple()
     page_files: Tuple[str, ...] = tuple()
 

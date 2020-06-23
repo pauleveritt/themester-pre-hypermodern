@@ -16,14 +16,15 @@ def builder_init(app: Sphinx):
     """ Wire up some global stuff after Sphinx startup """
 
     site = Site()
-    config: SphinxConfig = app.config.themester_config
-    themester_app = ThemesterApp(root=site, config=config)
+    sphinx_config = app.config  # type: ignore
+    themester_config: SphinxConfig = sphinx_config.themester_config  # type: ignore
+    themester_app = ThemesterApp(root=site, config=themester_config)
     themester_app.setup_plugin(views)
     scanner = themester_app.container.get(Scanner)
-    app.themester_app = themester_app
+    app.themester_app = themester_app  # type: ignore
 
     # Go through the configuration and register stuff
-    themester_plugins = app.config['themester_plugins']
+    themester_plugins = sphinx_config['themester_plugins']
     for plugin in themester_plugins:
         try:
             themester_app.setup_plugin(plugin)
@@ -73,7 +74,7 @@ def setup(app: Sphinx):
     app.add_config_value('themester_config', SphinxConfig(), 'env')
     app.add_config_value('themester_plugins', [], 'env')
     app.connect('builder-inited', builder_init)
-    app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'
+    app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'  # type: ignore
     app.connect('html-page-context', inject_page)
 
     return dict(parallel_read_safe=True)

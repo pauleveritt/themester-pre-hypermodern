@@ -52,7 +52,7 @@ def test_construction(this_component, this_props):
         assert getattr(this_component, k) == v
 
 
-def test_vdom(this_vdom):
+def test_vdom(this_vdom, this_props):
     from themester.themabaster.protocols import CSSFiles, JSFiles, Title
     assert len(this_vdom.children) == 5
     assert this_vdom.tag == 'head'
@@ -65,6 +65,7 @@ def test_vdom(this_vdom):
     css = this_vdom.children[3]
     assert css.tag == CSSFiles
     assert css.props == dict(
+        resource=this_props['resource'],
         page_files=('page1.css', 'page2.css'),
         site_files=('site1.css', 'site2.css'),
     )

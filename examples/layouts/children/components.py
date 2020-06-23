@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from typing import Iterable
 
-from viewdom import html
-from viewdom.h import H
+from viewdom import html, VDOM
 from viewdom_wired import component
 
 from .protocols import Layout
@@ -11,7 +10,7 @@ from .protocols import Layout
 @component()
 @dataclass
 class MyLayout(Layout):
-    children: Iterable[H]
+    children: Iterable[VDOM]
     site_name: str = 'My Site'
 
     def __call__(self):

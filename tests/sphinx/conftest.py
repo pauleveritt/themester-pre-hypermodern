@@ -6,10 +6,6 @@ import pytest
 from bs4 import BeautifulSoup
 from sphinx.testing.path import path
 
-pytest_plugins = [
-    'sphinx.testing.fixtures',
-]
-
 
 @pytest.fixture(scope='session')
 def remove_sphinx_projects(sphinx_test_tempdir):

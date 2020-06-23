@@ -56,7 +56,6 @@ def test_render(this_html):
 
 def test_wired_render(this_container, this_props):
     from themester.themabaster.protocols import CSSFiles  # noqa
-    del this_props['resource']
     this_vdom = html('<{CSSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

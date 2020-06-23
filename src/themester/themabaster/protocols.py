@@ -1,6 +1,6 @@
-from typing import Protocol, Optional, Tuple, Iterable, Mapping
+from typing import Protocol, Optional, Tuple, Iterable, Mapping, Union
 
-from viewdom import Children
+from viewdom import VDOM
 from viewdom_wired import Component
 
 
@@ -11,7 +11,7 @@ class CSSFiles(Component, Protocol):
 
 class Head(Component, Protocol):
     """ A container for the head element and its children """
-    children: Children
+    children: VDOM
 
 
 class JSFiles(Component, Protocol):
@@ -24,13 +24,21 @@ class Layout(Component, Protocol):
     site_name: str
 
 
+# TODO Add support for extra attrs
+CSSFile = Union[str, Tuple[str, Mapping]]
+JSFile = Union[str, Tuple[str, Mapping]]
+
+
 class LayoutConfig(Protocol):
     """ Configuration options used in this layout """
+
+    baseurl: Optional[str]
+    css_files: Iterable[CSSFile]
     doctype: str
+    file_suffix: str
+    js_files: Iterable[JSFile]
     lang: str
     site_name: Optional[str]
-    file_suffix: str
-    baseurl: Optional[str]
 
 
 class PageContext:

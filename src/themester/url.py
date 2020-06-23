@@ -30,9 +30,9 @@ def normalize_path(path: str) -> str:
     return path
 
 
-def parents(resource: Resource) -> List[Optional[Resource]]:
+def parents(resource: Resource) -> List[Resource]:
     # TODO: Good docstrings and API docs
-    these_parents: List[Optional[Resource]] = []
+    these_parents: List[Resource] = []
     parent = resource.parent
     while parent is not None:
         these_parents.append(parent)

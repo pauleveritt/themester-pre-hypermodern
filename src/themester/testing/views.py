@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from typing import List
 
 from venusian import Scanner
-from viewdom import html
-from viewdom import H
+from viewdom import html, VDOM
 
 from themester import testing
 from themester.views import view, View
@@ -14,7 +13,7 @@ from themester.views import view, View
 class FixtureView(View):
     name: str = 'Fixture View'
 
-    def __call__(self) -> H:
+    def __call__(self) -> VDOM:
         return html('<div>View: {self.name}</div>')
 
 

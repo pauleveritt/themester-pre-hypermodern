@@ -4,9 +4,8 @@ from typing import Optional
 from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected, Context
 
-from themester.themabaster.protocols import LayoutConfig, Title
+from themester.themabaster.protocols import Title
 
 
 @component(for_=Title)
@@ -14,8 +13,6 @@ from themester.themabaster.protocols import LayoutConfig, Title
 class DefaultTitle:
     page_title: str
     site_name: Optional[str] = None
-    # page_title: str = injected(Context, attr='title')
-    # site_name: Optional[str] = injected(LayoutConfig, attr='site_name')
 
     def __call__(self) -> VDOM:
         if self.site_name:
