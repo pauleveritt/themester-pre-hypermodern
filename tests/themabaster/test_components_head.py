@@ -76,7 +76,7 @@ def test_vdom(this_vdom, this_props):
 
 
 def test_wired_render(themabaster_app, this_container, this_props):
-    from themester.themabaster.protocols import CSSFiles, JSFiles, Title, Head  # noqa
+    from themester.themabaster.protocols import Head  # noqa
     this_vdom = html('<{Head} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

@@ -17,6 +17,11 @@ class Head(Component, Protocol):
     page_title: str
 
 
+class HTML(Component, Protocol):
+    """ The html element """
+    lang: str
+
+
 class CSSFiles(Component, Protocol):
     resource: Resource
     site_files: PropsFiles
@@ -60,26 +65,3 @@ class PageContext:
 class Title(Component, Protocol):
     page_title: str
     site_name: Optional[str]
-
-# from __future__ import annotations
-#
-# from typing import Protocol, Optional, Union, Tuple, Mapping
-#
-# class HTML(Protocol):
-#     """ The html element """
-#     lang: str
-#     # head: Head
-#
-#
-# class LayoutConfig(Protocol):
-#     """ Configuration options used in this layout """
-#     doctype: str
-#     lang: str
-#     site_name: Optional[str]
-#     file_suffix: str
-#     baseurl: Optional[str]
-#
-#
-# class Layout(Protocol):
-#     """ All the contracts for any theme implementing this layout """
-#     site_name: str
