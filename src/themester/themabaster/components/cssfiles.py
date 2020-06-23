@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Tuple
 
 from viewdom import html, VDOM
-from viewdom_wired import component
+from viewdom_wired import component, adherent
 
 from themester import Resource
 from themester.themabaster.protocols import CSSFiles
@@ -16,11 +16,12 @@ def CSSFile(href: str) -> VDOM:
 
 
 @component(for_=CSSFiles)
+@adherent(CSSFiles)
 @dataclass(frozen=True)
-class DefaultCSSFiles:
+class DefaultCSSFiles(CSSFiles):
     resource: Resource
-    site_files: Tuple[str, ...] = tuple()
-    page_files: Tuple[str, ...] = tuple()
+    site_files: Tuple[str, ...]
+    page_files: Tuple[str, ...]
 
     def __call__(self) -> VDOM:
         all_files = self.site_files + self.page_files

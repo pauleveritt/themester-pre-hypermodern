@@ -16,7 +16,7 @@ from themester.themabaster.protocols import CSSFiles, Head, JSFiles, LayoutConfi
 @component(for_=Head)
 @dataclass(frozen=True)
 class DefaultHead:
-    page_title: str = injected(Context, attr='title')
+    page_title: str = injected(PageContext, attr='page_title')
     site_name: Optional[str] = injected(LayoutConfig, attr='site_name')
     site_css_files: Iterable[str] = injected(LayoutConfig, attr='css_files')
     page_css_files: Iterable[str] = injected(PageContext, attr='css_files')
@@ -35,6 +35,6 @@ class DefaultHead:
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <{Title} page_title={self.page_title} site_name={self.site_name} />
   <{CSSFiles} resource={self.resource} page_files={self.page_css_files} site_files={self.site_css_files} />
-  <{JSFiles} page_files={self.page_js_files} site_files={self.site_js_files} />
+  <{JSFiles} resource={self.resource} page_files={self.page_js_files} site_files={self.site_js_files} />
 </head>
 ''')

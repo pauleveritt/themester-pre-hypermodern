@@ -1,22 +1,32 @@
 from typing import Protocol, Optional, Tuple, Iterable, Mapping, Union
 
-from viewdom import VDOM
 from viewdom_wired import Component
 
+from themester import Resource
 
-class CSSFiles(Component, Protocol):
-    site_files = Tuple[str, ...]
-    page_files = Optional[Tuple[str, ...]]
+# CSSFile = Union[str, Tuple[str, Mapping]]
+# JSFile = Union[str, Tuple[str, Mapping]]
+
+# TODO Add support for extra attrs
+PropsFile = Union[str, Tuple[str, Mapping]]
+PropsFiles = Tuple[PropsFile, ...]
 
 
 class Head(Component, Protocol):
     """ A container for the head element and its children """
-    children: VDOM
+    page_title: str
+
+
+class CSSFiles(Component, Protocol):
+    resource: Resource
+    site_files: PropsFiles
+    page_files: Optional[PropsFiles]
 
 
 class JSFiles(Component, Protocol):
-    site_files = Tuple[str, ...]
-    page_files = Optional[Tuple[str, ...]]
+    resource: Resource
+    site_files: Tuple[str, ...]
+    page_files: Optional[Tuple[str, ...]]
 
 
 class Layout(Component, Protocol):
@@ -24,19 +34,14 @@ class Layout(Component, Protocol):
     site_name: str
 
 
-# TODO Add support for extra attrs
-CSSFile = Union[str, Tuple[str, Mapping]]
-JSFile = Union[str, Tuple[str, Mapping]]
-
-
 class LayoutConfig(Protocol):
     """ Configuration options used in this layout """
 
     baseurl: Optional[str]
-    css_files: Iterable[CSSFile]
+    css_files: PropsFiles
     doctype: str
     file_suffix: str
-    js_files: Iterable[JSFile]
+    js_files: PropsFiles
     lang: str
     site_name: Optional[str]
 

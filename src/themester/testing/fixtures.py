@@ -5,7 +5,7 @@ Quickly construct an app using defaults. Override those defaults with
 local fixtures of the same name.
 """
 from types import ModuleType
-from typing import Tuple, Optional, Mapping, Dict, Any
+from typing import Tuple, Optional, Dict, Any
 
 import pytest
 from bs4 import BeautifulSoup

@@ -42,11 +42,6 @@ def these_modules():
     return cssfiles, head, jsfiles, title
 
 
-def test_protocol():
-    from themester.themabaster.protocols import Head
-    assert Head
-
-
 def test_construction(this_component, this_props):
     for k, v in this_props.items():
         assert getattr(this_component, k) == v
@@ -73,6 +68,7 @@ def test_vdom(this_vdom, this_props):
     js = this_vdom.children[4]
     assert js.tag == JSFiles
     assert js.props == dict(
+        resource=this_props['resource'],
         page_files=('page1.js', 'page2.js'),
         site_files=('site1.js', 'site2.js'),
     )
@@ -84,7 +80,7 @@ def test_wired_render(themabaster_app, this_container, this_props):
     this_vdom = html('<{Head} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    assert this_html.select_one('title').text == 'D2 - Themester SiteConfig'
+    assert this_html.select_one('title').text == 'Some Page - Themester SiteConfig'
     links = this_html.select('link')
     assert len(links) == 4
     assert links[0].attrs['href'] == '../../../site_first.css'

@@ -7,11 +7,11 @@ file then injected into the site container as a singleton.
 """
 
 from dataclasses import dataclass
-from typing import Optional, Iterable
+from typing import Optional
 
 from viewdom_wired import adherent
 
-from themester.themabaster.protocols import LayoutConfig, CSSFile, JSFile
+from themester.themabaster.protocols import LayoutConfig, PropsFiles
 
 
 @adherent(LayoutConfig)
@@ -20,7 +20,7 @@ class ThemabasterConfig:
     doctype: str = 'html'
     lang: str = 'EN'
     site_name: Optional[str] = None
-    css_files: Iterable[CSSFile] = tuple()
-    js_files: Iterable[JSFile] = tuple()
+    css_files: PropsFiles = tuple()
+    js_files: PropsFiles = tuple()
     file_suffix: str = '.html'
     baseurl: Optional[str] = None

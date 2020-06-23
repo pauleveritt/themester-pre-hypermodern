@@ -33,17 +33,13 @@ def these_modules():
     return cssfiles,
 
 
-def test_protocol():
-    from themester.themabaster.protocols import CSSFiles
-    assert CSSFiles
-
-
 def test_construction(this_component, this_props):
     for k, v in this_props.items():
         assert getattr(this_component, k) == v
 
 
 def test_vdom(this_vdom):
+    # TODO Need to re-invent VDOM data type to be tuple-ish at the root.
     assert 4 == len(this_vdom)
     assert '../../../c' == this_vdom[0].props['href']
 

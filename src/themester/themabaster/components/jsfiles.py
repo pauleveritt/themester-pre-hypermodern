@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Tuple
 
 from viewdom import html, VDOM
-from viewdom_wired import component
-from wired.dataclasses import injected, Context
+from viewdom_wired import component, adherent
 
 from themester import Resource
 from themester.themabaster.protocols import JSFiles
@@ -17,9 +16,10 @@ def JSFile(src: str) -> VDOM:
 
 
 @component(for_=JSFiles)
+@adherent(JSFiles)
 @dataclass(frozen=True)
-class DefaultJSFiles:
-    resource: Resource = injected(Context)
+class DefaultJSFiles(JSFiles):
+    resource: Resource
     site_files: Tuple[str, ...] = tuple()
     page_files: Tuple[str, ...] = tuple()
 
@@ -30,5 +30,5 @@ class DefaultJSFiles:
             for js_file in all_files
         ]
         return html('''\n
-{[JSFile(src) for src in srcs]}
-        ''')
+    {[JSFile(src) for src in srcs]}
+            ''')
