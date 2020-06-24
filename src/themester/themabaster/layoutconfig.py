@@ -9,12 +9,10 @@ file then injected into the site container as a singleton.
 from dataclasses import dataclass
 from typing import Optional
 
-from viewdom_wired import adherent
-
-from themester.themabaster.protocols import LayoutConfig, PropsFiles
+from themester.themabaster.protocols import PropsFiles
 
 
-@adherent(LayoutConfig)
+# TODO Post-1.0: Make a Protocol for this
 @dataclass
 class ThemabasterConfig:
     doctype: str = 'html'

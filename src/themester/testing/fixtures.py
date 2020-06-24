@@ -17,9 +17,8 @@ from themester.app import ThemesterApp
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
-from ..themabaster.config import ThemabasterConfig
+from ..themabaster.layoutconfig import ThemabasterConfig
 from ..themabaster.pagecontext import PageContext
-from ..themabaster.protocols import LayoutConfig
 
 
 @pytest.fixture
@@ -86,7 +85,7 @@ def themabaster_app(themester_app, themabaster_config):
     """ Wire in the themabaster components, views, layout, etc. """
 
     themester_app.setup_plugin(themabaster)
-    themester_app.registry.register_singleton(themabaster_config, LayoutConfig)
+    themester_app.registry.register_singleton(themabaster_config, ThemabasterConfig)
     return themester_app
 
 

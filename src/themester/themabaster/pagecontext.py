@@ -41,6 +41,7 @@ Meta = Optional[Dict[str, Dict[str, Any]]]
 """
 
 
+# TODO Post-1.0: Make a Protocol for this
 @dataclass(frozen=True)
 class PageContext:
     """ Per-page info from the underlying system needed for by layout """

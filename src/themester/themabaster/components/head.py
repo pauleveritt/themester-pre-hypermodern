@@ -10,17 +10,18 @@ from viewdom_wired import component
 from wired.dataclasses import injected, Context
 
 from themester import Resource
-from themester.themabaster.protocols import CSSFiles, Head, JSFiles, LayoutConfig, Title  # noqa
+from themester.themabaster.layoutconfig import ThemabasterConfig
+from themester.themabaster.protocols import CSSFiles, Head, JSFiles, Title  # noqa
 from themester.themabaster.pagecontext import PageContext
 
 @component(for_=Head)
 @dataclass(frozen=True)
 class DefaultHead:
     page_title: str = injected(PageContext, attr='title')
-    site_name: Optional[str] = injected(LayoutConfig, attr='site_name')
-    site_css_files: Iterable[str] = injected(LayoutConfig, attr='css_files')
+    site_name: Optional[str] = injected(ThemabasterConfig, attr='site_name')
+    site_css_files: Iterable[str] = injected(ThemabasterConfig, attr='css_files')
     page_css_files: Iterable[str] = injected(PageContext, attr='css_files')
-    site_js_files: Iterable[str] = injected(LayoutConfig, attr='js_files')
+    site_js_files: Iterable[str] = injected(ThemabasterConfig, attr='js_files')
     page_js_files: Iterable[str] = injected(PageContext, attr='css_files')
     resource: Resource = injected(Context)
     charset: str = 'utf-8'
