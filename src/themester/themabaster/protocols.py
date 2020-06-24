@@ -1,4 +1,4 @@
-from typing import Protocol, Optional, Tuple, Iterable, Mapping, Union
+from typing import Protocol, Optional, Tuple, Mapping, Union
 
 from viewdom_wired import Component
 
@@ -49,17 +49,6 @@ class LayoutConfig(Protocol):
     js_files: PropsFiles
     lang: str
     site_name: Optional[str]
-
-
-class PageContext:
-    """ Per-page info from the underlying system needed for by layout """
-
-    body: str
-    css_files: Iterable[str]
-    js_files: Iterable[str]
-    page_title: str
-    prev: Optional[Mapping[str, str]]
-    next: Optional[Mapping[str, str]]
 
 
 class Title(Component, Protocol):

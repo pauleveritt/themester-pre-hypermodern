@@ -18,8 +18,8 @@ from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
 from ..themabaster.config import ThemabasterConfig
-from ..themabaster.pagecontext import DefaultPageContext
-from ..themabaster.protocols import LayoutConfig, PageContext
+from ..themabaster.pagecontext import PageContext
+from ..themabaster.protocols import LayoutConfig
 
 
 @pytest.fixture
@@ -106,11 +106,15 @@ def this_html(this_vdom) -> BeautifulSoup:
 
 @pytest.fixture
 def this_pagecontext():
-    pc = DefaultPageContext(
+    pc = PageContext(
         body='<h1>Some Body</h1>',
         css_files=('page_first.css', 'page_second.css'),
         js_files=('page_first.js', 'page_second.js'),
-        page_title='Some Page',
+        title='Some Page',
+        display_toc=True,
+        page_source_suffix='.html',
+        sourcename='somedoc.rst',
+        toc='<li>toc</li>',
     )
     return pc
 
