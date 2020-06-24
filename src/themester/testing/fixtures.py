@@ -19,6 +19,7 @@ from .resources import Site, Document, Collection
 from .. import themabaster, Resource
 from ..themabaster.services.layoutconfig import ThemabasterConfig
 from ..themabaster.services.pagecontext import PageContext
+from ..url import URL
 
 
 @pytest.fixture
@@ -129,6 +130,13 @@ def this_props(this_resource) -> Dict[str, Any]:
 def this_resource() -> Optional[Resource]:
     """ Use None unless a local test provides a fixture """
     return None
+
+
+@pytest.fixture
+def this_url(themester_site_deep, this_resource) -> Optional[URL]:
+    """ Use None unless a local test provides a fixture """
+
+    return URL(context=this_resource, root=themester_site_deep) if this_resource else None
 
 
 @pytest.fixture

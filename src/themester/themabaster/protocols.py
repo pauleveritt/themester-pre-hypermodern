@@ -5,6 +5,8 @@ from viewdom_wired import Component
 from themester import Resource
 
 # TODO Add support for extra attrs
+from themester.url import URL
+
 PropsFile = Union[str, Tuple[str, Mapping]]
 PropsFiles = Tuple[PropsFile, ...]
 
@@ -25,7 +27,7 @@ class Head(Component, Protocol):
     page_css_files: Iterable[str]
     site_js_files: Iterable[str]
     page_js_files: Iterable[str]
-    resource: Resource
+    url: URL
     charset: str
 
 
@@ -35,13 +37,13 @@ class HTML(Component, Protocol):
 
 
 class CSSFiles(Component, Protocol):
-    resource: Resource
+    url: URL
     site_files: PropsFiles
     page_files: Optional[PropsFiles]
 
 
 class JSFiles(Component, Protocol):
-    resource: Resource
+    url: URL
     site_files: Tuple[str, ...]
     page_files: Optional[Tuple[str, ...]]
 

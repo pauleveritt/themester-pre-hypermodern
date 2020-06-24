@@ -11,9 +11,9 @@ def this_resource(themester_site_deep):
 
 
 @pytest.fixture
-def this_props(this_resource):
+def this_props(this_url, this_resource):
     props = dict(
-        resource=this_resource,
+        url=this_url,
         favicon='someicon.png',
         page_title='Some Page',
         site_name='Some Site',
@@ -61,7 +61,7 @@ def test_vdom(this_vdom, this_props):
     css = this_vdom.children[3]
     assert css.tag == CSSFiles
     assert css.props == dict(
-        resource=this_props['resource'],
+        url=this_props['url'],
         page_files=('page1.css', 'page2.css'),
         site_files=('site1.css', 'site2.css'),
     )
@@ -69,7 +69,7 @@ def test_vdom(this_vdom, this_props):
     js = this_vdom.children[4]
     assert js.tag == JSFiles
     assert js.props == dict(
-        resource=this_props['resource'],
+        url=this_props['url'],
         page_files=('page1.js', 'page2.js'),
         site_files=('site1.js', 'site2.js'),
     )

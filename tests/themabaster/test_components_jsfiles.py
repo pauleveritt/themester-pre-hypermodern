@@ -11,12 +11,11 @@ def this_resource(themester_site_deep):
 
 
 @pytest.fixture
-def this_props(themester_site_deep):
-    this_resource = themester_site_deep['f1']['d2']
+def this_props(this_url):
     props = dict(
         site_files=('a', 'b'),
         page_files=('x', 'y'),
-        resource=this_resource,
+        url=this_url,
     )
     return props
 

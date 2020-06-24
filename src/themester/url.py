@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional, Union
+from typing import List, Union
 
 from wired.dataclasses import factory, Context, injected
 
@@ -109,7 +109,7 @@ def resource_path(resource: Resource) -> str:
     return path
 
 
-@factory()
+@factory(context=Resource)
 @dataclass
 class URL:
     """ Convenience factory for paths relative to the context resource.
