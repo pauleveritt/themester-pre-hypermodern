@@ -32,11 +32,6 @@ def these_modules():
     return title,
 
 
-def test_protocol():
-    from themester.themabaster.protocols import Title
-    assert Title
-
-
 def test_construction(this_component, this_props):
     for k, v in this_props.items():
         assert getattr(this_component, k) == v

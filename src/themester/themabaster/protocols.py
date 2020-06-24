@@ -14,7 +14,7 @@ PropsFiles = Tuple[PropsFile, ...]
 class Favicon(Component, Protocol):
     """ Render the link in the head """
 
-    filename: str
+    href: str
 
 
 class Head(Component, Protocol):

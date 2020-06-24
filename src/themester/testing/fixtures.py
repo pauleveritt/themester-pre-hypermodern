@@ -76,7 +76,8 @@ def themabaster_config() -> ThemabasterConfig:
     """ Dead-simple configuration """
     tc = ThemabasterConfig(
         site_name='Themester SiteConfig',
-        css_files=('site_first.css', 'site_second.css',)
+        css_files=('site_first.css', 'site_second.css',),
+        favicon='themabaster.ico',
     )
     return tc
 

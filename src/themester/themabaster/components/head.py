@@ -29,9 +29,6 @@ class DefaultHead(Head):
     page_js_files: Iterable[str] = injected(PageContext, attr='css_files')
     charset: str = 'utf-8'
 
-    # TODO Have a Meta component and make this an iterable of those
-    # metatags: Iterable[Component] = tuple()
-
     def __call__(self) -> VDOM:
         return html('''\n
 <head>
