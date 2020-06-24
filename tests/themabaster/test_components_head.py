@@ -14,6 +14,7 @@ def this_resource(themester_site_deep):
 def this_props(this_resource):
     props = dict(
         resource=this_resource,
+        favicon='someicon.png',
         page_title='Some Page',
         site_name='Some Site',
         site_css_files=('site1.css', 'site2.css',),

@@ -17,8 +17,8 @@ from themester.app import ThemesterApp
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
-from ..themabaster.layoutconfig import ThemabasterConfig
-from ..themabaster.pagecontext import PageContext
+from ..themabaster.services.layoutconfig import ThemabasterConfig
+from ..themabaster.services.pagecontext import PageContext
 
 
 @pytest.fixture

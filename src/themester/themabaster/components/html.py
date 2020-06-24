@@ -8,7 +8,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component, adherent
 from wired.dataclasses import injected
 
-from ..layoutconfig import ThemabasterConfig
+from ..services.layoutconfig import ThemabasterConfig
 from ..protocols import HTML, LayoutConfig, Head  # noqa
 
 

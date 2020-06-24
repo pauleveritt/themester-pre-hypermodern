@@ -22,3 +22,4 @@ class ThemabasterConfig:
     js_files: PropsFiles = tuple()
     file_suffix: str = '.html'
     baseurl: Optional[str] = None
+    favicon: Optional[str] = None

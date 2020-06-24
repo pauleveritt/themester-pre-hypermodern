@@ -1,20 +1,32 @@
-from typing import Protocol, Optional, Tuple, Mapping, Union
+from typing import Protocol, Optional, Tuple, Mapping, Union, Iterable
 
 from viewdom_wired import Component
 
 from themester import Resource
-
-# CSSFile = Union[str, Tuple[str, Mapping]]
-# JSFile = Union[str, Tuple[str, Mapping]]
 
 # TODO Add support for extra attrs
 PropsFile = Union[str, Tuple[str, Mapping]]
 PropsFiles = Tuple[PropsFile, ...]
 
 
+class Favicon(Component, Protocol):
+    """ Render the link in the head """
+
+    filename: str
+
+
 class Head(Component, Protocol):
     """ A container for the head element and its children """
+
+    favicon: Optional[str]
     page_title: str
+    site_name: Optional[str]
+    site_css_files: Iterable[str]
+    page_css_files: Iterable[str]
+    site_js_files: Iterable[str]
+    page_js_files: Iterable[str]
+    resource: Resource
+    charset: str
 
 
 class HTML(Component, Protocol):
