@@ -66,12 +66,6 @@ def themester_config() -> ThemesterConfig:
 
 
 @pytest.fixture
-def these_modules() -> Tuple[ModuleType, ...]:
-    """ A tuple with imported modules for themester to scan """
-    return tuple()
-
-
-@pytest.fixture
 def themabaster_config() -> ThemabasterConfig:
     """ Dead-simple configuration """
     tc = ThemabasterConfig(
@@ -154,11 +148,9 @@ def this_container(
         themester_scanner,
         this_pagecontext,  # Should have local override
         this_props,  # Should have local override
-        these_modules,  # # Should have local override
         this_resource,  # Should have local override
 ) -> ServiceContainer:
     """ Scan for modules and return a context-bound container """
-    [themester_scanner.scan(this_module) for this_module in these_modules]
     this_container = themester_app.container.bind(context=this_resource)
 
     # For this per-page container, register the PageContext

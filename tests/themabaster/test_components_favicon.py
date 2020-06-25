@@ -20,12 +20,6 @@ def this_component(this_props):
     return ci
 
 
-@pytest.fixture
-def these_modules():
-    from themester.themabaster.components import favicon
-    return favicon,
-
-
 def test_construction(this_component, this_props):
     for k, v in this_props.items():
         assert getattr(this_component, k) == v

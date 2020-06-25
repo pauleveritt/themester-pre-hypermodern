@@ -4,7 +4,6 @@ from viewdom import html
 from viewdom_wired import render
 
 
-
 @pytest.fixture
 def this_props(this_url, this_resource):
     props = dict(
@@ -25,22 +24,6 @@ def this_component(this_props):
     from themester.themabaster.components.head import DefaultHead
     ci = DefaultHead(**this_props)
     return ci
-
-
-@pytest.fixture
-def these_modules():
-    from themester.themabaster.components import (
-        cssfiles,
-        head,
-        jsfiles,
-        title,
-    )
-    return cssfiles, head, jsfiles, title
-
-
-def test_construction(this_component, this_props):
-    for k, v in this_props.items():
-        assert getattr(this_component, k) == v
 
 
 def test_vdom(this_vdom, this_props):

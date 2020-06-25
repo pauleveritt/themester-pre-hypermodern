@@ -9,23 +9,12 @@ This theme is resource-driven but only lightly.
 """
 from venusian import Scanner
 
-from . import views
-from .components import (
-    cssfiles,
-    jsfiles,
-    head,
-    html,
-    title,
-)
+from . import components, services, views
+from .components import cssfiles
 
 
 def wired_setup(scanner: Scanner):
-    for module in (
-            cssfiles,
-            jsfiles,
-            head,
-            html,
-            title,
-            views,
-    ):
-        scanner.scan(module)
+    scanner.scan(components)
+    scanner.scan(cssfiles)
+    scanner.scan(services)
+    scanner.scan(views)

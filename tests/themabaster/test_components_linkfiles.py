@@ -48,17 +48,6 @@ def this_component(this_props):
     return ci
 
 
-@pytest.fixture
-def these_modules():
-    from themester.themabaster.components import linktags
-    return linktags,
-
-
-def test_construction(this_component, this_props):
-    for k, v in this_props.items():
-        assert getattr(this_component, k) == v
-
-
 def test_vdom(this_vdom):
     assert 'mock/genindex' == this_vdom[0].props['href']
     assert 'index' == this_vdom[0].props['rel']
@@ -75,7 +64,7 @@ def test_render(this_html):
     assert 'mock/copyright' == links[1].attrs['href']
 
 
-def test_wired_render(this_container, this_props):
+def test_wired_render(this_container, this_props, themabaster_app):
     from themester.themabaster.protocols import Linktags  # noqa
     del this_props['static_url']
     this_vdom = html('<{Linktags} ...{this_props}/>')
