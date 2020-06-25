@@ -15,7 +15,7 @@ def mock_static_url(target: str):
 
 
 @pytest.fixture
-def this_props(this_resource, this_url):
+def this_props(this_url):
     props = dict(
         href='someicon.png',
         static_url=mock_static_url,

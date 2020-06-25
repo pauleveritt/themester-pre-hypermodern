@@ -4,6 +4,10 @@ from viewdom import html
 from viewdom_wired import render
 
 
+def mock_static_url(target: str):
+    return f'mock/{target}'
+
+
 @pytest.fixture
 def this_resource(themester_site_deep):
     this_resource = themester_site_deep['f1']['d2']
@@ -15,7 +19,7 @@ def this_props(this_url):
     props = dict(
         site_files=('c', 'd'),
         page_files=('p', 'q'),
-        url=this_url,
+        static_url=mock_static_url,
     )
     return props
 
@@ -41,17 +45,18 @@ def test_construction(this_component, this_props):
 def test_vdom(this_vdom):
     # TODO Need to re-invent VDOM data type to be tuple-ish at the root.
     assert 4 == len(this_vdom)
-    assert '../../../c' == this_vdom[0].props['href']
+    assert 'mock/c' == this_vdom[0].props['href']
 
 
 def test_render(this_html):
     links = this_html.select('link')
     assert 4 == len(links)
-    assert '../../../c' == links[0].attrs['href']
+    assert 'mock/c' == links[0].attrs['href']
 
 
 def test_wired_render(this_container, this_props):
     from themester.themabaster.protocols import CSSFiles  # noqa
+    del this_props['static_url']
     this_vdom = html('<{CSSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

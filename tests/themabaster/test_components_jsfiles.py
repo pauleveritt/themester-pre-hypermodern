@@ -10,12 +10,16 @@ def this_resource(themester_site_deep):
     return this_resource
 
 
+def mock_static_url(target: str):
+    return f'mock/{target}'
+
+
 @pytest.fixture
 def this_props(this_url):
     props = dict(
         site_files=('a', 'b'),
         page_files=('x', 'y'),
-        url=this_url,
+        static_url=mock_static_url,
     )
     return props
 
@@ -40,17 +44,18 @@ def test_construction(this_component, this_props):
 
 def test_vdom(this_vdom):
     assert 4 == len(this_vdom)
-    assert '../../../a' == this_vdom[0].props['src']
+    assert 'mock/a' == this_vdom[0].props['src']
 
 
 def test_render(this_html):
     srcs = this_html.select('script')
     assert 4 == len(srcs)
-    assert '../../../a' == srcs[0].attrs['src']
+    assert 'mock/a' == srcs[0].attrs['src']
 
 
 def test_wired_render(this_container, this_props):
     from themester.themabaster.protocols import JSFiles  # noqa
+    del this_props['static_url']
     this_vdom = html('<{JSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

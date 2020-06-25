@@ -15,7 +15,6 @@ from .components import (
     jsfiles,
     head,
     html,
-    # site_layout,
     title,
 )
 
@@ -26,7 +25,6 @@ def wired_setup(scanner: Scanner):
             jsfiles,
             head,
             html,
-            # site_layout,
             title,
             views,
     ):

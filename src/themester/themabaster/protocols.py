@@ -1,12 +1,10 @@
-from typing import Protocol, Optional, Tuple, Mapping, Union, Iterable
+from typing import Protocol, Optional, Tuple, Mapping, Union, Iterable, Callable
 
 from viewdom_wired import Component
 
-from themester import Resource
-
-# TODO Add support for extra attrs
 from themester.url import URL
 
+# TODO Add support for extra attrs
 PropsFile = Union[str, Tuple[str, Mapping]]
 PropsFiles = Tuple[PropsFile, ...]
 
@@ -15,6 +13,7 @@ class Favicon(Component, Protocol):
     """ Render the link in the head """
 
     href: str
+    static_url: Callable
 
 
 class Head(Component, Protocol):
@@ -37,13 +36,13 @@ class HTML(Component, Protocol):
 
 
 class CSSFiles(Component, Protocol):
-    url: URL
+    static_url: Callable
     site_files: PropsFiles
     page_files: Optional[PropsFiles]
 
 
 class JSFiles(Component, Protocol):
-    url: URL
+    static_url: Callable
     site_files: Tuple[str, ...]
     page_files: Optional[Tuple[str, ...]]
 
@@ -68,3 +67,19 @@ class LayoutConfig(Protocol):
 class Title(Component, Protocol):
     page_title: str
     site_name: Optional[str]
+
+
+class Hasdoc(Protocol):
+    """ A callable that does what Sphinx's helper does for hasdoc() """
+
+    def __call__(self, target: str) -> bool:
+        """ Determine whether that target path, relative to root, exists """
+        ...
+
+
+class Linktags(Component, Protocol):
+    """ Insert <link> tags to related documents if present """
+
+    # The "slot" doesn't have any contract. You can put any VDOM
+    # in there.
+    pass
