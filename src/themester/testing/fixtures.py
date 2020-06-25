@@ -5,7 +5,7 @@ Quickly construct an app using defaults. Override those defaults with
 local fixtures of the same name.
 """
 from types import ModuleType
-from typing import Tuple, Optional, Dict, Any
+from typing import Tuple, Optional, Dict, Any, Callable
 
 import pytest
 from bs4 import BeautifulSoup
@@ -128,9 +128,9 @@ def this_props(this_resource) -> Dict[str, Any]:
 
 
 @pytest.fixture
-def this_resource() -> Optional[Resource]:
-    """ Use None unless a local test provides a fixture """
-    return None
+def this_resource(themester_site_deep) -> Optional[Resource]:
+    this_resource = themester_site_deep['f1']['d2']
+    return this_resource
 
 
 @pytest.fixture
@@ -138,6 +138,14 @@ def this_url(themester_site_deep, this_resource) -> Optional[URL]:
     """ Use None unless a local test provides a fixture """
 
     return URL(context=this_resource, root=themester_site_deep) if this_resource else None
+
+
+@pytest.fixture
+def this_static_url() -> Callable[[str], str]:
+    def foo(target: str) -> str:
+        return f'mock/{target}'
+
+    return foo
 
 
 @pytest.fixture

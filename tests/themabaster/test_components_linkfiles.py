@@ -7,10 +7,6 @@ from themester.themabaster.components.linktags import SemanticLink
 from themester.themabaster.protocols import Hasdoc
 
 
-def mock_static_url(target: str):
-    return f'mock/{target}'
-
-
 @adherent(Hasdoc)
 class TestHasDoc(Hasdoc):
     def __call__(self, target: str) -> bool:
@@ -19,13 +15,7 @@ class TestHasDoc(Hasdoc):
 
 
 @pytest.fixture
-def this_resource(themester_site_deep):
-    this_resource = themester_site_deep['f1']['d2']
-    return this_resource
-
-
-@pytest.fixture
-def this_props(this_url):
+def this_props(this_url, this_static_url):
     link1: SemanticLink = dict(
         rel='index',
         docname='genindex',
@@ -46,7 +36,7 @@ def this_props(this_url):
     props = dict(
         hasdoc=test_hasdoc,
         links=links,
-        static_url=mock_static_url,
+        static_url=this_static_url,
     )
     return props
 

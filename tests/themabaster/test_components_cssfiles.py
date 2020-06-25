@@ -4,22 +4,13 @@ from viewdom import html
 from viewdom_wired import render
 
 
-def mock_static_url(target: str):
-    return f'mock/{target}'
-
 
 @pytest.fixture
-def this_resource(themester_site_deep):
-    this_resource = themester_site_deep['f1']['d2']
-    return this_resource
-
-
-@pytest.fixture
-def this_props(this_url):
+def this_props(this_url, this_static_url):
     props = dict(
         site_files=('c', 'd'),
         page_files=('p', 'q'),
-        static_url=mock_static_url,
+        static_url=this_static_url,
     )
     return props
 

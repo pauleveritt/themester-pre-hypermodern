@@ -4,11 +4,6 @@ from viewdom import html
 from viewdom_wired import render
 
 
-@pytest.fixture
-def this_resource(themester_site_deep):
-    this_resource = themester_site_deep['f1']['d2']
-    return this_resource
-
 
 @pytest.fixture
 def this_props(this_resource):
