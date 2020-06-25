@@ -5,7 +5,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component, adherent
 from wired.dataclasses import injected
 
-from themester.themabaster.protocols import Linktags
+from themester.themabaster.protocols import Linktags, Hasdoc
 from themester.url import URL
 
 
@@ -19,6 +19,7 @@ class SemanticLink(TypedDict):
 @adherent(Linktags)
 @dataclass(frozen=True)
 class DefaultLinktags(Linktags):
+    hasdoc: Hasdoc
     static_url: Callable = injected(URL, attr='static_url')
     links: Iterable[SemanticLink] = tuple()
 
@@ -30,6 +31,7 @@ class DefaultLinktags(Linktags):
                 href=self.static_url(link['docname'])
             )
             for link in self.links
+            if self.hasdoc(link['docname'])
         )
         return html('''\n
 {[
