@@ -1,9 +1,7 @@
-from dataclasses import dataclass
-
 import pytest
 from bs4 import BeautifulSoup
 from viewdom import html
-from viewdom_wired import render, register_component
+from viewdom_wired import render
 
 
 @pytest.fixture
@@ -30,7 +28,7 @@ def this_component(this_props):
 
 
 def test_vdom(this_vdom, this_props):
-    from themester.themabaster.protocols import CSSFiles, JSFiles, Title, ExtraHead
+    from themester.themabaster.protocols import CSSFiles, JSFiles, Title
     assert len(this_vdom.children) == 8
     assert this_vdom.tag == 'head'
     assert this_vdom.children[0].tag == 'meta'
@@ -54,7 +52,21 @@ def test_vdom(this_vdom, this_props):
     )
     assert js.children == []
     assert 'mock/sometouchicon.png' == this_vdom.children[6].props['href']
-    assert ExtraHead == this_vdom.children[7].tag
+    # No children
+    assert None == this_vdom.children[7]
+
+
+def test_vdom_children(this_props):
+    """ Fill the "extrahead" slot using children """
+    from themester.themabaster.components.head import DefaultHead
+
+    this_props['children'] = html('''\n
+<link rel="first"/>
+<link rel="second"/>
+    ''')
+    head = DefaultHead(**this_props)
+    assert 'first' == head.children[0].props['rel']
+    assert 'second' == head.children[1].props['rel']
 
 
 def test_wired_render(themabaster_app, this_container, this_props):
@@ -72,17 +84,15 @@ def test_wired_render(themabaster_app, this_container, this_props):
 
 
 def test_wired_render_extrahead(themabaster_app, this_container, this_props):
-    from themester.themabaster.protocols import ExtraHead, Head  # noqa
-    @dataclass
-    class TestExtraHead:
-        def __call__(self):
-            return html('<link rel="extra" />')
-
-    register_component(themabaster_app.registry, ExtraHead, TestExtraHead)
-
-    this_vdom = html('<{Head} />')
+    from themester.themabaster.protocols import Head  # noqa
+    this_vdom = html('''\n
+<{Head}> 
+    <link rel="extra" href="first" />
+    <link rel="extra" href="second" />
+<//>
+    ''')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    links = this_html.select('link')
-    assert len(links) == 7
-    assert ['extra'] == links[6].attrs['rel']
+    links = this_html.select('link[rel="extra"]')
+    assert len(links) == 2
+    assert 'first' == links[0].attrs['href']

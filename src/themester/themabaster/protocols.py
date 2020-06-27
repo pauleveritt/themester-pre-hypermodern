@@ -1,5 +1,6 @@
 from typing import Protocol, Optional, Tuple, Mapping, Union, Iterable, Callable
 
+from viewdom import VDOM
 from viewdom_wired import Component
 
 # TODO Add support for extra attrs
@@ -24,6 +25,7 @@ class Head(Component, Protocol):
     page_css_files: Iterable[str]
     site_js_files: Iterable[str]
     page_js_files: Iterable[str]
+    children: Optional[Tuple[VDOM, ...]]
     charset: str
 
 
@@ -42,11 +44,6 @@ class JSFiles(Component, Protocol):
     static_url: Callable
     site_files: Tuple[str, ...]
     page_files: Optional[Tuple[str, ...]]
-
-
-class ExtraHead(Component, Protocol):
-    """ Provide VDOM with extra stuff to go at the end of <head> """
-    ...
 
 
 class Layout(Component, Protocol):
