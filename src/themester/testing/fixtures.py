@@ -72,6 +72,7 @@ def themabaster_config() -> ThemabasterConfig:
         site_name='Themester SiteConfig',
         css_files=('site_first.css', 'site_second.css',),
         favicon='themabaster.ico',
+        touch_icon='sometouchicon.ico'
     )
     return tc
 

@@ -3,7 +3,7 @@ Default implementation of the Themabaster <Head> component.
 """
 
 from dataclasses import dataclass
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Callable
 
 from viewdom import html, VDOM
 from viewdom_wired import component, adherent
@@ -26,10 +26,15 @@ class DefaultHead(Head):
     site_css_files: Iterable[str] = injected(ThemabasterConfig, attr='css_files')
     page_css_files: Iterable[str] = injected(PageContext, attr='css_files')
     site_js_files: Iterable[str] = injected(ThemabasterConfig, attr='js_files')
+    touch_icon: Optional[str] = injected(ThemabasterConfig, attr='touch_icon')
     page_js_files: Iterable[str] = injected(PageContext, attr='css_files')
+    static_url: Callable = injected(URL, attr='static_url')
     charset: str = 'utf-8'
 
     def __call__(self) -> VDOM:
+        custom_css = self.static_url('_static/custom.css')
+        touch_icon_href = self.static_url(self.touch_icon)
+        touch_icon = html('<link rel="stylesheet" href="{touch_icon_href}" type="text/css"/>') if self.touch_icon else ''
         return html('''\n
 <head>
   <meta charset="{self.charset}" />
@@ -37,6 +42,8 @@ class DefaultHead(Head):
   <{Title} page_title={self.page_title} site_name={self.site_name} />
   <{CSSFiles} url={self.url} page_files={self.page_css_files} site_files={self.site_css_files} />
   <{JSFiles} url={self.url} page_files={self.page_js_files} site_files={self.site_js_files} />
+  <link rel="stylesheet" href="{custom_css}" type="text/css"/>
+  {touch_icon}
   <{ExtraHead} />
 </head>
 ''')

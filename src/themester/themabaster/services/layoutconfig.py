@@ -23,3 +23,4 @@ class ThemabasterConfig:
     file_suffix: str = '.html'
     baseurl: Optional[str] = None
     favicon: Optional[str] = None
+    touch_icon: Optional[str] = None
