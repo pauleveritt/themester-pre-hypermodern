@@ -34,6 +34,6 @@ def test_wired_render(themabaster_app, this_container, this_props):
     this_html = BeautifulSoup(rendered, 'html.parser')
     assert this_html.select_one('title').text == 'Some Page - Themester SiteConfig'
     links = this_html.select('link')
-    assert len(links) == 4
-    assert links[0].attrs['href'] == '../../../site_first.css'
-    assert links[2].attrs['href'] == '../../../page_first.css'
+    assert 6 == len(links)
+    assert '../../../site_first.css' == links[0].attrs['href']
+    assert '../../../page_first.css' == links[2].attrs['href']
