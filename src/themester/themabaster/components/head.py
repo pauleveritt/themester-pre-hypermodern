@@ -9,7 +9,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component, adherent
 from wired.dataclasses import injected
 
-from themester.themabaster.protocols import CSSFiles, Head, JSFiles, Title  # noqa
+from themester.themabaster.protocols import CSSFiles, Head, JSFiles, Title, ExtraHead  # noqa
 from themester.themabaster.services.layoutconfig import ThemabasterConfig
 from themester.themabaster.services.pagecontext import PageContext
 from themester.url import URL
@@ -37,5 +37,6 @@ class DefaultHead(Head):
   <{Title} page_title={self.page_title} site_name={self.site_name} />
   <{CSSFiles} url={self.url} page_files={self.page_css_files} site_files={self.site_css_files} />
   <{JSFiles} url={self.url} page_files={self.page_js_files} site_files={self.site_js_files} />
+  <{ExtraHead} />
 </head>
 ''')

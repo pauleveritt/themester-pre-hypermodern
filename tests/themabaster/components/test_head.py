@@ -1,7 +1,9 @@
+from dataclasses import dataclass
+
 import pytest
 from bs4 import BeautifulSoup
 from viewdom import html
-from viewdom_wired import render
+from viewdom_wired import render, register_component
 
 
 @pytest.fixture
@@ -28,7 +30,7 @@ def this_component(this_props):
 
 def test_vdom(this_vdom, this_props):
     from themester.themabaster.protocols import CSSFiles, JSFiles, Title
-    assert len(this_vdom.children) == 5
+    assert len(this_vdom.children) == 6
     assert this_vdom.tag == 'head'
     assert this_vdom.children[0].tag == 'meta'
     assert this_vdom.children[1].tag == 'meta'
@@ -64,3 +66,20 @@ def test_wired_render(themabaster_app, this_container, this_props):
     assert len(links) == 4
     assert links[0].attrs['href'] == '../../../site_first.css'
     assert links[2].attrs['href'] == '../../../page_first.css'
+
+
+def test_wired_render_extrahead(themabaster_app, this_container, this_props):
+    from themester.themabaster.protocols import ExtraHead, Head  # noqa
+    @dataclass
+    class TestExtraHead:
+        def __call__(self):
+            return html('<link rel="extra" />')
+
+    register_component(themabaster_app.registry, ExtraHead, TestExtraHead)
+
+    this_vdom = html('<{Head} />')
+    rendered = render(this_vdom, container=this_container)
+    this_html = BeautifulSoup(rendered, 'html.parser')
+    links = this_html.select('link')
+    assert len(links) == 5
+    assert ['extra'] == links[4].attrs['rel']

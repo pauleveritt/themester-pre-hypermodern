@@ -47,6 +47,11 @@ class JSFiles(Component, Protocol):
     page_files: Optional[Tuple[str, ...]]
 
 
+class ExtraHead(Component, Protocol):
+    """ Provide VDOM with extra stuff to go at the end of <head> """
+    ...
+
+
 class Layout(Component, Protocol):
     """ All the contracts for any theme implementing this layout """
     site_name: str
