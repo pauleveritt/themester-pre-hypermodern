@@ -2,8 +2,6 @@ from typing import Protocol, Optional, Tuple, Mapping, Union, Iterable, Callable
 
 from viewdom_wired import Component
 
-from themester.url import URL
-
 # TODO Add support for extra attrs
 PropsFile = Union[str, Tuple[str, Mapping]]
 PropsFiles = Tuple[PropsFile, ...]
@@ -26,7 +24,6 @@ class Head(Component, Protocol):
     page_css_files: Iterable[str]
     site_js_files: Iterable[str]
     page_js_files: Iterable[str]
-    url: URL
     charset: str
 
 
