@@ -6,19 +6,20 @@ from dataclasses import dataclass
 from typing import Iterable, Optional, Callable, Tuple
 
 from viewdom import html, VDOM
-from viewdom_wired import component, adherent
+from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.themabaster.protocols import CSSFiles, Head, JSFiles, Title  # noqa
 from themester.themabaster.services.layoutconfig import ThemabasterConfig
 from themester.themabaster.services.pagecontext import PageContext
 from themester.url import URL
+from .cssfiles import CSSFiles  # noqa: F401
+from .jsfiles import JSFiles  # noqa: F401
+from .title import Title  # noqa: F401
 
 
-@component(for_=Head)
-@adherent(Head)
+@component()
 @dataclass(frozen=True)
-class DefaultHead(Head):
+class Head:
     favicon: Optional[str] = injected(ThemabasterConfig, attr='favicon')
     page_title: str = injected(PageContext, attr='title')
     site_name: Optional[str] = injected(ThemabasterConfig, attr='site_name')

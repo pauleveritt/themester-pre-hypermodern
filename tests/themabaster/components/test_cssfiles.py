@@ -16,8 +16,8 @@ def this_props(this_url, this_static_url):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.cssfiles import DefaultCSSFiles
-    ci = DefaultCSSFiles(**this_props)
+    from themester.themabaster.components.cssfiles import CSSFiles
+    ci = CSSFiles(**this_props)
     return ci
 
 
@@ -34,7 +34,7 @@ def test_render(this_html):
 
 
 def test_wired_render(this_container, this_props, themabaster_app):
-    from themester.themabaster.protocols import CSSFiles  # noqa
+    from themester.themabaster.components.cssfiles import CSSFiles  # noqa: F401
     del this_props['static_url']
     this_vdom = html('<{CSSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

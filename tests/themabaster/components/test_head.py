@@ -22,18 +22,19 @@ def this_props(this_url, this_resource, this_static_url):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.head import DefaultHead
-    ci = DefaultHead(**this_props)
+    from themester.themabaster.components.head import Head
+    ci = Head(**this_props)
     return ci
 
 
 def test_vdom(this_vdom, this_props):
-    from themester.themabaster.protocols import CSSFiles, JSFiles, Title
+    from themester.themabaster.components.cssfiles import CSSFiles
     assert len(this_vdom.children) == 8
     assert this_vdom.tag == 'head'
     assert this_vdom.children[0].tag == 'meta'
     assert this_vdom.children[1].tag == 'meta'
     title = this_vdom.children[2]
+    from themester.themabaster.components.title import Title
     assert title.tag == Title
     assert title.props == dict(page_title='Some Page', site_name='Some Site')
     assert title.children == []
@@ -45,6 +46,7 @@ def test_vdom(this_vdom, this_props):
     )
     assert css.children == []
     js = this_vdom.children[4]
+    from themester.themabaster.components.jsfiles import JSFiles
     assert js.tag == JSFiles
     assert js.props == dict(
         page_files=('page1.js', 'page2.js'),
@@ -58,19 +60,19 @@ def test_vdom(this_vdom, this_props):
 
 def test_vdom_children(this_props):
     """ Fill the "extrahead" slot using children """
-    from themester.themabaster.components.head import DefaultHead
+    from themester.themabaster.components.head import Head
 
     this_props['children'] = html('''\n
 <link rel="first"/>
 <link rel="second"/>
     ''')
-    head = DefaultHead(**this_props)
+    head = Head(**this_props)
     assert 'first' == head.children[0].props['rel']
     assert 'second' == head.children[1].props['rel']
 
 
 def test_wired_render(themabaster_app, this_container):
-    from themester.themabaster.protocols import Head  # noqa
+    from themester.themabaster.components.head import Head  # noqa: F401
     this_vdom = html('<{Head} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
@@ -84,7 +86,7 @@ def test_wired_render(themabaster_app, this_container):
 
 
 def test_wired_render_extrahead(themabaster_app, this_container):
-    from themester.themabaster.protocols import Head  # noqa
+    from themester.themabaster.components.head import Head  # noqa: F401
     this_vdom = html('''\n
 <{Head}> 
     <link rel="extra" href="first" />

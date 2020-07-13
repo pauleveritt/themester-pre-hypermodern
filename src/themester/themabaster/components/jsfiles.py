@@ -2,10 +2,9 @@ from dataclasses import dataclass
 from typing import Tuple, Callable
 
 from viewdom import html, VDOM
-from viewdom_wired import component, adherent
+from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.themabaster.protocols import JSFiles
 from themester.url import URL
 
 
@@ -15,10 +14,9 @@ def JSFile(src: str) -> VDOM:
     return html('<script type="text/javascript" src="{src}"></script>')
 
 
-@component(for_=JSFiles)
-@adherent(JSFiles)
+@component()
 @dataclass(frozen=True)
-class DefaultJSFiles(JSFiles):
+class JSFiles:
     static_url: Callable = injected(URL, attr='static_url')
     site_files: Tuple[str, ...] = tuple()
     page_files: Tuple[str, ...] = tuple()
