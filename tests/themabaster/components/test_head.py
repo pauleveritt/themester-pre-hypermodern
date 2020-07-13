@@ -69,7 +69,7 @@ def test_vdom_children(this_props):
     assert 'second' == head.children[1].props['rel']
 
 
-def test_wired_render(themabaster_app, this_container, this_props):
+def test_wired_render(themabaster_app, this_container):
     from themester.themabaster.protocols import Head  # noqa
     this_vdom = html('<{Head} />')
     rendered = render(this_vdom, container=this_container)
@@ -83,7 +83,7 @@ def test_wired_render(themabaster_app, this_container, this_props):
     assert '../../../sometouchicon.ico' == links[5].attrs['href']
 
 
-def test_wired_render_extrahead(themabaster_app, this_container, this_props):
+def test_wired_render_extrahead(themabaster_app, this_container):
     from themester.themabaster.protocols import Head  # noqa
     this_vdom = html('''\n
 <{Head}> 

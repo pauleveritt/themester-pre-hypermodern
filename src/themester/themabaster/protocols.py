@@ -34,6 +34,12 @@ class HTML(Component, Protocol):
     lang: str
 
 
+class BaseLayout(Component, Protocol):
+    """ The layout for sublayouts """
+
+    ...
+
+
 class CSSFiles(Component, Protocol):
     static_url: Callable
     site_files: PropsFiles
