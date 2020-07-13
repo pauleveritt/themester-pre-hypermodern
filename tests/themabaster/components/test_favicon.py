@@ -15,8 +15,8 @@ def this_props(this_url, this_static_url):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.favicon import DefaultFavicon
-    ci = DefaultFavicon(**this_props)
+    from themester.themabaster.components.favicon import Favicon
+    ci = Favicon(**this_props)
     return ci
 
 
@@ -39,7 +39,7 @@ def test_render(this_html):
 
 
 def test_wired_render(themabaster_app, this_container):
-    from themester.themabaster.protocols import Favicon  # noqa
+    from themester.themabaster.components.favicon import Favicon  # noqa: F401
     this_vdom = html('<{Favicon} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

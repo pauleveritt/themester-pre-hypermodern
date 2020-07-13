@@ -1,19 +1,17 @@
-from typing import Callable
 from dataclasses import dataclass
+from typing import Callable
 
 from viewdom import html, VDOM
-from viewdom_wired import component, adherent
+from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.themabaster.protocols import Favicon
 from themester.themabaster.services.layoutconfig import ThemabasterConfig
 from themester.url import URL
 
 
-@component(for_=Favicon)
-@adherent(Favicon)
+@component()
 @dataclass(frozen=True)
-class DefaultFavicon(Favicon):
+class Favicon:
     static_url: Callable = injected(URL, attr='static_url')
     href: str = injected(ThemabasterConfig, attr='favicon')
 
