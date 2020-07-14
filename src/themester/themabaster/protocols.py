@@ -1,20 +1,4 @@
-from typing import Protocol, Optional, Tuple, Mapping, Union
-
-# TODO Add support for extra attrs
-PropsFile = Union[str, Tuple[str, Mapping]]
-PropsFiles = Tuple[PropsFile, ...]
-
-
-class LayoutConfig(Protocol):
-    """ Configuration options used in this layout """
-
-    baseurl: Optional[str]
-    css_files: PropsFiles
-    doctype: str
-    file_suffix: str
-    js_files: PropsFiles
-    lang: str
-    site_name: Optional[str]
+from typing import Protocol
 
 
 class Hasdoc(Protocol):
