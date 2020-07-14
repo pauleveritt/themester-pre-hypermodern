@@ -3,7 +3,7 @@ A layout that has sidebars.
 """
 from viewdom import html, VDOM
 
-from themester.themabaster.protocols import HTML  # noqa
+from ..components.html import HTML  # noqa: F401
 
 
 def SidebarLayout() -> VDOM:

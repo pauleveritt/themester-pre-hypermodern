@@ -2,29 +2,31 @@
 The base layout, possibly extended by sublayouts.
 """
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Tuple
 
 from viewdom import html, VDOM
-from viewdom_wired import component, adherent
+from viewdom_wired import component
 
-from themester.themabaster.protocols import HTML, BaseLayout, Head  # noqa
 from themester.themabaster.services.layoutconfig import ThemabasterConfig
+from ..components.head import Head  # noqa: F401
+from ..components.html import HTML  # noqa: F401
 
 
-@component(for_=BaseLayout)
-@adherent(BaseLayout)
+@component()
 @dataclass
-class DefaultBaseLayout(BaseLayout):
+class BaseLayout:
     config: ThemabasterConfig
-    extrahead: Tuple[VDOM, ...] = None
+    extrahead: VDOM = None
 
     def __call__(self) -> VDOM:
         return html('''\n
 <html lang="{self.config.lang}">
     <head>
+    {self.extrahead}
     </head>
 </html>
         ''')
+
 
 @component()
 @dataclass

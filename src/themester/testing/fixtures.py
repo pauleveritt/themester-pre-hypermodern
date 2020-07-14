@@ -4,8 +4,7 @@ Fixtures to construct parts of themester for tests in pluggable ways.
 Quickly construct an app using defaults. Override those defaults with
 local fixtures of the same name.
 """
-from types import ModuleType
-from typing import Tuple, Optional, Dict, Any, Callable
+from typing import Optional, Dict, Any, Callable
 
 import pytest
 from bs4 import BeautifulSoup
