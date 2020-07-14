@@ -1,4 +1,8 @@
-from typing import Protocol
+from typing import Protocol, Tuple, Mapping, Union
+
+# TODO Add support for extra attrs
+PropsFile = Union[str, Tuple[str, Mapping]]
+PropsFiles = Tuple[PropsFile, ...]
 
 
 class Hasdoc(Protocol):
