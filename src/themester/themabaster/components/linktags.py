@@ -2,10 +2,10 @@ from dataclasses import dataclass
 from typing import Callable, TypedDict, Iterable
 
 from viewdom import html, VDOM
-from viewdom_wired import component, adherent
+from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.themabaster.protocols import Linktags, Hasdoc
+from themester.themabaster.protocols import Hasdoc
 from themester.url import URL
 
 
@@ -15,11 +15,10 @@ class SemanticLink(TypedDict):
     docname: str
 
 
-@component(for_=Linktags)
-@adherent(Linktags)
+@component()
 @dataclass(frozen=True)
-class DefaultLinktags(Linktags):
-    hasdoc: Hasdoc
+class Linktags:
+    hasdoc: Hasdoc  # TODO Sphinx "adapter" has to register this in container
     static_url: Callable = injected(URL, attr='static_url')
     links: Iterable[SemanticLink] = tuple()
 

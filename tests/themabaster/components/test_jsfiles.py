@@ -16,9 +16,10 @@ def this_props(this_url, this_static_url):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.jsfiles import DefaultJSFiles
-    ci = DefaultJSFiles(**this_props)
+    from themester.themabaster.components.jsfiles import JSFiles
+    ci = JSFiles(**this_props)
     return ci
+
 
 def test_vdom(this_vdom):
     assert 4 == len(this_vdom)
@@ -32,7 +33,7 @@ def test_render(this_html):
 
 
 def test_wired_render(this_container, this_props, themabaster_app):
-    from themester.themabaster.protocols import JSFiles  # noqa
+    from themester.themabaster.components.jsfiles import JSFiles  # noqa: F401
     del this_props['static_url']
     this_vdom = html('<{JSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)
