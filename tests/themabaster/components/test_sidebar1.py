@@ -1,23 +1,21 @@
 import pytest
-from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.body import Body
+from themester.themabaster.components.sidebar1 import Sidebar1
 
 
 @pytest.fixture
 def this_component(this_props):
-    ci = Body()
+    ci = Sidebar1()
     return ci
 
 
 def test_vdom(this_vdom, this_props):
-    assert {} == this_vdom.props
+    assert [] == this_vdom
 
 
 def test_wired_render(themabaster_app, this_container):
-    this_vdom = html('<{Body} />')
+    this_vdom = html('<{Sidebar1} />')
     rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    assert [] == this_html.select_one('body').contents
+    assert '' == rendered
