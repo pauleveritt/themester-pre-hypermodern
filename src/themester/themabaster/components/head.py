@@ -29,7 +29,7 @@ class Head:
     touch_icon: Optional[str] = injected(ThemabasterConfig, attr='touch_icon')
     page_js_files: Iterable[str] = injected(PageContext, attr='css_files')
     static_url: Callable = injected(URL, attr='static_url')
-    children: Optional[Tuple[VDOM, ...]] = None
+    extrahead: Optional[Tuple[VDOM, ...]] = None
     charset: str = 'utf-8'
 
     def __call__(self) -> VDOM:
@@ -46,6 +46,6 @@ class Head:
   <{JSFiles} page_files={self.page_js_files} site_files={self.site_js_files} />
   <link rel="stylesheet" href="{custom_css}" type="text/css"/>
   {touch_icon}
-  {self.children}
+  {self.extrahead}
 </head>
 ''')

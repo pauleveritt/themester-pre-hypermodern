@@ -7,6 +7,7 @@ from viewdom_wired import render
 @pytest.fixture
 def this_props(this_url, this_resource, this_static_url):
     props = dict(
+        extrahead=None,
         favicon='someicon.png',
         page_title='Some Page',
         site_name='Some Site',
@@ -58,17 +59,16 @@ def test_vdom(this_vdom, this_props):
     assert None == this_vdom.children[7]
 
 
-def test_vdom_children(this_props):
-    """ Fill the "extrahead" slot using children """
+def test_vdom_extrahead(this_props):
     from themester.themabaster.components.head import Head
 
-    this_props['children'] = html('''\n
+    this_props['extrahead'] = html('''\n
 <link rel="first"/>
 <link rel="second"/>
     ''')
     head = Head(**this_props)
-    assert 'first' == head.children[0].props['rel']
-    assert 'second' == head.children[1].props['rel']
+    assert 'first' == head.extrahead[0].props['rel']
+    assert 'second' == head.extrahead[1].props['rel']
 
 
 def test_wired_render(themabaster_app, this_container):
@@ -87,12 +87,11 @@ def test_wired_render(themabaster_app, this_container):
 
 def test_wired_render_extrahead(themabaster_app, this_container):
     from themester.themabaster.components.head import Head  # noqa: F401
-    this_vdom = html('''\n
-<{Head}> 
+    extrahead = html('''\n
     <link rel="extra" href="first" />
     <link rel="extra" href="second" />
-<//>
     ''')
+    this_vdom = html('<{Head} extrahead={extrahead}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     links = this_html.select('link[rel="extra"]')

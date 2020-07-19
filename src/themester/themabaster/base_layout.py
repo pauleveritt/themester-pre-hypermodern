@@ -17,17 +17,12 @@ from .components.html import HTML  # noqa: F401
 class BaseLayout:
     config: ThemabasterConfig
     extrahead: VDOM = None
-
-    # Blocks
     doctype: Markup = Markup('<!DOCTYPE html>\n')
-
 
     def __call__(self) -> VDOM:
         return html('''\n
 {self.doctype}
 <html lang="{self.config.lang}">
-    <head>
-    {self.extrahead}
-    </head>
+    <{Head} extrahead={self.extrahead} />
 </html>
         ''')
