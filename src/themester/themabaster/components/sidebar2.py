@@ -1,5 +1,5 @@
 """
-Document is a block in the Content component.
+Sidebar2 is a block in the Content component.
 """
 
 from dataclasses import dataclass
@@ -10,8 +10,8 @@ from viewdom_wired import component
 
 @component()
 @dataclass(frozen=True)
-class Document:
-    """ A block in content, holding most of the info on this resource """
+class Sidebar2:
+    """ A block in content, presumably for right-column """
 
     def __call__(self) -> VDOM:
         return html('')
