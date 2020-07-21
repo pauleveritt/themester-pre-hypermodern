@@ -8,7 +8,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 
 from .header import Header  # noqa: F401
-
+from .content import Content  # noqa: F401
 
 @component()
 @dataclass(frozen=True)
@@ -17,5 +17,6 @@ class Body:
         return html('''\n
 <body>
 <{Header} />
+<{Content} />
 </body>
 ''')

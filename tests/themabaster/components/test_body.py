@@ -20,4 +20,4 @@ def test_wired_render(themabaster_app, this_container):
     this_vdom = html('<{Body} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    assert [] == this_html.select_one('body').contents
+    assert ['content'] == this_html.select_one('body').contents

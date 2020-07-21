@@ -4,6 +4,7 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.components.content import Content
+from themester.themabaster.components.sidebar1 import Sidebar1
 
 
 @pytest.fixture
@@ -13,7 +14,7 @@ def this_component(this_props):
 
 
 def test_vdom(this_vdom, this_props):
-    assert 'content' == this_vdom
+    assert Sidebar1 == this_vdom.tag
 
 
 def test_wired_render(themabaster_app, this_container):

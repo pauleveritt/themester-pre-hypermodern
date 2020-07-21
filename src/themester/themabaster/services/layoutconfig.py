@@ -24,3 +24,6 @@ class ThemabasterConfig:
     baseurl: Optional[str] = None
     favicon: Optional[str] = None
     touch_icon: Optional[str] = None
+    show_relbars: bool = False
+    show_relbar_top: bool = False
+    show_relbar_bottom: bool = False
