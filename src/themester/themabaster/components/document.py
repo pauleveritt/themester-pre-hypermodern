@@ -14,4 +14,7 @@ class Document:
     """ A block in content, holding most of the info on this resource """
 
     def __call__(self) -> VDOM:
-        return html('')
+        return html('''\n
+<div class="documentwrapper">
+</div>        
+        ''')
