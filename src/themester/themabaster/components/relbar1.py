@@ -17,6 +17,7 @@ from wired.dataclasses import injected
 from themester.themabaster.services.layoutconfig import ThemabasterConfig
 from ..components.rellink_markup import RellinkMarkup  # noqa: F401
 
+
 @component()
 @dataclass(frozen=True)
 class Relbar1:

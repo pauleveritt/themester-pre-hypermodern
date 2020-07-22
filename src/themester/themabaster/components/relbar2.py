@@ -12,6 +12,10 @@ from dataclasses import dataclass
 
 from viewdom import html, VDOM
 from viewdom_wired import component
+from wired.dataclasses import injected
+
+from themester.themabaster.services.layoutconfig import ThemabasterConfig
+from ..components.rellink_markup import RellinkMarkup  # noqa: F401
 
 
 @component()
@@ -19,5 +23,11 @@ from viewdom_wired import component
 class Relbar2:
     """ Relation bar usually at the bottom. """
 
+    show_relbar_bottom: bool = injected(ThemabasterConfig, attr='show_relbar_top')
+    show_relbars: bool = injected(ThemabasterConfig, attr='show_relbar_top')
+
     def __call__(self) -> VDOM:
-        return html('')
+        show_relbar_top = self.show_relbar_bottom or self.show_relbars
+        return html('''\n
+<div class="related top"><{RellinkMarkup} /> </div>        
+        ''') if show_relbar_top else []
