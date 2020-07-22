@@ -18,6 +18,7 @@ from .resources import Site, Document, Collection
 from .. import themabaster, Resource
 from ..themabaster.services.layoutconfig import ThemabasterConfig
 from ..themabaster.services.pagecontext import PageContext
+from ..themabaster.services.prevnext import PreviousLink, NextLink
 from ..url import URL
 
 
@@ -154,5 +155,15 @@ def this_container(
     this_container = themester_app.container.bind(context=this_resource)
 
     # For this per-page container, register the PageContext
+    # TODO Consider splitting this garbage barge into isolated services
+    #   such as PreviousLink and NextLink below
     this_container.register_singleton(this_pagecontext, PageContext)
+
+    # Register singletons for Previous/Next, to mimic the Sphinx "adapter"
+    # doing so in html_context, just for this per-request container.
+    if this_props.get('previous'):
+        this_container.register_singleton(this_props['previous'], PreviousLink)
+    if this_props.get('next'):
+        this_container.register_singleton(this_props['next'], NextLink)
+
     return this_container

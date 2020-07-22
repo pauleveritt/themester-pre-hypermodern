@@ -49,10 +49,6 @@ def test_vdom(this_vdom, this_props):
 
 
 def test_wired_render(themabaster_app, this_container, this_props):
-    # Register singletons for Previous/Next, to mimic the Sphinx "adapter"
-    # doing so in html_context
-    this_container.register_singleton(this_props['previous'], PreviousLink)
-    this_container.register_singleton(this_props['next'], NextLink)
     this_vdom = html('<{RellinkMarkup} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
