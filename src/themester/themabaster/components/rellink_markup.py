@@ -11,25 +11,20 @@ and/or next, each having link and title attributes.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-
-@dataclass(frozen=True)
-class PrevNextLink:
-    """ The minimum information needed from previous/next resources."""
-    title: str
-    link: str
+from ..services.prevnext import PreviousLink, NextLink
 
 
 @component()
 @dataclass(frozen=True)
 class RellinkMarkup:
     """ Markup for rellink bars. """
-    previous: Optional[PrevNextLink] = None
-    next: Optional[PrevNextLink] = None
+
+    previous: PreviousLink
+    next: NextLink
 
     def __call__(self) -> VDOM:
         prev = html('''\n

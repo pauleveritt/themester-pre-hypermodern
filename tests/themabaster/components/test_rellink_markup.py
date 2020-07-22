@@ -3,20 +3,18 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.rellink_markup import (
-    PrevNextLink,
-    RellinkMarkup,
-)
+from themester.themabaster.components.rellink_markup import RellinkMarkup
+from themester.themabaster.services.prevnext import PreviousLink, NextLink
 
 
 @pytest.fixture
 def this_props():
     tp = dict(
-        previous=PrevNextLink(
+        previous=PreviousLink(
             title='Previous',
             link='/previous/',
         ),
-        next=PrevNextLink(
+        next=NextLink(
             title='Next',
             link='/next/',
         )
@@ -51,7 +49,11 @@ def test_vdom(this_vdom, this_props):
 
 
 def test_wired_render(themabaster_app, this_container, this_props):
-    this_vdom = html('<{RellinkMarkup} previous={this_props["previous"]} next={this_props["next"]} />')
+    # Register singletons for Previous/Next, to mimic the Sphinx "adapter"
+    # doing so in html_context
+    this_container.register_singleton(this_props['previous'], PreviousLink)
+    this_container.register_singleton(this_props['next'], NextLink)
+    this_vdom = html('<{RellinkMarkup} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     links = this_html.select('nav#rellinks ul li a')
