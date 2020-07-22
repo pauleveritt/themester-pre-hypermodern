@@ -27,3 +27,4 @@ class ThemabasterConfig:
     show_relbars: bool = False
     show_relbar_top: bool = False
     show_relbar_bottom: bool = False
+    no_sidebar: bool = False
