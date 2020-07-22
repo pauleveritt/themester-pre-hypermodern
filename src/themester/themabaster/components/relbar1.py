@@ -15,7 +15,7 @@ from viewdom_wired import component
 from wired.dataclasses import injected
 
 from themester.themabaster.services.layoutconfig import ThemabasterConfig
-
+from ..components.rellink_markup import RellinkMarkup  # noqa: F401
 
 @component()
 @dataclass(frozen=True)
@@ -28,10 +28,5 @@ class Relbar1:
     def __call__(self) -> VDOM:
         show_relbar_top = self.show_relbar_top or self.show_relbars
         return html('''\n
-<div class="related top">&nbsp; </div>        
+<div class="related top"><{RellinkMarkup} /> </div>        
         ''') if show_relbar_top else []
-
-"""
-        &nbsp;
-        {{- rellink_markup (prev, next) }}
-"""

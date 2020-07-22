@@ -13,7 +13,7 @@ from themester.themabaster.protocols import PropsFiles
 
 
 # TODO Post-1.0: Make a Protocol for this
-@dataclass
+@dataclass(frozen=True)
 class ThemabasterConfig:
     doctype: str = 'html'
     lang: str = 'EN'

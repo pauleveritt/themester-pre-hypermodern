@@ -54,3 +54,9 @@ def test_wired_render(themabaster_app, this_container, this_props):
     this_html = BeautifulSoup(rendered, 'html.parser')
     links = this_html.select('nav#rellinks ul li a')
     assert 2 == len(links)
+    assert '/previous/' == links[0].get('href')
+    assert 'Previous Document' == links[0].get('title')
+    assert 'Previous' == links[0].text
+    assert '/next/' == links[1].get('href')
+    assert 'Next Document' == links[1].get('title')
+    assert 'Next' == links[1].text
