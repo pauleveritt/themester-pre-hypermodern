@@ -1,3 +1,5 @@
+import dataclasses
+
 from bs4 import BeautifulSoup, Doctype
 from markupsafe import Markup
 from viewdom import html
@@ -23,8 +25,11 @@ def test_defaults(themabaster_app, this_container):
 
 
 def test_config(themabaster_app, this_container, themabaster_config):
-    themabaster_config.lang = 'FR'
-    this_container.register_singleton(themabaster_config, ThemabasterConfig)
+    tc = dataclasses.replace(
+        themabaster_config,
+        lang='FR'
+    )
+    this_container.register_singleton(tc, ThemabasterConfig)
     this_vdom = html('<{BaseLayout} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
