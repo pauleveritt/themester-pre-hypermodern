@@ -12,7 +12,6 @@ from typing import Optional
 from themester.themabaster.protocols import PropsFiles
 
 
-# TODO Post-1.0: Make a Protocol for this
 @dataclass(frozen=True)
 class ThemabasterConfig:
     baseurl: Optional[str] = None
@@ -20,6 +19,7 @@ class ThemabasterConfig:
     doctype: str = 'html'
     favicon: Optional[str] = None
     file_suffix: str = '.html'
+    has_source: bool = True
     js_files: PropsFiles = tuple()
     lang: str = 'EN'
     master_doc: str = 'index'
@@ -27,5 +27,6 @@ class ThemabasterConfig:
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
+    show_source: bool = True
     site_name: Optional[str] = None
     touch_icon: Optional[str] = None
