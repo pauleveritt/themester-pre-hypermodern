@@ -34,7 +34,7 @@ class Document:
   </div>          
 <{Relbar2}/>        
         ''')
-        inner = self.content if self.no_sidebar else html('<div class="bodywrapper">{main_content}</div>')
+        inner = main_content if self.no_sidebar else html('<div class="bodywrapper">{main_content}</div>')
 
         return html('''\n
 <div class="documentwrapper">

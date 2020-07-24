@@ -1,3 +1,5 @@
+import dataclasses
+
 import pytest
 from bs4 import BeautifulSoup
 from markupsafe import Markup
@@ -8,6 +10,7 @@ from themester.themabaster.components.document import Document
 from themester.themabaster.components.relbar1 import Relbar1
 from themester.themabaster.components.relbar2 import Relbar2
 from themester.themabaster.services.documentbody import DocumentBody
+from themester.themabaster.services.layoutconfig import ThemabasterConfig
 from themester.themabaster.services.prevnext import PreviousLink, NextLink
 
 
@@ -56,10 +59,24 @@ def test_wired_render_default(themabaster_app, this_container, this_props):
     this_vdom = html('<{Document} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    div = this_html.select_one('div')
+    div = this_html.select_one('div.documentwrapper')
     assert ['documentwrapper'] == div.get('class')
     assert div.select_one('div.bodywrapper')
     assert div.select_one('div.body')
     # relbars are off by default
     assert not div.select('div.top')
     assert not div.select('div.bottom')
+
+
+def test_wired_render_without_sidebars(themabaster_app, themabaster_config, this_container, this_props):
+    # Change the themabaster settings in the container
+    tc = dataclasses.replace(themabaster_config, no_sidebar=True)
+    this_container.register_singleton(tc, ThemabasterConfig)
+
+    # Add DocumentBody to the container
+    db = DocumentBody(html=this_props['document_body'])
+    this_container.register_singleton(db, DocumentBody)
+    this_vdom = html('<{Document} />')
+    rendered = render(this_vdom, container=this_container)
+    this_html = BeautifulSoup(rendered, 'html.parser')
+    assert None is this_html.select_one('div.bodywrapper')
