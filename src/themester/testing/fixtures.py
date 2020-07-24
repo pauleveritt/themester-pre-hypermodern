@@ -70,9 +70,10 @@ def themester_config() -> ThemesterConfig:
 def themabaster_config() -> ThemabasterConfig:
     """ Dead-simple configuration """
     tc = ThemabasterConfig(
-        site_name='Themester SiteConfig',
         css_files=('site_first.css', 'site_second.css',),
         favicon='themabaster.ico',
+        logo='site_logo.png',
+        site_name='Themester SiteConfig',
         touch_icon='sometouchicon.ico'
     )
     return tc
@@ -102,8 +103,8 @@ def this_html(this_vdom) -> BeautifulSoup:
 
 
 @pytest.fixture
-def this_pathto() -> Callable[[str], str]:
-    def _this_pathto(docname) -> str:
+def this_pathto() -> Callable[[str, Optional[int]], str]:
+    def _this_pathto(docname, mode=0) -> str:
         """ Sphinx page context function to get a path to a target """
         return f'../mock/{docname}'
 

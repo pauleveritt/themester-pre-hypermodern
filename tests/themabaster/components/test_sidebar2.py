@@ -20,7 +20,7 @@ def this_component(this_props):
 
 
 def test_vdom(this_vdom, this_props):
-    assert [] == this_vdom
+    assert 'div' == this_vdom.tag
 
 
 def test_vdom_no_sidebar():

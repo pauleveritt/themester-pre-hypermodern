@@ -14,6 +14,7 @@ from themester.themabaster.protocols import PropsFiles
 
 @dataclass(frozen=True)
 class ThemabasterConfig:
+    logo: Optional[str] = None
     baseurl: Optional[str] = None
     css_files: PropsFiles = tuple()
     doctype: str = 'html'
