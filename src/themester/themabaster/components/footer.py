@@ -3,9 +3,14 @@ A block in the body, below the content block.
 """
 
 from dataclasses import dataclass
+from typing import Optional, Callable
 
 from viewdom import VDOM, html
 from viewdom_wired import component
+from wired.dataclasses import injected
+
+from themester.sphinx import PageContext
+from themester.themabaster.services.layoutconfig import ThemabasterConfig
 
 
 @component()
@@ -13,5 +18,32 @@ from viewdom_wired import component
 class Footer:
     """ A block in the body below the content block. """
 
+    copyright: Optional[str] = injected(ThemabasterConfig, attr='copyright')
+    has_source: bool = injected(ThemabasterConfig, attr='has_source')
+    pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
+    show_powered_by: bool = injected(ThemabasterConfig, attr='show_powered_by')
+    show_copyright: bool = injected(ThemabasterConfig, attr='show_copyright')
+    show_source: bool = injected(ThemabasterConfig, attr='show_source')
+    sourcename: str = injected(PageContext, attr='sourcename')
+
     def __call__(self) -> VDOM:
-        return html('')
+        copyright = f'&copy; {self.copyright}.' if self.copyright else ''
+        powered_by = html('''\n
+{'|' if self.copyright else ''}
+Powered by <a href="http://sphinx-doc.org/">Sphinx</a>
+        ''') if self.show_powered_by else html('')
+        if self.show_source and self.has_source and self.sourcename:
+            ps = self.pathto(f'_sources/{self.sourcename}')
+            page_source = html('''\n
+{'|' if self.show_copyright or self.show_powered_by else ''}
+<a href={ps} rel="nofollow">Page source</a>
+            ''')
+        else:
+            page_source = html('')
+        return html('''\n
+<div class="footer">
+    {copyright}
+    {powered_by}
+    {page_source}
+</div>
+        ''')

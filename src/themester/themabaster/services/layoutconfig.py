@@ -33,6 +33,7 @@ def get_sidebars():
 class ThemabasterConfig:
     logo: Optional[str] = None
     baseurl: Optional[str] = None
+    copyright: Optional[str] = None
     css_files: PropsFiles = tuple()
     doctype: str = 'html'
     favicon: Optional[str] = None
@@ -42,6 +43,8 @@ class ThemabasterConfig:
     lang: str = 'EN'
     master_doc: str = 'index'
     no_sidebar: bool = False
+    show_copyright: bool = True
+    show_powered_by: bool = True
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
