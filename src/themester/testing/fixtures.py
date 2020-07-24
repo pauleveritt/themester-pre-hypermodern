@@ -111,7 +111,16 @@ def this_pathto() -> Callable[[str], str]:
 
 
 @pytest.fixture
-def this_pagecontext(this_pathto):
+def this_toctree() -> Callable[[], str]:
+    def _this_toctree() -> str:
+        """ Sphinx page context function to return string of toctree """
+        return '<ul><li>First</li></ul>'
+
+    return _this_toctree
+
+
+@pytest.fixture
+def this_pagecontext(this_pathto, this_toctree):
     pc = PageContext(
         body=Markup('<h1>Some Body</h1>'),
         css_files=('page_first.css', 'page_second.css'),
@@ -122,6 +131,7 @@ def this_pagecontext(this_pathto):
         sourcename='somedoc.rst',
         title='Some Page',
         toc=Markup('<li>toc</li>'),
+        toctree=this_toctree,
     )
     return pc
 
