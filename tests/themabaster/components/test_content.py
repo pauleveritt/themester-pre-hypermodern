@@ -1,6 +1,5 @@
 import pytest
 from bs4 import BeautifulSoup
-from markupsafe import Markup
 from viewdom import html
 from viewdom_wired import render
 
@@ -8,7 +7,6 @@ from themester.themabaster.components.content import Content
 from themester.themabaster.components.document import Document
 from themester.themabaster.components.sidebar1 import Sidebar1
 from themester.themabaster.components.sidebar2 import Sidebar2
-from themester.themabaster.services.documentbody import DocumentBody
 
 
 @pytest.fixture
@@ -23,9 +21,7 @@ def test_vdom(this_vdom, this_props):
     assert Sidebar2 == this_vdom[1].children[1].tag
 
 
-def test_wired_render(themabaster_app, this_container, this_props):
-    db = DocumentBody(html=Markup('<p>Some content</p>'))
-    this_container.register_singleton(db, DocumentBody)
+def test_wired_render(themabaster_app, this_container, this_props, this_documentbody):
     this_vdom = html('<{Content} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

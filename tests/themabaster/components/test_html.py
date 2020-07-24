@@ -21,13 +21,13 @@ def this_component(this_props):
 
 def test_vdom(this_vdom, this_props):
     from themester.themabaster.components.html import Head
-    assert len(this_vdom.children) == 1
-    assert this_vdom.tag == 'html'
-    assert this_vdom.props['lang'] == this_props['lang']
-    assert this_vdom.children[0].tag == Head
+    assert 2 == len(this_vdom.children)
+    assert 'html' == this_vdom.tag
+    assert this_props['lang'] == this_vdom.props['lang']
+    assert Head == this_vdom.children[0].tag
 
 
-def test_wired_render(themabaster_app, this_container, this_props):
+def test_wired_render(themabaster_app, this_container, this_props, this_documentbody):
     from themester.themabaster.components.html import HTML  # noqa: F401
     this_vdom = html('<{HTML} lang="EN" />')
     rendered = render(this_vdom, container=this_container)
@@ -37,3 +37,5 @@ def test_wired_render(themabaster_app, this_container, this_props):
     assert 6 == len(links)
     assert '../../../site_first.css' == links[0].attrs['href']
     assert '../../../page_first.css' == links[2].attrs['href']
+    assert this_html.select_one('div.sphinxsidebar')
+    assert '../mock/_sources/somedoc.rst' == this_html.select_one('a[rel="nofollow"]').attrs['href']

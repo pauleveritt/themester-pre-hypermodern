@@ -18,6 +18,7 @@ from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
 from ..sphinx import PageContext
+from ..themabaster.services.documentbody import DocumentBody
 from ..themabaster.services.layoutconfig import ThemabasterConfig
 from ..themabaster.services.prevnext import PreviousLink, NextLink
 from ..url import URL
@@ -118,6 +119,12 @@ def this_toctree() -> Callable[[], str]:
         return '<ul><li>First</li></ul>'
 
     return _this_toctree
+
+
+@pytest.fixture
+def this_documentbody(this_container):
+    db = DocumentBody(html=Markup('<p>Some content</p>'))
+    this_container.register_singleton(db, DocumentBody)
 
 
 @pytest.fixture

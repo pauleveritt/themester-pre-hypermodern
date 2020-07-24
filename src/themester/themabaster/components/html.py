@@ -8,6 +8,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
+from .body import Body  # noqa: F401
 from .head import Head  # noqa: F401
 from ..services.layoutconfig import ThemabasterConfig
 
@@ -21,5 +22,6 @@ class HTML:
         return html('''\n
 <html lang="{self.lang}">
   <{Head} />
+  <{Body} />
 </head>
 ''')
