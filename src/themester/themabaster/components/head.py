@@ -10,11 +10,11 @@ from viewdom_wired import component
 from wired.dataclasses import injected
 
 from themester.themabaster.services.layoutconfig import ThemabasterConfig
-from themester.themabaster.services.pagecontext import PageContext
 from themester.url import URL
 from .cssfiles import CSSFiles  # noqa: F401
 from .jsfiles import JSFiles  # noqa: F401
 from .title import Title  # noqa: F401
+from ...sphinx import PageContext
 
 
 @component()

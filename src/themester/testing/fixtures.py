@@ -8,6 +8,7 @@ from typing import Optional, Dict, Any, Callable
 
 import pytest
 from bs4 import BeautifulSoup
+from markupsafe import Markup
 from venusian import Scanner
 from viewdom import render, VDOM
 from wired import ServiceContainer
@@ -16,8 +17,8 @@ from themester.app import ThemesterApp
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
+from ..sphinx import PageContext
 from ..themabaster.services.layoutconfig import ThemabasterConfig
-from ..themabaster.services.pagecontext import PageContext
 from ..themabaster.services.prevnext import PreviousLink, NextLink
 from ..url import URL
 
@@ -101,16 +102,26 @@ def this_html(this_vdom) -> BeautifulSoup:
 
 
 @pytest.fixture
-def this_pagecontext():
+def this_pathto() -> Callable[[str], str]:
+    def _this_pathto(docname) -> str:
+        """ Sphinx page context function to get a path to a target """
+        return f'../mock/{docname}'
+
+    return _this_pathto
+
+
+@pytest.fixture
+def this_pagecontext(this_pathto):
     pc = PageContext(
-        body='<h1>Some Body</h1>',
+        body=Markup('<h1>Some Body</h1>'),
         css_files=('page_first.css', 'page_second.css'),
-        js_files=('page_first.js', 'page_second.js'),
-        title='Some Page',
         display_toc=True,
+        js_files=('page_first.js', 'page_second.js'),
         page_source_suffix='.html',
+        pathto=this_pathto,
         sourcename='somedoc.rst',
-        toc='<li>toc</li>',
+        title='Some Page',
+        toc=Markup('<li>toc</li>'),
     )
     return pc
 

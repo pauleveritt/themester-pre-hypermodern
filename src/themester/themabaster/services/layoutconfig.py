@@ -15,16 +15,17 @@ from themester.themabaster.protocols import PropsFiles
 # TODO Post-1.0: Make a Protocol for this
 @dataclass(frozen=True)
 class ThemabasterConfig:
-    doctype: str = 'html'
-    lang: str = 'EN'
-    site_name: Optional[str] = None
-    css_files: PropsFiles = tuple()
-    js_files: PropsFiles = tuple()
-    file_suffix: str = '.html'
     baseurl: Optional[str] = None
+    css_files: PropsFiles = tuple()
+    doctype: str = 'html'
     favicon: Optional[str] = None
-    touch_icon: Optional[str] = None
-    show_relbars: bool = False
-    show_relbar_top: bool = False
-    show_relbar_bottom: bool = False
+    file_suffix: str = '.html'
+    js_files: PropsFiles = tuple()
+    lang: str = 'EN'
+    master_doc: str = 'index'
     no_sidebar: bool = False
+    show_relbar_bottom: bool = False
+    show_relbar_top: bool = False
+    show_relbars: bool = False
+    site_name: Optional[str] = None
+    touch_icon: Optional[str] = None
