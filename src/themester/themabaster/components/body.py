@@ -7,8 +7,9 @@ from dataclasses import dataclass
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-from .header import Header  # noqa: F401
 from .content import Content  # noqa: F401
+from .footer import Footer  # noqa: F401
+from .header import Header  # noqa: F401
 
 @component()
 @dataclass(frozen=True)
@@ -18,5 +19,6 @@ class Body:
 <body>
 <{Header} />
 <{Content} />
+<{Footer} />
 </body>
 ''')
