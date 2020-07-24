@@ -3,12 +3,13 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.components.sidebar2 import Sidebar2
+from themester.themabaster.components.sidebarlogo import SidebarLogo
 
 
 @pytest.fixture
-def this_props():
+def this_props(themabaster_config):
     tp = dict(
-        no_sidebar=False,
+        sidebars=themabaster_config.sidebars,
     )
     return tp
 
@@ -21,10 +22,11 @@ def this_component(this_props):
 
 def test_vdom(this_vdom, this_props):
     assert 'div' == this_vdom.tag
+    assert SidebarLogo == this_vdom.children[0].children[0].tag
 
 
 def test_vdom_no_sidebar():
-    ci = Sidebar2(no_sidebar=True)
+    ci = Sidebar2(sidebars=tuple())
     this_vdom = ci()
     assert [] == this_vdom
 
@@ -32,4 +34,5 @@ def test_vdom_no_sidebar():
 def test_wired_render(themabaster_app, this_container):
     this_vdom = html('<{Sidebar2} />')
     rendered = render(this_vdom, container=this_container)
-    assert '' == rendered
+    assert 'Table of Contents' in rendered
+    assert '<li>First' in rendered
