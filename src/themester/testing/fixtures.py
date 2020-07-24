@@ -126,6 +126,7 @@ def this_pagecontext(this_pathto, this_toctree):
         css_files=('page_first.css', 'page_second.css'),
         display_toc=True,
         js_files=('page_first.js', 'page_second.js'),
+        pagename='somedoc',
         page_source_suffix='.html',
         pathto=this_pathto,
         sourcename='somedoc.rst',

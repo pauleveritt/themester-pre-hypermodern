@@ -52,12 +52,14 @@ class PageContext:
     css_files: Iterable[str]
     display_toc: bool
     js_files: Iterable[str]
+    pagename: str
     page_source_suffix: str
     pathto: Callable[[str, ], str]
     sourcename: Optional[str]
     title: str
     toc: Markup
 
+    builder: str = 'html'
     meta: Meta = None
     metatags: str = ''
     next: Links = None
