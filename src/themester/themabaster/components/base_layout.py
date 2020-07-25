@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
+from wired.dataclasses import injected
 
 from ..config import ThemabasterConfig
 from ..components.head import Head  # noqa: F401
@@ -15,14 +16,14 @@ from ..components.body import Body  # noqa: F401
 @component()
 @dataclass
 class BaseLayout:
-    config: ThemabasterConfig
+    language: str = injected(ThemabasterConfig, attr='language')
     extrahead: VDOM = None
     doctype: Markup = Markup('<!DOCTYPE html>\n')
 
     def __call__(self) -> VDOM:
         return html('''\n
 {self.doctype}
-<html lang="{self.config.lang}">
+<html lang="{self.language}">
     <{Head} extrahead={self.extrahead} />
     <{Body} />
 </html>

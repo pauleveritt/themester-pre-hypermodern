@@ -31,16 +31,24 @@ def get_sidebars():
 
 @dataclass(frozen=True)
 class ThemabasterConfig:
+    # Sphinx Config
+
+
+    # Sphinx Template Context Globals
     logo: Optional[str] = None
-    baseurl: Optional[str] = None
     copyright: Optional[str] = None
-    css_files: PropsFiles = tuple()
-    doctype: str = 'html'
     favicon: Optional[str] = None
     file_suffix: str = '.html'
     has_source: bool = True
+    language: str = 'EN'
+
+
+    # HTML Theme
+
+    baseurl: Optional[str] = None
+    css_files: PropsFiles = tuple()
+    doctype: str = 'html'
     js_files: PropsFiles = tuple()
-    lang: str = 'EN'
     master_doc: str = 'index'
     no_sidebar: bool = False
     show_copyright: bool = True

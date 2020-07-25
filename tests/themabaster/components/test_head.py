@@ -30,33 +30,33 @@ def this_component(this_props):
 
 def test_vdom(this_vdom, this_props):
     from themester.themabaster.components.cssfiles import CSSFiles
-    assert len(this_vdom.children) == 8
-    assert this_vdom.tag == 'head'
-    assert this_vdom.children[0].tag == 'meta'
-    assert this_vdom.children[1].tag == 'meta'
+    assert 9 == len(this_vdom.children)
+    assert 'head' == this_vdom.tag
+    assert 'meta' == this_vdom.children[0].tag
+    assert 'meta' == this_vdom.children[1].tag
     title = this_vdom.children[2]
     from themester.themabaster.components.title import Title
-    assert title.tag == Title
-    assert title.props == dict(page_title='Some Page', site_name='Some Site')
-    assert title.children == []
-    css = this_vdom.children[3]
-    assert css.tag == CSSFiles
-    assert css.props == dict(
+    assert Title == title.tag
+    assert dict(page_title='Some Page', site_name='Some Site') == title.props
+    assert [] == title.children
+    css = this_vdom.children[4]
+    assert CSSFiles == css.tag
+    assert dict(
         page_files=('page1.css', 'page2.css'),
         site_files=('site1.css', 'site2.css'),
-    )
-    assert css.children == []
-    js = this_vdom.children[4]
+    ) == css.props
+    assert [] == css.children
+    js = this_vdom.children[5]
     from themester.themabaster.components.jsfiles import JSFiles
-    assert js.tag == JSFiles
+    assert JSFiles == js.tag
     assert js.props == dict(
         page_files=('page1.js', 'page2.js'),
         site_files=('site1.js', 'site2.js'),
     )
-    assert js.children == []
-    assert '../mock/sometouchicon.png' == this_vdom.children[6].props['href']
+    assert [] == js.children
+    assert '../mock/sometouchicon.png' == this_vdom.children[7].props['href']
     # No children
-    assert None == this_vdom.children[7]
+    assert None is this_vdom.children[8]
 
 
 def test_vdom_extrahead(this_props):
@@ -78,11 +78,11 @@ def test_wired_render(themabaster_app, this_container):
     this_html = BeautifulSoup(rendered, 'html.parser')
     assert 'Some Page - Themester SiteConfig' == this_html.select_one('title').text
     links = this_html.select('link')
-    assert 6 == len(links)
-    assert '../mock/site_first.css' == links[0].attrs['href']
-    assert '../mock/page_first.css' == links[2].attrs['href']
-    assert '../mock/_static/custom.css' == links[4].attrs['href']
-    assert '../mock/sometouchicon.ico' == links[5].attrs['href']
+    assert 7 == len(links)
+    assert '../mock/site_first.css' == links[1].attrs['href']
+    assert '../mock/page_first.css' == links[3].attrs['href']
+    assert '../mock/_static/custom.css' == links[5].attrs['href']
+    assert '../mock/sometouchicon.ico' == links[6].attrs['href']
 
 
 def test_wired_render_extrahead(themabaster_app, this_container):

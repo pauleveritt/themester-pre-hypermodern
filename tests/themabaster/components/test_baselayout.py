@@ -19,14 +19,14 @@ def test_defaults(themabaster_app, this_container):
     this_html = BeautifulSoup(rendered, 'html.parser')
 
     assert 'EN' == this_html.select_one('html').get('lang')
-    assert 6 == len(this_html.select('html head link'))
+    assert 7 == len(this_html.select('html head link'))
     assert 'html' == doctype(this_html)
 
 
 def test_config(themabaster_app, this_container, themabaster_config):
     tc = dataclasses.replace(
         themabaster_config,
-        lang='FR'
+        language='FR'
     )
     this_container.register_singleton(tc, ThemabasterConfig)
     this_vdom = html('<{BaseLayout} />')
@@ -40,7 +40,7 @@ def test_extrahead(themabaster_app, this_container):
     this_vdom = html('<{BaseLayout} extrahead={extrahead} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    assert 7 == len(this_html.select('html head link'))
+    assert 8 == len(this_html.select('html head link'))
 
 
 def test_doctype(themabaster_app, this_container):
