@@ -51,6 +51,7 @@ class PageContext:
     body: Markup
     css_files: Iterable[str]
     display_toc: bool
+    hasdoc: Callable[[str, ], bool]
     js_files: Iterable[str]
     pagename: str
     page_source_suffix: str

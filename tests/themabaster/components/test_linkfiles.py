@@ -1,21 +1,13 @@
 import pytest
 from bs4 import BeautifulSoup
 from viewdom import html
-from viewdom_wired import render, adherent
+from viewdom_wired import render
 
 from themester.themabaster.components.linktags import SemanticLink
-from themester.themabaster.protocols import Hasdoc
-
-
-@adherent(Hasdoc)
-class TestHasDoc(Hasdoc):
-    def __call__(self, target: str) -> bool:
-        # Remove one of the dummy documents from the listing
-        return False if target == 'author' else True
 
 
 @pytest.fixture
-def this_props(this_url, this_static_url):
+def this_props(this_url, this_static_url, this_hasdoc):
     link1: SemanticLink = dict(
         rel='index',
         docname='genindex',
@@ -32,9 +24,8 @@ def this_props(this_url, this_static_url):
         title='Copyright'
     )
     links = (link1, link2, link3)
-    test_hasdoc = TestHasDoc()
     props = dict(
-        hasdoc=test_hasdoc,
+        hasdoc=this_hasdoc,
         links=links,
         static_url=this_static_url,
     )

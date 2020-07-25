@@ -13,13 +13,13 @@ from venusian import Scanner
 from viewdom import render, VDOM
 from wired import ServiceContainer
 
-from ..app import ThemesterApp
-from ..sphinx.documentbody import DocumentBody
-from ..sphinx.prevnext import PreviousLink, NextLink
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
+from ..app import ThemesterApp
 from ..sphinx import PageContext
+from ..sphinx.documentbody import DocumentBody
+from ..sphinx.prevnext import PreviousLink, NextLink
 from ..themabaster.config import ThemabasterConfig
 from ..url import URL
 
@@ -113,6 +113,15 @@ def this_pathto() -> Callable[[str, Optional[int]], str]:
 
 
 @pytest.fixture
+def this_hasdoc() -> Callable[[str], bool]:
+    def _this_hasdoc(docname) -> bool:
+        """ Sphinx page context function to confirm a path exists """
+        return True if docname != 'author' else False
+
+    return _this_hasdoc
+
+
+@pytest.fixture
 def this_toctree() -> Callable[[], str]:
     def _this_toctree() -> str:
         """ Sphinx page context function to return string of toctree """
@@ -128,11 +137,12 @@ def this_documentbody(this_container):
 
 
 @pytest.fixture
-def this_pagecontext(this_pathto, this_toctree):
+def this_pagecontext(this_hasdoc, this_pathto, this_toctree):
     pc = PageContext(
         body=Markup('<h1>Some Body</h1>'),
         css_files=('page_first.css', 'page_second.css'),
         display_toc=True,
+        hasdoc=this_hasdoc,
         js_files=('page_first.js', 'page_second.js'),
         pagename='somedoc',
         page_source_suffix='.html',

@@ -5,7 +5,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.themabaster.protocols import Hasdoc
+from themester.sphinx import PageContext
 from themester.url import URL
 
 
@@ -18,7 +18,7 @@ class SemanticLink(TypedDict):
 @component()
 @dataclass(frozen=True)
 class Linktags:
-    hasdoc: Hasdoc  # TODO Sphinx "adapter" has to register this in container
+    hasdoc: Callable[[str], bool] = injected(PageContext, attr='hasdoc')
     static_url: Callable = injected(URL, attr='static_url')
     links: Iterable[SemanticLink] = tuple()
 
