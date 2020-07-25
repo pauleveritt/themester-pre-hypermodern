@@ -10,7 +10,7 @@ from wired.dataclasses import injected
 
 from .body import Body  # noqa: F401
 from .head import Head  # noqa: F401
-from ..services.layoutconfig import ThemabasterConfig
+from ..config import ThemabasterConfig
 
 
 @component()

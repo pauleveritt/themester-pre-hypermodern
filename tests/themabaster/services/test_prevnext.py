@@ -1,4 +1,4 @@
-from themester.themabaster.services.prevnext import PreviousLink, NextLink
+from themester.sphinx.prevnext import PreviousLink, NextLink
 
 
 def test_construction():

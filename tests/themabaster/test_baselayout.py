@@ -6,7 +6,7 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.base_layout import BaseLayout  # noqa: F401
-from themester.themabaster.services.layoutconfig import ThemabasterConfig
+from themester.themabaster.base_layout import ThemabasterConfig
 
 
 def doctype(soup):

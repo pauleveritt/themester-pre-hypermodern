@@ -11,8 +11,8 @@ from wired.dataclasses import injected
 
 from ..components.relbar1 import Relbar1  # noqa: F401
 from ..components.relbar2 import Relbar2  # noqa: F401
-from ..services.layoutconfig import ThemabasterConfig
-from ..services.documentbody import DocumentBody
+from ..config import ThemabasterConfig
+from themester.sphinx.documentbody import DocumentBody
 
 
 @component()

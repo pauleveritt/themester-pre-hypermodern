@@ -1,6 +1,6 @@
 from markupsafe import Markup
 
-from themester.themabaster.services.documentbody import DocumentBody
+from themester.sphinx.documentbody import DocumentBody
 
 
 def test_construction():

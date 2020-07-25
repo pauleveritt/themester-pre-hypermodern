@@ -7,7 +7,7 @@ from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-from themester.themabaster.services.layoutconfig import ThemabasterConfig
+from .config import ThemabasterConfig
 from .components.head import Head  # noqa: F401
 from .components.html import HTML  # noqa: F401
 

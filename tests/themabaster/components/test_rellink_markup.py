@@ -4,7 +4,7 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.components.rellink_markup import RellinkMarkup
-from themester.themabaster.services.prevnext import PreviousLink, NextLink
+from themester.sphinx.prevnext import PreviousLink, NextLink
 
 
 @pytest.fixture

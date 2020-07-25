@@ -10,7 +10,7 @@ from viewdom_wired import component
 from wired.dataclasses import injected
 
 from themester.sphinx import PageContext
-from themester.themabaster.services.layoutconfig import ThemabasterConfig
+from themester.themabaster.config import ThemabasterConfig
 
 
 @component()

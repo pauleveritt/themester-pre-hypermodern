@@ -14,7 +14,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.themabaster.services.layoutconfig import ThemabasterConfig
+from themester.themabaster.config import ThemabasterConfig
 from ..components.rellink_markup import RellinkMarkup  # noqa: F401
 
 

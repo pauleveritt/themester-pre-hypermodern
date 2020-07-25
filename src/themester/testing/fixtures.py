@@ -13,14 +13,14 @@ from venusian import Scanner
 from viewdom import render, VDOM
 from wired import ServiceContainer
 
-from themester.app import ThemesterApp
+from ..app import ThemesterApp
+from ..sphinx.documentbody import DocumentBody
+from ..sphinx.prevnext import PreviousLink, NextLink
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster, Resource
 from ..sphinx import PageContext
-from ..themabaster.services.documentbody import DocumentBody
-from ..themabaster.services.layoutconfig import ThemabasterConfig
-from ..themabaster.services.prevnext import PreviousLink, NextLink
+from ..themabaster.config import ThemabasterConfig
 from ..url import URL
 
 

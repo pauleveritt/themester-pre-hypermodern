@@ -9,7 +9,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.themabaster.services.layoutconfig import ThemabasterConfig
+from ..config import ThemabasterConfig
 from themester.url import URL
 from .cssfiles import CSSFiles  # noqa: F401
 from .jsfiles import JSFiles  # noqa: F401

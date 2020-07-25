@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-from ..services.prevnext import PreviousLink, NextLink
+from themester.sphinx.prevnext import PreviousLink, NextLink
 
 
 @component()

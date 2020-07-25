@@ -1,11 +1,9 @@
 import pytest
 from bs4 import BeautifulSoup
-from markupsafe import Markup
 from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.components.body import Body
-from themester.themabaster.services.documentbody import DocumentBody
 
 
 @pytest.fixture
