@@ -2,7 +2,7 @@ import sys
 
 from themester.themabaster.config import ThemabasterConfig
 
-extensions = ['themester']
+extensions = ['themester', 'themester.themabaster']
 
 # The rest is normal Sphinx stuff
 master_doc = 'index'

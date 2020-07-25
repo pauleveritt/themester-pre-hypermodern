@@ -13,4 +13,4 @@ class TestSetupFunction:
      """
 
     def test_index(self, page):
-        assert 'themester-body' in str(page)
+        assert '_static/themabaster.css' in str(page)

@@ -41,6 +41,7 @@ class Head:
   <meta charset="{self.charset}" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <{Title} page_title={self.page_title} site_name={self.site_name} />
+  <link rel="stylesheet" href={self.pathto('_static/themabaster.css', 1)} type="text/css" />
   <{CSSFiles} page_files={self.page_css_files} site_files={self.site_css_files} />
   <{JSFiles} page_files={self.page_js_files} site_files={self.site_js_files} />
   <link rel="stylesheet" href="{custom_css}" type="text/css"/>
