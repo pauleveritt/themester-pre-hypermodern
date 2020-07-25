@@ -9,7 +9,7 @@ file then injected into the site container as a singleton.
 from dataclasses import dataclass, field
 from typing import Optional, Tuple, Callable
 
-from themester.themabaster.protocols import PropsFiles
+from themester.utils import PropsFiles
 
 
 def get_sidebars():
