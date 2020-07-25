@@ -12,6 +12,7 @@ from wired.dataclasses import injected
 
 from themester import sphinx
 from themester.sphinx.models import PageContext
+from themester.themabaster.components.base_layout import BaseLayout  # noqa: F401
 from themester.views import view
 
 

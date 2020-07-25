@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from viewdom import html, VDOM
 
 from themester.views import view
-from .components.base_layout import BaseLayout  # noqa: F401
 
 
 @view()
@@ -11,4 +10,6 @@ from .components.base_layout import BaseLayout  # noqa: F401
 class RootView:
 
     def __call__(self) -> VDOM:
+        # Dang, circular imports
+        from .components.base_layout import BaseLayout  # noqa: F401
         return html('<{BaseLayout}><div>One Child</div><//>')

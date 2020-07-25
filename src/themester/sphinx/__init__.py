@@ -4,7 +4,6 @@ from venusian import Scanner
 
 from themester import Root
 from themester.app import ThemesterApp
-from themester.sphinx import views
 from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.config import ThemesterConfig
@@ -14,13 +13,19 @@ from themester.testing.resources import Site
 def builder_init(app: Sphinx):
     """ Wire up some global stuff after Sphinx startup """
 
+    # Circular import
+    from themester.sphinx import views
+    from themester import themabaster
+
     site = Site()
     sphinx_config = app.config  # type: ignore
     themester_config: SphinxConfig = sphinx_config.themester_config  # type: ignore
     themester_app = ThemesterApp(root=site, config=themester_config)
     themester_app.setup_plugin(views)
     scanner = themester_app.container.get(Scanner)
-    app.themester_app = themester_app  # type: ignore
+    app.themester_app = themester_app  # noqa
+
+    themester_app.registry.register_singleton(themester_config, ThemabasterConfig)
 
     # Go through the configuration and register stuff
     themester_plugins = sphinx_config['themester_plugins']
