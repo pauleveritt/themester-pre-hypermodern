@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from viewdom import html, VDOM
 
 from themester.views import view
-from .base_layout import BaseLayout  # noqa: F401
+from .components.base_layout import BaseLayout  # noqa: F401
 
 
 @view()

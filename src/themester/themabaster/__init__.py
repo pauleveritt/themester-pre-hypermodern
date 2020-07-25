@@ -9,12 +9,11 @@ This theme is resource-driven but only lightly.
 """
 from venusian import Scanner
 
-from . import components, base_layout, views
+from . import components, views
 from .components import cssfiles
 
 
 def wired_setup(scanner: Scanner):
     scanner.scan(components)
     scanner.scan(cssfiles)
-    scanner.scan(base_layout)
     scanner.scan(views)
