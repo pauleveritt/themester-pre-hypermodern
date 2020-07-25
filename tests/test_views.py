@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 import pytest
-from viewdom.h import html, VDOM
+from viewdom.h import html, VDOM, VDOMNode
 from wired import ServiceRegistry
 
 
@@ -25,7 +25,7 @@ def test_views_hello():
     view = container.get(View)
     actual = view()
     assert actual.tag == 'div'
-    expected = VDOM(tag='div', props={}, children=['Hello ', 'DefaultView'])
+    expected = VDOMNode(tag='div', props={}, children=['Hello ', 'DefaultView'])
     assert actual == expected
 
 
@@ -44,7 +44,7 @@ def test_views_context():
     container = registry.create_container(context=ViewsContext())
     view = container.get(View)
     actual = view()
-    expected = VDOM(tag='div', props={}, children=['Hello ', 'ContextView'])
+    expected = VDOMNode(tag='div', props={}, children=['Hello ', 'ContextView'])
     assert actual == expected
 
 
@@ -63,7 +63,7 @@ def test_views_no_context():
     container = registry.create_container()
     view = container.get(View)
     actual = view()
-    expected = VDOM(tag='div', props={}, children=['Hello ', 'ContextView'])
+    expected = VDOMNode(tag='div', props={}, children=['Hello ', 'ContextView'])
     assert actual == expected
 
 
@@ -84,5 +84,5 @@ def test_views_named():
         container.get(View)
     view = container.get(View, name='somename')
     actual = view()
-    expected = VDOM(tag='div', props={}, children=['Hello ', 'NamedView'])
+    expected = VDOMNode(tag='div', props={}, children=['Hello ', 'NamedView'])
     assert actual == expected

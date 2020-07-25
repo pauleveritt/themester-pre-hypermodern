@@ -7,13 +7,13 @@ registry.
 from __future__ import annotations
 
 from types import ModuleType
-from typing import Protocol, Optional
+from typing import Optional
 
 from viewdom import VDOM
 from wired import ServiceContainer, ServiceRegistry
 
 
-class App(Protocol):
+class App:
     container: ServiceContainer
     registry: ServiceRegistry
 
@@ -24,22 +24,22 @@ class App(Protocol):
         ...
 
 
-class Config(Protocol):
+class Config:
     site_name: Optional[str] = None
 
 
-class Resource(Protocol):
+class Resource:
     name: str
     parent: Optional[Resource]
 
 
-class Root(Resource, dict):
+class Root:
     """ The root of the resource tree """
 
     name: str = ''
     parent: None = None
 
 
-class View(Protocol):
+class View:
     def __call__(self) -> VDOM:
         ...
