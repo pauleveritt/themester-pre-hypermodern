@@ -22,7 +22,7 @@ class JSFiles:
     page_files: Tuple[str, ...] = tuple()
 
     def __call__(self) -> VDOM:
-        all_files = self.site_files + self.page_files
+        all_files = tuple(self.site_files) + tuple(self.page_files)
         srcs = [
             self.pathto(js_file, 1)
             for js_file in all_files

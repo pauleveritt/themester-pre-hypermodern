@@ -22,7 +22,7 @@ class CSSFiles:
     pathto: Callable[[str], int] = injected(PageContext, attr='pathto')
 
     def __call__(self) -> VDOM:
-        all_files = self.site_files + self.page_files
+        all_files = tuple(self.site_files) + tuple(self.page_files)
         hrefs = [
             self.pathto(css_file, 1)
             for css_file in all_files
