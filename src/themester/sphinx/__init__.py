@@ -1,7 +1,5 @@
 from sphinx.application import Sphinx
 from venusian import Scanner
-from wired import ServiceRegistry, ServiceContainer
-from wired.dataclasses import register_dataclass
 
 from themester import Root
 from themester.app import ThemesterApp
