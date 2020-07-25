@@ -6,6 +6,7 @@ Default views for a page and special pages like genindex.
 
 from dataclasses import dataclass
 
+from markupsafe import Markup
 from venusian import Scanner
 from viewdom import html
 from wired.dataclasses import injected
@@ -22,7 +23,9 @@ class DefaultView:
     body: str = injected(PageContext, attr='body')
 
     def __call__(self):
-        return html('<div id="themester-body">{self.body}</div>')
+        # return html('<div id="themester-body">{self.body}</div>')
+        this_doctype = Markup('<!DOCTYPE html5>\n')
+        return html('<{BaseLayout} doctype={this_doctype} />')
 
 
 def wired_setup(scanner: Scanner):

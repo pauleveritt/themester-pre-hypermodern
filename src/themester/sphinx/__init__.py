@@ -8,6 +8,7 @@ from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.config import ThemesterConfig
 from themester.testing.resources import Site
+from themester.themabaster.config import ThemabasterConfig
 
 
 def builder_init(app: Sphinx):
@@ -21,6 +22,7 @@ def builder_init(app: Sphinx):
     sphinx_config = app.config  # type: ignore
     themester_config: SphinxConfig = sphinx_config.themester_config  # type: ignore
     themester_app = ThemesterApp(root=site, config=themester_config)
+    themester_app.setup_plugin(themabaster)
     themester_app.setup_plugin(views)
     scanner = themester_app.container.get(Scanner)
     app.themester_app = themester_app  # noqa
@@ -51,7 +53,7 @@ def inject_page(app, pagename, templatename, context, doctree):
 
     # If this is a Sphinx site that wants to do resource-oriented
     # pages, get the current resource.
-    if themester_config.use_resources:
+    if getattr(themester_config, 'use_resources', False):
         resource = themester_root[pagename]
     else:
         resource = themester_root
