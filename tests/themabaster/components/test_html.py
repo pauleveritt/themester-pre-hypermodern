@@ -27,7 +27,7 @@ def test_vdom(this_vdom, this_props):
     assert Head == this_vdom.children[0].tag
 
 
-def test_wired_render(themabaster_app, this_container, this_props, this_documentbody):
+def test_wired_render(themabaster_app, this_container, this_props):
     from themester.themabaster.components.html import HTML  # noqa: F401
     this_vdom = html('<{HTML} lang="EN" />')
     rendered = render(this_vdom, container=this_container)

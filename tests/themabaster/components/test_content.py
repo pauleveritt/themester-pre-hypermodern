@@ -21,7 +21,7 @@ def test_vdom(this_vdom, this_props):
     assert Sidebar2 == this_vdom[1].children[1].tag
 
 
-def test_wired_render(themabaster_app, this_container, this_props, this_documentbody):
+def test_wired_render(themabaster_app, this_container, this_props):
     this_vdom = html('<{Content} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

@@ -13,7 +13,7 @@ def doctype(soup):
     return items[0] if items else None
 
 
-def test_defaults(themabaster_app, this_container, this_documentbody):
+def test_defaults(themabaster_app, this_container):
     vdom = html('<{BaseLayout} />')
     rendered = render(vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
@@ -23,7 +23,7 @@ def test_defaults(themabaster_app, this_container, this_documentbody):
     assert 'html' == doctype(this_html)
 
 
-def test_config(themabaster_app, this_container, themabaster_config, this_documentbody):
+def test_config(themabaster_app, this_container, themabaster_config):
     tc = dataclasses.replace(
         themabaster_config,
         lang='FR'
@@ -35,7 +35,7 @@ def test_config(themabaster_app, this_container, themabaster_config, this_docume
     assert 'FR' == this_html.select_one('html').get('lang')
 
 
-def test_extrahead(themabaster_app, this_container, this_documentbody):
+def test_extrahead(themabaster_app, this_container):
     extrahead = html('<link rel="stylesheet" />')
     this_vdom = html('<{BaseLayout} extrahead={extrahead} />')
     rendered = render(this_vdom, container=this_container)
@@ -43,7 +43,7 @@ def test_extrahead(themabaster_app, this_container, this_documentbody):
     assert 7 == len(this_html.select('html head link'))
 
 
-def test_doctype(themabaster_app, this_container, this_documentbody):
+def test_doctype(themabaster_app, this_container):
     this_doctype = Markup('<!DOCTYPE html5>\n')
     this_vdom = html('<{BaseLayout} doctype={this_doctype} />')
     rendered = render(this_vdom, container=this_container)

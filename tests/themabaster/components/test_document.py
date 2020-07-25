@@ -6,17 +6,17 @@ from markupsafe import Markup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx.prevnext import PreviousLink, NextLink
+from themester.themabaster.components.base_layout import ThemabasterConfig
 from themester.themabaster.components.document import Document
 from themester.themabaster.components.relbar1 import Relbar1
 from themester.themabaster.components.relbar2 import Relbar2
-from themester.themabaster.components.base_layout import ThemabasterConfig
-from themester.sphinx.prevnext import PreviousLink, NextLink
 
 
 @pytest.fixture
 def this_props():
     tp = dict(
-        document_body=Markup('<p>Some content</p>'),
+        body=Markup('<p>Some content</p>'),
         no_sidebar=False,
         previous=PreviousLink(
             title='Previous',
@@ -50,7 +50,7 @@ def test_vdom_default(this_vdom, this_props):
     assert Relbar2 == this_vdom.children[0].children[0][2].tag
 
 
-def test_wired_render_default(themabaster_app, this_container, this_props, this_documentbody):
+def test_wired_render_default(themabaster_app, this_container, this_props):
     # With sidebars
     this_vdom = html('<{Document} />')
     rendered = render(this_vdom, container=this_container)
@@ -65,8 +65,7 @@ def test_wired_render_default(themabaster_app, this_container, this_props, this_
 
 
 def test_wired_render_without_sidebars(
-        themabaster_app, themabaster_config, this_container,
-        this_props, this_documentbody
+        themabaster_app, themabaster_config, this_container, this_props
 ):
     # Change the themabaster settings in the container
     tc = dataclasses.replace(themabaster_config, no_sidebar=True)

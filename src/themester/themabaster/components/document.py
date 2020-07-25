@@ -12,7 +12,7 @@ from wired.dataclasses import injected
 from ..components.relbar1 import Relbar1  # noqa: F401
 from ..components.relbar2 import Relbar2  # noqa: F401
 from ..config import ThemabasterConfig
-from themester.sphinx.documentbody import DocumentBody
+from ...sphinx import PageContext
 
 
 @component()
@@ -20,7 +20,7 @@ from themester.sphinx.documentbody import DocumentBody
 class Document:
     """ A block in content, holding most of the info on this resource """
 
-    document_body: Markup = injected(DocumentBody, attr='html')
+    body: Markup = injected(PageContext, attr='body')
     no_sidebar: bool = injected(ThemabasterConfig, attr='no_sidebar')
 
     def __call__(self) -> VDOM:
@@ -30,7 +30,7 @@ class Document:
         main_content = html('''\n
 <{Relbar1}/>
   <div class="body" role="main">
-    {self.document_body}
+    {self.body}
   </div>          
 <{Relbar2}/>        
         ''')
