@@ -32,4 +32,4 @@ def test_themester_bridge_construction(render_themester_bridge):
 
 def test_themester_bridge_render(render_themester_bridge, render_context):
     actual = render_themester_bridge.render('', render_context)
-    assert actual == '<div>View: Fixture View</div>'
+    assert '<div>View: Fixture View</div>' == actual

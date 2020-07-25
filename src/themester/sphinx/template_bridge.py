@@ -13,4 +13,4 @@ class ThemesterBridge(BuiltinTemplateLoader):
         render_container: ServiceContainer = context['render_container']
         app: App = render_container.get(App)
         response = app.render(container=render_container)
-        return 'response'
+        return response
