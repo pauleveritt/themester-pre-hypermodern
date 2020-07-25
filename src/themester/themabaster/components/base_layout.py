@@ -7,10 +7,10 @@ from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-from .config import ThemabasterConfig
-from .components.head import Head  # noqa: F401
-from .components.html import HTML  # noqa: F401
-
+from ..config import ThemabasterConfig
+from ..components.head import Head  # noqa: F401
+from ..components.html import HTML  # noqa: F401
+from ..components.body import Body  # noqa: F401
 
 @component()
 @dataclass
@@ -24,5 +24,6 @@ class BaseLayout:
 {self.doctype}
 <html lang="{self.config.lang}">
     <{Head} extrahead={self.extrahead} />
+    <{Body} />
 </html>
         ''')
