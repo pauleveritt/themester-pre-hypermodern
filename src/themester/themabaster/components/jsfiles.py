@@ -5,7 +5,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.url import URL
+from themester.sphinx import PageContext
 
 
 def JSFile(src: str) -> VDOM:
@@ -17,14 +17,14 @@ def JSFile(src: str) -> VDOM:
 @component()
 @dataclass(frozen=True)
 class JSFiles:
-    static_url: Callable = injected(URL, attr='static_url')
+    pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
     site_files: Tuple[str, ...] = tuple()
     page_files: Tuple[str, ...] = tuple()
 
     def __call__(self) -> VDOM:
         all_files = self.site_files + self.page_files
         srcs = [
-            self.static_url(js_file)
+            self.pathto(js_file, 1)
             for js_file in all_files
         ]
         return html('''\n

@@ -5,7 +5,7 @@ from viewdom_wired import render
 
 
 @pytest.fixture
-def this_props(this_url, this_resource, this_static_url):
+def this_props(this_resource, this_pathto):
     props = dict(
         extrahead=None,
         favicon='someicon.png',
@@ -16,7 +16,7 @@ def this_props(this_url, this_resource, this_static_url):
         page_css_files=('page1.css', 'page2.css'),
         site_js_files=('site1.js', 'site2.js',),
         page_js_files=('page1.js', 'page2.js'),
-        static_url=this_static_url,
+        pathto=this_pathto,
     )
     return props
 
@@ -54,7 +54,7 @@ def test_vdom(this_vdom, this_props):
         site_files=('site1.js', 'site2.js'),
     )
     assert js.children == []
-    assert 'mock/sometouchicon.png' == this_vdom.children[6].props['href']
+    assert '../mock/sometouchicon.png' == this_vdom.children[6].props['href']
     # No children
     assert None == this_vdom.children[7]
 
@@ -79,10 +79,10 @@ def test_wired_render(themabaster_app, this_container):
     assert 'Some Page - Themester SiteConfig' == this_html.select_one('title').text
     links = this_html.select('link')
     assert 6 == len(links)
-    assert '../../../site_first.css' == links[0].attrs['href']
-    assert '../../../page_first.css' == links[2].attrs['href']
-    assert '../../../_static/custom.css' == links[4].attrs['href']
-    assert '../../../sometouchicon.ico' == links[5].attrs['href']
+    assert '../mock/site_first.css' == links[0].attrs['href']
+    assert '../mock/page_first.css' == links[2].attrs['href']
+    assert '../mock/_static/custom.css' == links[4].attrs['href']
+    assert '../mock/sometouchicon.ico' == links[5].attrs['href']
 
 
 def test_wired_render_extrahead(themabaster_app, this_container):

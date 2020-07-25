@@ -7,7 +7,7 @@ from themester.themabaster.components.linktags import SemanticLink
 
 
 @pytest.fixture
-def this_props(this_url, this_static_url, this_hasdoc):
+def this_props(this_pathto, this_hasdoc):
     link1: SemanticLink = dict(
         rel='index',
         docname='genindex',
@@ -27,7 +27,7 @@ def this_props(this_url, this_static_url, this_hasdoc):
     props = dict(
         hasdoc=this_hasdoc,
         links=links,
-        static_url=this_static_url,
+        pathto=this_pathto,
     )
     return props
 
@@ -40,10 +40,10 @@ def this_component(this_props):
 
 
 def test_vdom(this_vdom):
-    assert 'mock/genindex' == this_vdom[0].props['href']
+    assert '../mock/genindex' == this_vdom[0].props['href']
     assert 'index' == this_vdom[0].props['rel']
     assert 'Index' == this_vdom[0].props['title']
-    assert 'mock/copyright' == this_vdom[1].props['href']
+    assert '../mock/copyright' == this_vdom[1].props['href']
     assert 'copyright' == this_vdom[1].props['rel']
     assert 'Copyright' == this_vdom[1].props['title']
 
@@ -51,16 +51,16 @@ def test_vdom(this_vdom):
 def test_render(this_html):
     links = this_html.select('link')
     assert 2 == len(links)
-    assert 'mock/genindex' == links[0].attrs['href']
-    assert 'mock/copyright' == links[1].attrs['href']
+    assert '../mock/genindex' == links[0].attrs['href']
+    assert '../mock/copyright' == links[1].attrs['href']
 
 
 def test_wired_render(this_container, this_props, themabaster_app):
     from themester.themabaster.components.linktags import Linktags  # noqa: F401
-    del this_props['static_url']
+    del this_props['pathto']
     this_vdom = html('<{Linktags} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     links = this_html.select('link')
     assert 2 == len(links)
-    assert '../../../genindex' == links[0].attrs['href']
+    assert '../mock/genindex' == links[0].attrs['href']

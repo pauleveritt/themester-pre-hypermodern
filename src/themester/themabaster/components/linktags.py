@@ -6,7 +6,6 @@ from viewdom_wired import component
 from wired.dataclasses import injected
 
 from themester.sphinx import PageContext
-from themester.url import URL
 
 
 class SemanticLink(TypedDict):
@@ -19,7 +18,7 @@ class SemanticLink(TypedDict):
 @dataclass(frozen=True)
 class Linktags:
     hasdoc: Callable[[str], bool] = injected(PageContext, attr='hasdoc')
-    static_url: Callable = injected(URL, attr='static_url')
+    pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
     links: Iterable[SemanticLink] = tuple()
 
     def __call__(self) -> VDOM:
@@ -27,7 +26,7 @@ class Linktags:
             dict(
                 rel=link['rel'],
                 title=link['title'],
-                href=self.static_url(link['docname'])
+                href=self.pathto(link['docname'], 1)
             )
             for link in self.links
             if self.hasdoc(link['docname'])

@@ -9,11 +9,10 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from ..config import ThemabasterConfig
-from themester.url import URL
 from .cssfiles import CSSFiles  # noqa: F401
 from .jsfiles import JSFiles  # noqa: F401
 from .title import Title  # noqa: F401
+from ..config import ThemabasterConfig
 from ...sphinx import PageContext
 
 
@@ -28,13 +27,13 @@ class Head:
     site_js_files: Iterable[str] = injected(ThemabasterConfig, attr='js_files')
     touch_icon: Optional[str] = injected(ThemabasterConfig, attr='touch_icon')
     page_js_files: Iterable[str] = injected(PageContext, attr='css_files')
-    static_url: Callable = injected(URL, attr='static_url')
+    pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
     extrahead: Optional[Tuple[VDOM, ...]] = None
     charset: str = 'utf-8'
 
     def __call__(self) -> VDOM:
-        custom_css = self.static_url('_static/custom.css')
-        touch_icon_href = self.static_url(self.touch_icon)
+        custom_css = self.pathto('_static/custom.css', 1)
+        touch_icon_href = self.pathto(self.touch_icon, 1)
         touch_icon = html(
             '<link rel="stylesheet" href="{touch_icon_href}" type="text/css"/>') if self.touch_icon else ''
         return html('''\n

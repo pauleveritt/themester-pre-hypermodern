@@ -5,10 +5,10 @@ from viewdom_wired import render
 
 
 @pytest.fixture
-def this_props(this_url, this_static_url):
+def this_props(this_pathto):
     props = dict(
         href='someicon.png',
-        static_url=this_static_url,
+        pathto=this_pathto,
     )
     return props
 
@@ -28,14 +28,14 @@ def test_construction(this_component, this_props):
 def test_vdom(this_vdom):
     assert 'link' == this_vdom.tag
     assert 'shortcut icon' == this_vdom.props['rel']
-    assert 'mock/someicon.png' == this_vdom.props['href']
+    assert '../mock/someicon.png' == this_vdom.props['href']
     assert [] == this_vdom.children
 
 
 def test_render(this_html):
     link = this_html.select_one('link')
     assert ['shortcut', 'icon'] == link.attrs['rel']
-    assert 'mock/someicon.png' == link.attrs['href']
+    assert '../mock/someicon.png' == link.attrs['href']
 
 
 def test_wired_render(themabaster_app, this_container):
@@ -44,4 +44,4 @@ def test_wired_render(themabaster_app, this_container):
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     link = this_html.select_one('link')
-    assert '../../../themabaster.ico' == link.attrs['href']
+    assert '../mock/themabaster.ico' == link.attrs['href']
