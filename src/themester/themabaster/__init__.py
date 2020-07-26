@@ -30,8 +30,7 @@ def copy_asset_files(app, exc):
 def wired_setup(scanner: Scanner):
     scanner.scan(components)
     scanner.scan(cssfiles)
-    # Ignore for now
-    # scanner.scan(views)
+    scanner.scan(views)
 
 
 def setup(app: Sphinx):

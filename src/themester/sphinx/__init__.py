@@ -13,7 +13,6 @@ def builder_init(app: Sphinx):
     """ Wire up some global stuff after Sphinx startup """
 
     # Circular import
-    from themester.sphinx import views
     from themester import themabaster
     from themester.app import ThemesterApp
 
@@ -29,7 +28,6 @@ def builder_init(app: Sphinx):
         theme_config=theme_config,
     )
     themester_app.setup_plugin(themabaster)
-    themester_app.setup_plugin(views)
     scanner = themester_app.container.get(Scanner)
     app.themester_app = themester_app  # noqa
 
