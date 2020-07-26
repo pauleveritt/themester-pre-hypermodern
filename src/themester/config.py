@@ -18,19 +18,6 @@ class SphinxConfig:
 
     # figure_language_filename
 
-    source_parsers: Dict = field(default_factory=lambda: {})
-    source_suffix: Dict[str, str] = field(default_factory=lambda: {'.rst': 'restructuredtext'})
-    suppress_warnings: List = field(default_factory=lambda: [])
-    template_bridge: Optional[str] = None
-    templates_path: List = field(default_factory=lambda: [])
-    tls_cacerts: Optional[List] = field(default_factory=lambda: [])
-    tls_verify: bool = True
-    today: Optional[str] = None
-    today_fmt: Optional[str] = None
-    trim_doctest_flags: bool = True
-    trim_footnote_reference_space: bool = False
-    user_agent: Optional[str] = None
-    version: Optional[str] = None
     add_function_parentheses: bool = True
     add_module_names: bool = True
     author: Optional[str] = None
@@ -47,22 +34,40 @@ class SphinxConfig:
     math_eqref_format: Optional[str] = None
     math_number_all: bool = False
     math_numfig: bool = True
-    modindex_common_prefix: List = field(default_factory=lambda: [])
-    needs_extensions: Dict = field(default_factory=lambda: {})
     needs_sphinx: Optional[str] = None
-    nitpick_ignore: List[str] = field(default_factory=lambda: [])
     nitpicky: bool = False
     numfig: bool = False
-    numfig_format: Dict = field(default_factory=lambda: {})
     numfig_secnum_depth: int = 1
     primary_domain: str = 'py'
     project: str = 'Python'
-    pygments_style: List[str] = field(default_factory=lambda: [])
     release: Optional[str] = None
     rst_epilog: Optional[str] = None
     rst_prolog: Optional[str] = None
     show_authors: bool = False
     smartquotes: bool = True
     smartquotes_action: str = 'qDe'
-    smartquotes_excludes: Dict[str, str] = field(default_factory=lambda: {'languages': ['ja']})
     source_encoding: str = 'utf-8-sig'
+    source_parsers: Dict = field(default_factory=lambda: {})
+    source_suffix: Dict[str, str] = field(default_factory=lambda: {'.rst': 'restructuredtext'})
+    suppress_warnings: List = field(default_factory=lambda: [])
+    template_bridge: Optional[str] = None
+    templates_path: List = field(default_factory=lambda: [])
+    tls_cacerts: Optional[List] = field(default_factory=lambda: [])
+    tls_verify: bool = True
+    today: Optional[str] = None
+    today_fmt: Optional[str] = None
+    trim_doctest_flags: bool = True
+    trim_footnote_reference_space: bool = False
+    user_agent: Optional[str] = None
+    version: Optional[str] = None
+
+    # Custom/Other
+    doctype: str = 'html'
+
+    modindex_common_prefix: List = field(default_factory=lambda: [])
+    needs_extensions: Dict = field(default_factory=lambda: {})
+    nitpick_ignore: List[str] = field(default_factory=lambda: [])
+    numfig_format: Dict = field(default_factory=lambda: {})
+    pygments_style: List[str] = field(default_factory=lambda: [])
+    smartquotes_excludes: Dict[str, str] = field(default_factory=lambda: {'languages': ['ja']})
+

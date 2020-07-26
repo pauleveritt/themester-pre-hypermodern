@@ -25,7 +25,7 @@ class App:
 
 
 class Config:
-    site_name: Optional[str] = None
+    pass
 
 
 class Resource:

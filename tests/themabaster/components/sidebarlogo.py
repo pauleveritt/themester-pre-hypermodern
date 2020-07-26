@@ -28,7 +28,7 @@ def test_vdom(this_vdom, this_props):
     assert logo == this_vdom.children[0].children[0].props['src']
 
 
-def test_vdom_no_sidebar(this_props):
+def test_vdom_nosidebar(this_props):
     this_props['logo'] = None
     ci = SidebarLogo(**this_props)
     this_vdom = ci()

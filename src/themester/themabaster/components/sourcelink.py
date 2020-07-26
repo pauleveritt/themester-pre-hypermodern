@@ -16,14 +16,14 @@ from themester.themabaster.config import ThemabasterConfig
 @component()
 @dataclass(frozen=True)
 class SourceLink:
-    show_source: bool = injected(ThemabasterConfig, attr='show_source')
+    show_sourcelink: bool = injected(ThemabasterConfig, attr='show_sourcelink')
     has_source: bool = injected(ThemabasterConfig, attr='has_source')
     sourcename: str = injected(PageContext, attr='sourcename')
     pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
 
     def __call__(self) -> VDOM:
 
-        if self.show_source and self.has_source and self.sourcename:
+        if self.show_sourcelink and self.has_source and self.sourcename:
             pt = self.pathto(f'_sources/{self.sourcename}')
             return html('''\n
 <div role="note" aria-label="source link" data-testid="sourcelink">

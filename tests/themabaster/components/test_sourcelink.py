@@ -8,7 +8,7 @@ from themester.themabaster.components.sourcelink import SourceLink
 @pytest.fixture
 def this_props(this_pagecontext, themabaster_config):
     tp = dict(
-        show_source=True,
+        show_sourcelink=True,
         has_source=True,
         pathto=this_pagecontext.pathto,
         sourcename='thispage.md',

@@ -25,7 +25,7 @@ def test_vdom(this_vdom, this_props):
     assert SidebarLogo == this_vdom.children[0].children[0].tag
 
 
-def test_vdom_no_sidebar():
+def test_vdom_nosidebar():
     ci = Sidebar2(sidebars=tuple())
     this_vdom = ci()
     assert [] == this_vdom

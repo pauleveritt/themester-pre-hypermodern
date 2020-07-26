@@ -10,7 +10,7 @@ def this_props(this_resource, this_pathto):
         extrahead=None,
         favicon='someicon.png',
         page_title='Some Page',
-        site_name='Some Site',
+        project='Some Project',
         touch_icon='sometouchicon.png',
         site_css_files=('site1.css', 'site2.css',),
         page_css_files=('page1.css', 'page2.css'),
@@ -37,7 +37,7 @@ def test_vdom(this_vdom, this_props):
     title = this_vdom.children[2]
     from themester.themabaster.components.title import Title
     assert Title == title.tag
-    assert dict(page_title='Some Page', site_name='Some Site') == title.props
+    assert dict(page_title='Some Page', project='Some Project') == title.props
     assert [] == title.children
     css = this_vdom.children[4]
     assert CSSFiles == css.tag

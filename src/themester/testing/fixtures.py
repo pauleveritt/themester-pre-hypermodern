@@ -61,7 +61,7 @@ def themester_scanner(themester_app) -> Scanner:
 @pytest.fixture
 def themester_config() -> ThemesterConfig:
     """ Dead-simple configuration """
-    tc = ThemesterConfig(site_name='Themester SiteConfig')
+    tc = ThemesterConfig()
     return tc
 
 
@@ -72,7 +72,7 @@ def themabaster_config() -> ThemabasterConfig:
         css_files=('site_first.css', 'site_second.css',),
         favicon='themabaster.ico',
         logo='site_logo.png',
-        site_name='Themester SiteConfig',
+        project='Themester SiteConfig',
         touch_icon='sometouchicon.ico'
     )
     return tc

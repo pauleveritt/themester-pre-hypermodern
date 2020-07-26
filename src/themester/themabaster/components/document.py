@@ -21,11 +21,11 @@ class Document:
     """ A block in content, holding most of the info on this resource """
 
     body: Markup = injected(PageContext, attr='body')
-    no_sidebar: bool = injected(ThemabasterConfig, attr='no_sidebar')
+    nosidebar: bool = injected(ThemabasterConfig, attr='nosidebar')
 
     def __call__(self) -> VDOM:
         # Alabaster wraps the main content in <div class="bodywrapper">
-        # if no_sidebar is true. Thus, get the main content first, then
+        # if nosidebar is true. Thus, get the main content first, then
         # insert in the two flavors of response.
         main_content = html('''\n
 <{Relbar1}/>
@@ -34,7 +34,7 @@ class Document:
   </div>          
 <{Relbar2}/>        
         ''')
-        inner = main_content if self.no_sidebar else html('<div class="bodywrapper">{main_content}</div>')
+        inner = main_content if self.nosidebar else html('<div class="bodywrapper">{main_content}</div>')
 
         return html('''\n
 <div class="documentwrapper">

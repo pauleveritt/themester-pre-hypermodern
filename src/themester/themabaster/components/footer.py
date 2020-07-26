@@ -23,7 +23,7 @@ class Footer:
     pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
     show_powered_by: bool = injected(ThemabasterConfig, attr='show_powered_by')
     show_copyright: bool = injected(ThemabasterConfig, attr='show_copyright')
-    show_source: bool = injected(ThemabasterConfig, attr='show_source')
+    show_sourcelink: bool = injected(ThemabasterConfig, attr='show_sourcelink')
     sourcename: str = injected(PageContext, attr='sourcename')
 
     def __call__(self) -> VDOM:
@@ -32,7 +32,7 @@ class Footer:
 {'|' if self.copyright else ''}
 Powered by <a href="http://sphinx-doc.org/">Sphinx</a>
         ''') if self.show_powered_by else html('')
-        if self.show_source and self.has_source and self.sourcename:
+        if self.show_sourcelink and self.has_source and self.sourcename:
             ps = self.pathto(f'_sources/{self.sourcename}')
             page_source = html('''\n
 {'|' if self.show_copyright or self.show_powered_by else ''}

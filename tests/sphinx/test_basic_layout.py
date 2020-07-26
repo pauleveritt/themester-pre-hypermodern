@@ -159,7 +159,7 @@ class TestBasicThemeGlobals:
             ('project', 'Python'),
             ('release', ''),
             ('shorttitle', 'Python  documentation'),
-            ('show_source', 'True'),
+            ('show_sourcelink', 'True'),
             ('show_sphinx', 'True'),
             ('sourcelink_suffix', '.txt'),
             ('show_copyright', ''),

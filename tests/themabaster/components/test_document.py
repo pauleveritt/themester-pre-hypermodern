@@ -17,7 +17,7 @@ from themester.themabaster.components.relbar2 import Relbar2
 def this_props():
     tp = dict(
         body=Markup('<p>Some content</p>'),
-        no_sidebar=False,
+        nosidebar=False,
         previous=PreviousLink(
             title='Previous',
             link='/previous/',
@@ -68,7 +68,7 @@ def test_wired_render_without_sidebars(
         themabaster_app, themabaster_config, this_container, this_props
 ):
     # Change the themabaster settings in the container
-    tc = dataclasses.replace(themabaster_config, no_sidebar=True)
+    tc = dataclasses.replace(themabaster_config, nosidebar=True)
     this_container.register_singleton(tc, ThemabasterConfig)
 
     this_vdom = html('<{Document} />')

@@ -12,7 +12,7 @@ def this_props(themabaster_config, this_pagecontext):
         copyright='Bazinga',
         show_copyright=themabaster_config.show_copyright,
         show_powered_by=themabaster_config.show_powered_by,
-        show_source=True,
+        show_sourcelink=True,
         has_source=True,
         pathto=this_pagecontext.pathto,
         sourcename='thispage.md',

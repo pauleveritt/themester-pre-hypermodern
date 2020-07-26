@@ -32,32 +32,35 @@ def get_sidebars():
 @dataclass(frozen=True)
 class ThemabasterConfig:
     # Sphinx Config
-
-
-    # Sphinx Template Context Globals
     copyright: Optional[str] = None
+    project: Optional[str] = 'Python'
+    language: str = 'EN'
+    master_doc: str = 'index'
+
+    # HTML Builder
+    baseurl: Optional[str] = None
+    copy_source: bool = True
+    css_files: PropsFiles = tuple()
     favicon: Optional[str] = None
     file_suffix: str = '.html'
-    has_source: bool = True
-    language: str = 'EN'
-    logo: Optional[str] = None
-    master_doc: str = 'index'
-    show_source: bool = True
-
-
-    # HTML Theme
-    baseurl: Optional[str] = None
-    css_files: PropsFiles = tuple()
     js_files: PropsFiles = tuple()
     show_copyright: bool = True
+    show_sourcelink: bool = True
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
 
-    # Custom/Other
-    doctype: str = 'html'
-    no_sidebar: bool = False
+    # HTML Templating Global Variables
+    has_source: bool = True
+    logo: Optional[str] = None
+
+    # Sphinx Basic
+    nosidebar: bool = False
+
+    # Alabaster
     show_powered_by: bool = True
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
-    site_name: Optional[str] = None
     touch_icon: Optional[str] = None
+
+    # Custom/Other
+    doctype: str = 'html'
