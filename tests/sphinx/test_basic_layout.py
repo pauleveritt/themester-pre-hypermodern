@@ -7,7 +7,7 @@ from bs4.element import Tag
 # The default values for all theme options, knobs, templates, etc.
 # Nothing customized in conf.py or anywhere else.
 
-pytestmark = pytest.mark.sphinx('html', testroot='basic-theme')
+pytestmark = pytest.mark.sphinx('html', testroot='basic-layout')
 
 
 @pytest.mark.parametrize('page', ['index.html', ], indirect=True)
@@ -33,7 +33,7 @@ class TestBasicLayoutDefaults:
 
         node: Tag = page.select_one('title')
         # Nothing customized so suffix appears
-        assert 'Hello World — Python  documentation' == node.text
+        assert 'Hello World — Python' == node.text
 
     def test_sidebar(self, page):
         """ Ensure the sidebar container exists """

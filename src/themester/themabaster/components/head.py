@@ -33,9 +33,14 @@ class Head:
 
     def __call__(self) -> VDOM:
         custom_css = self.pathto('_static/custom.css', 1)
-        touch_icon_href = self.pathto(self.touch_icon, 1)
-        touch_icon = html(
-            '<link rel="stylesheet" href="{touch_icon_href}" type="text/css"/>') if self.touch_icon else ''
+        if self.touch_icon:
+            touch_icon_href = self.pathto(self.touch_icon, 1)
+            touch_icon = html(
+                '<link rel="stylesheet" href="{touch_icon_href}" type="text/css"/>') if self.touch_icon else ''
+        else:
+            touch_icon = None
+        docs_src = self.pathto('_static/documentation_options.js', 1)
+        static_root = self.pathto('', 1)
         return html('''\n
 <head>
   <meta charset="{self.charset}" />
@@ -43,6 +48,7 @@ class Head:
   <{Title} page_title={self.page_title} project={self.project} />
   <link rel="stylesheet" href={self.pathto('_static/themabaster.css', 1)} type="text/css" />
   <{CSSFiles} page_files={self.page_css_files} site_files={self.site_css_files} />
+  <script id="documentation_options" data-url_root="{static_root}" src="{docs_src}"></script>
   <{JSFiles} page_files={self.page_js_files} site_files={self.site_js_files} />
   <link rel="stylesheet" href="{custom_css}" type="text/css"/>
   {touch_icon}

@@ -30,7 +30,7 @@ def this_component(this_props):
 
 def test_vdom(this_vdom, this_props):
     from themester.themabaster.components.cssfiles import CSSFiles
-    assert 9 == len(this_vdom.children)
+    assert 10 == len(this_vdom.children)
     assert 'head' == this_vdom.tag
     assert 'meta' == this_vdom.children[0].tag
     assert 'meta' == this_vdom.children[1].tag
@@ -46,7 +46,7 @@ def test_vdom(this_vdom, this_props):
         site_files=('site1.css', 'site2.css'),
     ) == css.props
     assert [] == css.children
-    js = this_vdom.children[5]
+    js = this_vdom.children[6]
     from themester.themabaster.components.jsfiles import JSFiles
     assert JSFiles == js.tag
     assert js.props == dict(
@@ -54,9 +54,9 @@ def test_vdom(this_vdom, this_props):
         site_files=('site1.js', 'site2.js'),
     )
     assert [] == js.children
-    assert '../mock/sometouchicon.png' == this_vdom.children[7].props['href']
+    assert '../mock/sometouchicon.png' == this_vdom.children[8].props['href']
     # No children
-    assert None is this_vdom.children[8]
+    assert None is this_vdom.children[9]
 
 
 def test_vdom_extrahead(this_props):
