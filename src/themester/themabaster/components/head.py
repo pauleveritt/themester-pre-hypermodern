@@ -11,6 +11,7 @@ from wired.dataclasses import injected
 
 from .cssfiles import CSSFiles  # noqa: F401
 from .jsfiles import JSFiles  # noqa: F401
+from .linktags import Linktags  # noqa: F401
 from .title import Title  # noqa: F401
 from ..config import ThemabasterConfig
 from ...sphinx import PageContext, SphinxConfig
@@ -53,6 +54,7 @@ class Head:
   <{JSFiles} page_files={self.page_js_files} site_files={self.site_js_files} />
   <link rel="stylesheet" href="{custom_css}" type="text/css"/>
   {touch_icon}
+  <{Linktags} />
   {self.extrahead}
 </head>
 ''')

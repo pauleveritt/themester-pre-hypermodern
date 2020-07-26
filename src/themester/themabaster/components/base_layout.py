@@ -10,7 +10,6 @@ from wired.dataclasses import injected
 
 from ..components.body import Body  # noqa: F401
 from ..components.head import Head  # noqa: F401
-from ..components.html import HTML  # noqa: F401
 from ...sphinx import SphinxConfig
 
 
@@ -22,9 +21,10 @@ class BaseLayout:
     doctype: Markup = Markup('<!DOCTYPE html>\n')
 
     def __call__(self) -> VDOM:
+        html_props = dict(lang=self.language) if self.language else dict()
         return html('''\n
 {self.doctype}
-<html lang="{self.language}">
+<html ...{html_props}>
     <{Head} extrahead={self.extrahead} />
     <{Body} />
 </html>

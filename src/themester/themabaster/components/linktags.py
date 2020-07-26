@@ -14,12 +14,20 @@ class SemanticLink(TypedDict):
     docname: str
 
 
+DEFAULT_LINKS = (
+    SemanticLink(rel='author', title='About these documents', docname='about'),
+    SemanticLink(rel='genindex', title='Index', docname='genindex'),
+    SemanticLink(rel='search', title='Search', docname='search'),
+    SemanticLink(rel='copyright', title='Copyright', docname='copyright'),
+)
+
+
 @component()
 @dataclass(frozen=True)
 class Linktags:
     hasdoc: Callable[[str], bool] = injected(PageContext, attr='hasdoc')
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
-    links: Iterable[SemanticLink] = tuple()
+    links: Iterable[SemanticLink] = DEFAULT_LINKS
 
     def __call__(self) -> VDOM:
         resolved_links = (

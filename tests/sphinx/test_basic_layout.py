@@ -61,10 +61,12 @@ class TestBasicLayoutDefaults:
         assert '_static/pygments.css' == nodes[1]['href']
 
     def test_html_tag(self, page):
-        """ Use default for top-level html node """
+        """ Use default for top-level html node, which means no attribute """
 
         node: Tag = page.select_one('html')
-        assert node.get('lang') is None
+        # SphinxConfig has None as the default value, so there should not
+        # be an attribute e.g. <html> and not <html lang="EN">
+        assert None is node.get('lang')
 
     def test_meta_charset_default(self, page):
         """ The meta charset is driven by a flag with a default  """
@@ -92,8 +94,10 @@ class TestBasicLayoutDefaults:
         # The basic theme defines a block linktags which alabaster
         # appears to not use
 
-        assert not page.find('link', attrs=dict(rel='author'))
-        assert not page.find('link', attrs=dict(rel='copyright'))
+        assert not page.select_one('link[rel="author"]')
+        assert not page.select_one('link[rel="copyright"]')
+        assert 'genindex' == page.select_one('link[rel="genindex"]').attrs['href']
+        assert 'search' == page.select_one('link[rel="search"]').attrs['href']
 
     def test_body_block(self, page):
         """ By default the body node should have no attributes on it """
