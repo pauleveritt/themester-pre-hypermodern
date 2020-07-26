@@ -18,29 +18,32 @@ def builder_init(app: Sphinx):
     from themester.app import ThemesterApp
 
     site = Site()
-    sphinx_config = app.config  # type: ignore
-    sphinx_config: SphinxConfig = getattr(sphinx_config, 'sphinx_config')
-    themester_app = ThemesterApp(root=site, sphinx_config=sphinx_config)
+
+    # Get all 3 of the configs: Sphinx, Themester, Themabaster
+    sphinx_config: SphinxConfig = getattr(app.config, 'sphinx_config')
+    theme_config: ThemabasterConfig = getattr(app.config, 'theme_config')
+
+    themester_app = ThemesterApp(
+        root=site,
+        sphinx_config=sphinx_config,
+        theme_config=theme_config,
+    )
     themester_app.setup_plugin(themabaster)
     themester_app.setup_plugin(views)
     scanner = themester_app.container.get(Scanner)
     app.themester_app = themester_app  # noqa
 
-    themester_app.registry.register_singleton(sphinx_config, ThemabasterConfig)
+    themester_app.registry.register_singleton(sphinx_config, SphinxConfig)
+    themester_app.registry.register_singleton(theme_config, ThemabasterConfig)
 
     # Go through the configuration and register stuff
-    themester_plugins = sphinx_config['themester_plugins']
+    themester_plugins = []  # sphinx_config['themester_plugins']
     for plugin in themester_plugins:
         try:
             themester_app.setup_plugin(plugin)
         except AttributeError:
             # No wired_setup so scan it instead
             scanner.scan(plugin)
-    #
-    # # Create a "base" container and stash on the Sphinx app
-    # app.site_container = registry.create_container()
-    #
-    # register_dataclass(registry, VDOMRenderer, Renderer)
 
 
 def inject_page(app, pagename, templatename, context, doctree):
@@ -49,8 +52,9 @@ def inject_page(app, pagename, templatename, context, doctree):
     from themester.app import ThemesterApp
 
     themester_app: ThemesterApp = app.themester_app
-    sphinx_config: SphinxConfig = app.sphinx_config.sphinx_config
     themester_root = themester_app.container.get(Root)
+
+    sphinx_config: SphinxConfig = app.config.sphinx_config
 
     # If this is a Sphinx site that wants to do resource-oriented
     # pages, get the current resource.
@@ -102,6 +106,7 @@ def inject_page(app, pagename, templatename, context, doctree):
 
 def setup(app: Sphinx):
     app.add_config_value('sphinx_config', SphinxConfig(), 'env')
+    app.add_config_value('theme_config', ThemabasterConfig(), 'env')
     app.add_config_value('themester_plugins', [], 'env')
     app.connect('builder-inited', builder_init)
     app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'  # noqa

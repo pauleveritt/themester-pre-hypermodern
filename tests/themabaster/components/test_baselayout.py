@@ -23,9 +23,9 @@ def test_defaults(themabaster_app, this_container):
     assert 'html' == doctype(this_html)
 
 
-def test_config(themabaster_app, this_container, themabaster_config):
+def test_config(themabaster_app, this_container, theme_config):
     tc = dataclasses.replace(
-        themabaster_config,
+        theme_config,
         language='FR'
     )
     this_container.register_singleton(tc, ThemabasterConfig)

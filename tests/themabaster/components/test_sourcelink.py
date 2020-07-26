@@ -6,7 +6,7 @@ from themester.themabaster.components.sourcelink import SourceLink
 
 
 @pytest.fixture
-def this_props(this_pagecontext, themabaster_config):
+def this_props(this_pagecontext, theme_config):
     tp = dict(
         show_sourcelink=True,
         has_source=True,

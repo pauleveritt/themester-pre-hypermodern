@@ -50,10 +50,10 @@ def test_wired_render(themabaster_app, this_container):
 
 
 def test_wired_render_show_relbars(themabaster_app, this_container,
-                                   themabaster_config):
+                                   theme_config):
     # Change the config to show relbars
     tc = dataclasses.replace(
-        themabaster_config,
+        theme_config,
         show_relbar_top=True,
         show_relbars=True
     )

@@ -7,9 +7,9 @@ from themester.themabaster.components.sidebarlogo import SidebarLogo
 
 
 @pytest.fixture
-def this_props(themabaster_config):
+def this_props(theme_config):
     tp = dict(
-        sidebars=themabaster_config.sidebars,
+        sidebars=theme_config.sidebars,
     )
     return tp
 

@@ -1,2 +1,2 @@
-def test_construction(themabaster_config):
-    assert 'Themester SiteConfig' == themabaster_config.site_name
+def test_construction(theme_config):
+    assert 'Themester SiteConfig' == theme_config.site_name

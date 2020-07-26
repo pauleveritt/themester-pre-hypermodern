@@ -6,10 +6,10 @@ from themester.themabaster.components.sidebarlogo import SidebarLogo
 
 
 @pytest.fixture
-def this_props(themabaster_config, this_pagecontext):
+def this_props(theme_config, this_pagecontext):
     tp = dict(
-        logo=themabaster_config.logo,
-        master_doc=themabaster_config.master_doc,
+        logo=theme_config.logo,
+        master_doc=theme_config.master_doc,
         pathto=this_pagecontext.pathto,
     )
     return tp

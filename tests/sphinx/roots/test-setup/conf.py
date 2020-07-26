@@ -10,7 +10,8 @@ html_title = ''
 exclude_patterns = ['_build']
 current_module = sys.modules[__name__]
 
-themester_config = ThemabasterConfig(
+
+theme_config = ThemabasterConfig(
     css_files=('site_first.css', 'site_second.css',),
     favicon='themabaster.ico',
     logo='site_logo.png',

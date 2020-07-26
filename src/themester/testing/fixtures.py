@@ -47,12 +47,13 @@ def themester_site_deep() -> Site:
 
 
 @pytest.fixture
-def themester_app(themester_site, sphinx_config) -> ThemesterApp:
+def themester_app(themester_site, sphinx_config, theme_config) -> ThemesterApp:
     """ An app that depends on a root and a config """
 
     return ThemesterApp(
         root=themester_site,
         sphinx_config=sphinx_config,
+        theme_config=theme_config,
     )
 
 
@@ -75,7 +76,7 @@ def themester_config() -> ThemesterConfig:
 
 
 @pytest.fixture
-def themabaster_config() -> ThemabasterConfig:
+def theme_config() -> ThemabasterConfig:
     tc = ThemabasterConfig(
         css_files=('site_first.css', 'site_second.css',),
         favicon='themabaster.ico',
@@ -87,11 +88,11 @@ def themabaster_config() -> ThemabasterConfig:
 
 
 @pytest.fixture
-def themabaster_app(themester_app, themabaster_config):
+def themabaster_app(themester_app, theme_config):
     """ Wire in the themabaster components, views, layout, etc. """
 
     themester_app.setup_plugin(themabaster)
-    themester_app.registry.register_singleton(themabaster_config, ThemabasterConfig)
+    themester_app.registry.register_singleton(theme_config, ThemabasterConfig)
     return themester_app
 
 

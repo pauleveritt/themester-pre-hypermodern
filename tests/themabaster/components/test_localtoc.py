@@ -6,10 +6,10 @@ from themester.themabaster.components.localtoc import LocalToc
 
 
 @pytest.fixture
-def this_props(this_pagecontext, themabaster_config):
+def this_props(this_pagecontext, theme_config):
     tp = dict(
         display_toc=this_pagecontext.display_toc,
-        master_doc=themabaster_config.master_doc,
+        master_doc=theme_config.master_doc,
         pathto=this_pagecontext.pathto,
         toc=this_pagecontext.toc,
     )

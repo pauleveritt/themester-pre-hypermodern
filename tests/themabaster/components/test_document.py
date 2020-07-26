@@ -65,10 +65,10 @@ def test_wired_render_default(themabaster_app, this_container, this_props):
 
 
 def test_wired_render_without_sidebars(
-        themabaster_app, themabaster_config, this_container, this_props
+        themabaster_app, theme_config, this_container, this_props
 ):
     # Change the themabaster settings in the container
-    tc = dataclasses.replace(themabaster_config, nosidebar=True)
+    tc = dataclasses.replace(theme_config, nosidebar=True)
     this_container.register_singleton(tc, ThemabasterConfig)
 
     this_vdom = html('<{Document} />')

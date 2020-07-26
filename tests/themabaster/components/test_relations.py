@@ -6,9 +6,9 @@ from themester.themabaster.components.relations import Relations
 
 
 @pytest.fixture
-def this_props(this_pagecontext, themabaster_config):
+def this_props(this_pagecontext, theme_config):
     tp = dict(
-        master_doc=themabaster_config.master_doc,
+        master_doc=theme_config.master_doc,
         pathto=this_pagecontext.pathto,
         toctree=this_pagecontext.toctree,
     )

@@ -16,17 +16,19 @@ from wired import ServiceRegistry, ServiceContainer
 from themester import url
 from themester.protocols import Root, View, App, Resource
 from .sphinx import SphinxConfig
+from .themabaster.config import ThemabasterConfig
 
 
 @dataclass
 class ThemesterApp(App):
     root: InitVar[Root]
     sphinx_config: InitVar[Optional[SphinxConfig]]
+    theme_config: InitVar[Optional[ThemabasterConfig]]
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
     scanner: Scanner = field(init=False)
     container: ServiceContainer = field(init=False)
 
-    def __post_init__(self, root, sphinx_config=None):
+    def __post_init__(self, root, sphinx_config=None, theme_config=None):
         # Make a site-wide container versus the per-render container. This
         # container uses the root as its context.
         self.container = self.registry.create_container(context=root)
@@ -40,6 +42,8 @@ class ThemesterApp(App):
         self.registry.register_singleton(scanner, Scanner)
         if sphinx_config:
             self.registry.register_singleton(sphinx_config, SphinxConfig)
+        if theme_config:
+            self.registry.register_singleton(theme_config, ThemabasterConfig)
         scanner.scan(url)
 
     def scan(self, module):
@@ -65,6 +69,7 @@ class ThemesterApp(App):
         # If a container was passed in, use it as the basis for a render
         # container. Otherwise, use the site container and bind to it.
         this_container = container if container is not None else self.container
+        tc = this_container.get(ThemabasterConfig)
 
         # If we were passed in a context, make a container with it,
         # bound to the site container. Otherwise, use the site container.

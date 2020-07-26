@@ -6,7 +6,7 @@ from themester.themabaster.components.searchbox import SearchBox
 
 
 @pytest.fixture
-def this_props(this_pagecontext, themabaster_config):
+def this_props(this_pagecontext, theme_config):
     tp = dict(
         builder=this_pagecontext.builder,
         pagename=this_pagecontext.pagename,
