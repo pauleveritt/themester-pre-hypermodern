@@ -14,13 +14,13 @@ from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
 from themester import url
-from themester.protocols import Root, View, App, Resource
+from themester.protocols import Root, View, Resource
 from .sphinx import SphinxConfig
 from .themabaster.config import ThemabasterConfig
 
 
 @dataclass
-class ThemesterApp(App):
+class ThemesterApp:
     root: InitVar[Root]
     sphinx_config: InitVar[Optional[SphinxConfig]]
     theme_config: InitVar[Optional[ThemabasterConfig]]
@@ -37,7 +37,7 @@ class ThemesterApp(App):
         # can get them there instead of always needing this app instance
         scanner = Scanner(registry=self.registry)
 
-        self.registry.register_singleton(self, App)
+        self.registry.register_singleton(self, ThemesterApp)
         self.registry.register_singleton(root, Root)
         self.registry.register_singleton(scanner, Scanner)
         if sphinx_config:

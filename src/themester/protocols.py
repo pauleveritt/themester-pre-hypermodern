@@ -6,22 +6,9 @@ registry.
 """
 from __future__ import annotations
 
-from types import ModuleType
 from typing import Optional
 
 from viewdom import VDOM
-from wired import ServiceContainer, ServiceRegistry
-
-
-class App:
-    container: ServiceContainer
-    registry: ServiceRegistry
-
-    def setup_plugins(self, module: ModuleType) -> None:
-        ...
-
-    def render(self, container: Optional[ServiceContainer]) -> str:
-        ...
 
 
 class Resource:
