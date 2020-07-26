@@ -13,7 +13,7 @@ from venusian import Scanner
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
-from themester import Root, View
+from themester.protocols import Root, View
 from themester import url
 from themester.protocols import App, Resource
 from .sphinx import SphinxConfig

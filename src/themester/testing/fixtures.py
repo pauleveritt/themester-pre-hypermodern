@@ -15,8 +15,9 @@ from wired import ServiceContainer
 
 from .config import ThemesterConfig
 from .resources import Site, Document, Collection
-from .. import themabaster, Resource
+from .. import themabaster
 from ..app import ThemesterApp
+from ..protocols import Resource
 from ..sphinx import PageContext
 from ..sphinx.prevnext import PreviousLink, NextLink
 from ..themabaster.config import ThemabasterConfig

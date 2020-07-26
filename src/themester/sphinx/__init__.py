@@ -2,7 +2,7 @@ from markupsafe import Markup
 from sphinx.application import Sphinx
 from venusian import Scanner
 
-from themester import Root
+from themester.protocols import Root
 from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.config import ThemesterConfig

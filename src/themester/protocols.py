@@ -29,7 +29,7 @@ class Resource:
     parent: Optional[Resource]
 
 
-class Root:
+class Root(Resource):
     """ The root of the resource tree """
 
     name: str = ''

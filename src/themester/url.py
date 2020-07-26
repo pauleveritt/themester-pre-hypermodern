@@ -3,7 +3,7 @@ from typing import List, Union
 
 from wired.dataclasses import factory, Context, injected
 
-from themester import Resource, Root
+from themester.protocols import Resource, Root
 
 SEP = "/"
 
@@ -128,15 +128,3 @@ class URL:
 
     def relative_path(self, target: Resource) -> str:
         return relative_path(self.root, self.context, target)
-
-
-__all__ = [
-    'find_resource',
-    'normalize_path',
-    'parents',
-    'relative_path',
-    'relative_static_path',
-    'relative_uri',
-    'resource_path',
-    'URL',
-]

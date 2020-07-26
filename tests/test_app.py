@@ -4,7 +4,7 @@ import pytest
 from venusian import Scanner
 from wired import ServiceContainer, ServiceRegistry
 
-from themester import Config, Root
+from themester.protocols import Root
 from themester.protocols import App
 from themester.testing.fixtures import ThemesterApp
 from themester.views import register_view
@@ -34,16 +34,16 @@ def test_themester_app_default(themester_site):
     scanner: Scanner = ta.container.get(Scanner)
     assert isinstance(scanner, Scanner)
 
-
-def test_themester_app_config(themester_site, themester_config):
-    ta = ThemesterApp(root=themester_site, config=themester_config)
-    ta_config = ta.container.get(Config)
-    assert ta_config == themester_config
+#
+# def test_themester_app_config(themester_site, themester_config):
+#     ta = ThemesterApp(root=themester_site, config=themester_config)
+#     ta_config = ta.container.get(Config)
+#     assert ta_config == themester_config
 
 
 def test_themester_app_setup_plugin(themester_site):
     from themester.testing import views
-    from themester import View
+    from themester.views import View
 
     ta = ThemesterApp(root=themester_site, config=None)
     ta.setup_plugin(views)
@@ -51,26 +51,26 @@ def test_themester_app_setup_plugin(themester_site):
     assert view.name == 'Fixture View'
 
 
-def test_themester_app_render_nocontext(themester_app):
-    """ Use the app's ``site container`` """
-
-    expected = 'Hello somecustomer'
-
-    @dataclass
-    class NoContextView:
-
-        def __call__(self):
-            return expected
-
-    register_view(themester_app.registry, NoContextView)
-
-    # Fail with context
-    with pytest.raises(LookupError):
-        themester_app.render(context=Customer())
-
-    # Succeed with no context
-    actual = themester_app.render()
-    assert actual == expected
+# def test_themester_app_render_nocontext(themester_app):
+#     """ Use the app's ``site container`` """
+#
+#     expected = 'Hello somecustomer'
+#
+#     @dataclass
+#     class NoContextView:
+#
+#         def __call__(self):
+#             return expected
+#
+#     register_view(themester_app.registry, NoContextView)
+#
+#     # Fail with context
+#     with pytest.raises(LookupError):
+#         themester_app.render(context=Customer())
+#
+#     # Succeed with no context
+#     actual = themester_app.render()
+#     assert actual == expected
 
 
 def test_themester_app_render_context(themester_app):

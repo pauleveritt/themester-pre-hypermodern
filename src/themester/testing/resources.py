@@ -6,7 +6,7 @@ Example resource types for use in fixtures and tests
 from dataclasses import dataclass
 from typing import Optional
 
-from themester import Resource, Root
+from themester.protocols import Resource, Root
 
 
 @dataclass(frozen=True)
