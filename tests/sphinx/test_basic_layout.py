@@ -57,7 +57,7 @@ class TestBasicLayoutDefaults:
         """ The `css` Jinja2 macro """
 
         nodes: List[Tag] = page.find_all('link', attrs=dict(rel='stylesheet'))
-        assert '_static/goku.css' == nodes[0]['href']
+        assert '_static/themabaster.css' == nodes[0]['href']
         assert '_static/pygments.css' == nodes[1]['href']
 
     def test_html_tag(self, page):

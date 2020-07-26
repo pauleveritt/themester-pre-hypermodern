@@ -47,6 +47,7 @@ class Head:
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <{Title} page_title={self.page_title} project={self.project} />
   <link rel="stylesheet" href={self.pathto('_static/themabaster.css', 1)} type="text/css" />
+  <link rel="stylesheet" href={self.pathto('_static/pygments.css', 1)} type="text/css" />
   <{CSSFiles} page_files={self.page_css_files} site_files={self.site_css_files} />
   <script id="documentation_options" data-url_root="{static_root}" src="{docs_src}"></script>
   <{JSFiles} page_files={self.page_js_files} site_files={self.site_js_files} />
