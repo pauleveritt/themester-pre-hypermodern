@@ -31,9 +31,6 @@ def get_sidebars():
 
 @dataclass(frozen=True)
 class ThemabasterConfig:
-    # Sphinx Config
-    master_doc: str = 'index'
-
     # HTML Builder
     baseurl: Optional[str] = None
     copy_source: bool = True

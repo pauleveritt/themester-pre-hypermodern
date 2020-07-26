@@ -6,9 +6,9 @@ from themester.themabaster.components.globaltoc import GlobalToc
 
 
 @pytest.fixture
-def this_props(this_pagecontext, theme_config):
+def this_props(this_pagecontext, sphinx_config):
     tp = dict(
-        master_doc=theme_config.master_doc,
+        master_doc=sphinx_config.master_doc,
         pathto=this_pagecontext.pathto,
         toctree=this_pagecontext.toctree,
     )

@@ -10,14 +10,13 @@ from viewdom import VDOM, html
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext
-from themester.themabaster.config import ThemabasterConfig
+from themester.sphinx import PageContext, SphinxConfig
 
 
 @component()
 @dataclass(frozen=True)
 class Relations:
-    master_doc: str = injected(ThemabasterConfig, attr='master_doc')
+    master_doc: str = injected(SphinxConfig, attr='master_doc')
     pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
     toctree: Optional[Callable[[], str]] = injected(PageContext, attr='toctree')
 
