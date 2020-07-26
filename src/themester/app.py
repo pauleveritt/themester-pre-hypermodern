@@ -13,15 +13,16 @@ from venusian import Scanner
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
-from themester import Config, Root, View
+from themester import Root, View
 from themester import url
 from themester.protocols import App, Resource
+from .sphinx import SphinxConfig
 
 
 @dataclass
 class ThemesterApp(App):
     root: InitVar[Root]
-    config: InitVar[Optional[Config]]
+    config: InitVar[Optional[SphinxConfig]]
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
     scanner: Scanner = field(init=False)
     container: ServiceContainer = field(init=False)
@@ -39,7 +40,7 @@ class ThemesterApp(App):
         self.registry.register_singleton(root, Root)
         self.registry.register_singleton(scanner, Scanner)
         if config:
-            self.registry.register_singleton(config, Config)
+            self.registry.register_singleton(config, SphinxConfig)
         scanner.scan(url)
 
     def scan(self, module):

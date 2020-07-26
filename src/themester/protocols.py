@@ -24,10 +24,6 @@ class App:
         ...
 
 
-class Config:
-    pass
-
-
 class Resource:
     name: str
     parent: Optional[Resource]

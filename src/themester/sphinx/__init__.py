@@ -3,7 +3,6 @@ from sphinx.application import Sphinx
 from venusian import Scanner
 
 from themester import Root
-from themester.app import ThemesterApp
 from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.config import ThemesterConfig
@@ -17,6 +16,7 @@ def builder_init(app: Sphinx):
     # Circular import
     from themester.sphinx import views
     from themester import themabaster
+    from themester.app import ThemesterApp
 
     site = Site()
     sphinx_config = app.config  # type: ignore
@@ -46,6 +46,8 @@ def builder_init(app: Sphinx):
 
 def inject_page(app, pagename, templatename, context, doctree):
     """ Store a resource-bound container in Sphinx context """
+
+    from themester.app import ThemesterApp
 
     themester_app: ThemesterApp = app.themester_app
     themester_config: ThemesterConfig = app.config.themester_config
