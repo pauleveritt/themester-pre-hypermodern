@@ -65,7 +65,10 @@ def themester_scanner(themester_app) -> Scanner:
 
 @pytest.fixture
 def sphinx_config() -> SphinxConfig:
-    tc = SphinxConfig(copyright='Bazinga')
+    tc = SphinxConfig(
+        copyright='Bazinga',
+        project='Themester SiteConfig',
+    )
     return tc
 
 
@@ -81,7 +84,6 @@ def theme_config() -> ThemabasterConfig:
         css_files=('site_first.css', 'site_second.css',),
         favicon='themabaster.ico',
         logo='site_logo.png',
-        project='Themester SiteConfig',
         touch_icon='sometouchicon.ico'
     )
     return tc

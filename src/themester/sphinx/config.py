@@ -39,7 +39,7 @@ class SphinxConfig:
     numfig: bool = False
     numfig_secnum_depth: int = 1
     primary_domain: str = 'py'
-    project: str = 'Python'
+    project: Optional[str] = 'Python'
     release: Optional[str] = None
     rst_epilog: Optional[str] = None
     rst_prolog: Optional[str] = None
