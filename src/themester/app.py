@@ -13,21 +13,20 @@ from venusian import Scanner
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
-from themester.protocols import Root, View
 from themester import url
-from themester.protocols import App, Resource
+from themester.protocols import Root, View, App, Resource
 from .sphinx import SphinxConfig
 
 
 @dataclass
 class ThemesterApp(App):
     root: InitVar[Root]
-    config: InitVar[Optional[SphinxConfig]]
+    sphinx_config: InitVar[Optional[SphinxConfig]]
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
     scanner: Scanner = field(init=False)
     container: ServiceContainer = field(init=False)
 
-    def __post_init__(self, root, config=None):
+    def __post_init__(self, root, sphinx_config=None):
         # Make a site-wide container versus the per-render container. This
         # container uses the root as its context.
         self.container = self.registry.create_container(context=root)
@@ -39,8 +38,8 @@ class ThemesterApp(App):
         self.registry.register_singleton(self, App)
         self.registry.register_singleton(root, Root)
         self.registry.register_singleton(scanner, Scanner)
-        if config:
-            self.registry.register_singleton(config, SphinxConfig)
+        if sphinx_config:
+            self.registry.register_singleton(sphinx_config, SphinxConfig)
         scanner.scan(url)
 
     def scan(self, module):

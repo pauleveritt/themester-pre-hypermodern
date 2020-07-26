@@ -9,7 +9,7 @@ from viewdom import VDOM, html
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext
+from themester.sphinx import PageContext, SphinxConfig
 from themester.themabaster.config import ThemabasterConfig
 
 
@@ -18,7 +18,7 @@ from themester.themabaster.config import ThemabasterConfig
 class Footer:
     """ A block in the body below the content block. """
 
-    copyright: Optional[str] = injected(ThemabasterConfig, attr='copyright')
+    copyright: Optional[str] = injected(SphinxConfig, attr='copyright')
     has_source: bool = injected(ThemabasterConfig, attr='has_source')
     pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
     show_powered_by: bool = injected(ThemabasterConfig, attr='show_powered_by')

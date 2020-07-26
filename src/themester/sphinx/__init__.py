@@ -5,7 +5,6 @@ from venusian import Scanner
 from themester.protocols import Root
 from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext, Link, Rellink
-from themester.testing.config import ThemesterConfig
 from themester.testing.resources import Site
 from themester.themabaster.config import ThemabasterConfig
 
@@ -20,14 +19,14 @@ def builder_init(app: Sphinx):
 
     site = Site()
     sphinx_config = app.config  # type: ignore
-    themester_config: SphinxConfig = sphinx_config.themester_config  # type: ignore
-    themester_app = ThemesterApp(root=site, config=themester_config)
+    sphinx_config: SphinxConfig = getattr(sphinx_config, 'sphinx_config')
+    themester_app = ThemesterApp(root=site, sphinx_config=sphinx_config)
     themester_app.setup_plugin(themabaster)
     themester_app.setup_plugin(views)
     scanner = themester_app.container.get(Scanner)
     app.themester_app = themester_app  # noqa
 
-    themester_app.registry.register_singleton(themester_config, ThemabasterConfig)
+    themester_app.registry.register_singleton(sphinx_config, ThemabasterConfig)
 
     # Go through the configuration and register stuff
     themester_plugins = sphinx_config['themester_plugins']
@@ -50,12 +49,12 @@ def inject_page(app, pagename, templatename, context, doctree):
     from themester.app import ThemesterApp
 
     themester_app: ThemesterApp = app.themester_app
-    themester_config: ThemesterConfig = app.config.themester_config
+    sphinx_config: SphinxConfig = app.sphinx_config.sphinx_config
     themester_root = themester_app.container.get(Root)
 
     # If this is a Sphinx site that wants to do resource-oriented
     # pages, get the current resource.
-    if getattr(themester_config, 'use_resources', False):
+    if getattr(sphinx_config, 'use_resources', False):
         resource = themester_root[pagename]
     else:
         resource = themester_root
@@ -102,10 +101,10 @@ def inject_page(app, pagename, templatename, context, doctree):
 
 
 def setup(app: Sphinx):
-    app.add_config_value('themester_config', SphinxConfig(), 'env')
+    app.add_config_value('sphinx_config', SphinxConfig(), 'env')
     app.add_config_value('themester_plugins', [], 'env')
     app.connect('builder-inited', builder_init)
-    app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'  # type: ignore
+    app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'  # noqa
     app.connect('html-page-context', inject_page)
 
     return dict(parallel_read_safe=True)

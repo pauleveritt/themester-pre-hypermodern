@@ -4,8 +4,8 @@ import pytest
 from venusian import Scanner
 from wired import ServiceContainer, ServiceRegistry
 
-from themester.protocols import Root
-from themester.protocols import App
+from themester.protocols import Root, App
+from themester.sphinx import SphinxConfig
 from themester.testing.fixtures import ThemesterApp
 from themester.views import register_view
 
@@ -19,7 +19,7 @@ class Customer:
 
 
 def test_themester_app_default(themester_site):
-    ta = ThemesterApp(root=themester_site, config=None)
+    ta = ThemesterApp(root=themester_site, sphinx_config=None)
     assert isinstance(ta.registry, ServiceRegistry)
     assert isinstance(ta.container, ServiceContainer)
 
@@ -34,18 +34,18 @@ def test_themester_app_default(themester_site):
     scanner: Scanner = ta.container.get(Scanner)
     assert isinstance(scanner, Scanner)
 
-#
-# def test_themester_app_config(themester_site, themester_config):
-#     ta = ThemesterApp(root=themester_site, config=themester_config)
-#     ta_config = ta.container.get(Config)
-#     assert ta_config == themester_config
+
+def test_themester_app_config(themester_site, sphinx_config):
+    ta = ThemesterApp(root=themester_site, sphinx_config=sphinx_config)
+    ta_config = ta.container.get(SphinxConfig)
+    assert ta_config == sphinx_config
 
 
 def test_themester_app_setup_plugin(themester_site):
     from themester.testing import views
     from themester.views import View
 
-    ta = ThemesterApp(root=themester_site, config=None)
+    ta = ThemesterApp(root=themester_site, sphinx_config=None)
     ta.setup_plugin(views)
     view = ta.container.get(View)
     assert view.name == 'Fixture View'

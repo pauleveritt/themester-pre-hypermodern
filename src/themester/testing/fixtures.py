@@ -18,7 +18,7 @@ from .resources import Site, Document, Collection
 from .. import themabaster
 from ..app import ThemesterApp
 from ..protocols import Resource
-from ..sphinx import PageContext
+from ..sphinx import PageContext, SphinxConfig
 from ..sphinx.prevnext import PreviousLink, NextLink
 from ..themabaster.config import ThemabasterConfig
 
@@ -47,10 +47,13 @@ def themester_site_deep() -> Site:
 
 
 @pytest.fixture
-def themester_app(themester_site, themester_config) -> ThemesterApp:
+def themester_app(themester_site, sphinx_config) -> ThemesterApp:
     """ An app that depends on a root and a config """
 
-    return ThemesterApp(root=themester_site, config=themester_config)
+    return ThemesterApp(
+        root=themester_site,
+        sphinx_config=sphinx_config,
+    )
 
 
 @pytest.fixture
@@ -60,15 +63,19 @@ def themester_scanner(themester_app) -> Scanner:
 
 
 @pytest.fixture
+def sphinx_config() -> SphinxConfig:
+    tc = SphinxConfig(copyright='Bazinga')
+    return tc
+
+
+@pytest.fixture
 def themester_config() -> ThemesterConfig:
-    """ Dead-simple configuration """
     tc = ThemesterConfig()
     return tc
 
 
 @pytest.fixture
 def themabaster_config() -> ThemabasterConfig:
-    """ Dead-simple configuration """
     tc = ThemabasterConfig(
         css_files=('site_first.css', 'site_second.css',),
         favicon='themabaster.ico',
