@@ -35,28 +35,29 @@ class ThemabasterConfig:
 
 
     # Sphinx Template Context Globals
-    logo: Optional[str] = None
     copyright: Optional[str] = None
     favicon: Optional[str] = None
     file_suffix: str = '.html'
     has_source: bool = True
     language: str = 'EN'
+    logo: Optional[str] = None
+    master_doc: str = 'index'
+    show_source: bool = True
 
 
     # HTML Theme
-
     baseurl: Optional[str] = None
     css_files: PropsFiles = tuple()
-    doctype: str = 'html'
     js_files: PropsFiles = tuple()
-    master_doc: str = 'index'
-    no_sidebar: bool = False
     show_copyright: bool = True
+    sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
+
+    # Custom/Other
+    doctype: str = 'html'
+    no_sidebar: bool = False
     show_powered_by: bool = True
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
-    show_source: bool = True
-    sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
     site_name: Optional[str] = None
     touch_icon: Optional[str] = None
