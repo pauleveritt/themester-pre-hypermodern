@@ -32,7 +32,6 @@ def get_sidebars():
 @dataclass(frozen=True)
 class ThemabasterConfig:
     # Sphinx Config
-    language: str = 'EN'
     master_doc: str = 'index'
 
     # HTML Builder

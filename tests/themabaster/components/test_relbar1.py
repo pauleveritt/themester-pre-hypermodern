@@ -7,8 +7,8 @@ from viewdom_wired import render
 
 from themester.themabaster.components.relbar1 import Relbar1
 from themester.themabaster.components.rellink_markup import RellinkMarkup
-from themester.themabaster.components.base_layout import ThemabasterConfig
 from themester.sphinx.prevnext import PreviousLink, NextLink
+from themester.themabaster.config import ThemabasterConfig
 
 
 @pytest.fixture

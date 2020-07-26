@@ -67,6 +67,7 @@ def themester_scanner(themester_app) -> Scanner:
 def sphinx_config() -> SphinxConfig:
     tc = SphinxConfig(
         copyright='Bazinga',
+        language='EN',
         project='Themester SiteConfig',
     )
     return tc
@@ -90,10 +91,11 @@ def theme_config() -> ThemabasterConfig:
 
 
 @pytest.fixture
-def themabaster_app(themester_app, theme_config):
+def themabaster_app(themester_app, sphinx_config, theme_config):
     """ Wire in the themabaster components, views, layout, etc. """
 
     themester_app.setup_plugin(themabaster)
+    themester_app.registry.register_singleton(sphinx_config, SphinxConfig)
     themester_app.registry.register_singleton(theme_config, ThemabasterConfig)
     return themester_app
 

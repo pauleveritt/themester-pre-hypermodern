@@ -5,7 +5,8 @@ from markupsafe import Markup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.base_layout import BaseLayout, ThemabasterConfig  # noqa: F401
+from themester.sphinx import SphinxConfig
+from themester.themabaster.components.base_layout import BaseLayout  # noqa: F401
 
 
 def doctype(soup):
@@ -23,12 +24,12 @@ def test_defaults(themabaster_app, this_container):
     assert 'html' == doctype(this_html)
 
 
-def test_config(themabaster_app, this_container, theme_config):
-    tc = dataclasses.replace(
-        theme_config,
+def test_config(themabaster_app, this_container, sphinx_config):
+    sc = dataclasses.replace(
+        sphinx_config,
         language='FR'
     )
-    this_container.register_singleton(tc, ThemabasterConfig)
+    this_container.register_singleton(sc, SphinxConfig)
     this_vdom = html('<{BaseLayout} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
