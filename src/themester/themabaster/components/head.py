@@ -15,6 +15,7 @@ from .linktags import Linktags  # noqa: F401
 from .title import Title  # noqa: F401
 from ..config import ThemabasterConfig
 from ...sphinx import PageContext, SphinxConfig
+from ...sphinx.config import HTMLConfig
 
 
 @component()
@@ -23,9 +24,9 @@ class Head:
     favicon: Optional[str] = injected(ThemabasterConfig, attr='favicon')
     page_title: str = injected(PageContext, attr='title')
     project: Optional[str] = injected(SphinxConfig, attr='project')
-    site_css_files: Iterable[str] = injected(ThemabasterConfig, attr='css_files')
+    site_css_files: Iterable[str] = injected(HTMLConfig, attr='css_files')
     page_css_files: Iterable[str] = injected(PageContext, attr='css_files')
-    site_js_files: Iterable[str] = injected(ThemabasterConfig, attr='js_files')
+    site_js_files: Iterable[str] = injected(HTMLConfig, attr='js_files')
     touch_icon: Optional[str] = injected(ThemabasterConfig, attr='touch_icon')
     page_js_files: Iterable[str] = injected(PageContext, attr='css_files')
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')

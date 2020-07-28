@@ -32,12 +32,8 @@ def get_sidebars():
 @dataclass(frozen=True)
 class ThemabasterConfig:
     # HTML Builder
-    baseurl: Optional[str] = None
-    copy_source: bool = True
-    css_files: PropsFiles = tuple()
     favicon: Optional[str] = None
     file_suffix: str = '.html'
-    js_files: PropsFiles = tuple()
     show_copyright: bool = True
     show_sourcelink: bool = True
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)

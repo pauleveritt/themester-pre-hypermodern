@@ -3,7 +3,7 @@ from sphinx.application import Sphinx
 from venusian import Scanner
 
 from themester.protocols import Root
-from themester.sphinx.config import SphinxConfig
+from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.resources import Site
 from themester.themabaster.config import ThemabasterConfig
@@ -18,21 +18,20 @@ def builder_init(app: Sphinx):
 
     site = Site()
 
-    # Get all 3 of the configs: Sphinx, Themester, Themabaster
+    # Get all 4 of the configs: Sphinx, HTML, Themester, Themabaster
     sphinx_config: SphinxConfig = getattr(app.config, 'sphinx_config')
+    html_config: HTMLConfig = getattr(app.config, 'html_config')
     theme_config: ThemabasterConfig = getattr(app.config, 'theme_config')
 
     themester_app = ThemesterApp(
         root=site,
         sphinx_config=sphinx_config,
+        html_config=html_config,
         theme_config=theme_config,
     )
     themester_app.setup_plugin(themabaster)
     scanner = themester_app.container.get(Scanner)
     app.themester_app = themester_app  # noqa
-
-    themester_app.registry.register_singleton(sphinx_config, SphinxConfig)
-    themester_app.registry.register_singleton(theme_config, ThemabasterConfig)
 
     # Go through the configuration and register stuff
     themester_plugins = []  # sphinx_config['themester_plugins']
@@ -104,6 +103,7 @@ def inject_page(app, pagename, templatename, context, doctree):
 
 def setup(app: Sphinx):
     app.add_config_value('sphinx_config', SphinxConfig(), 'env')
+    app.add_config_value('html_config', HTMLConfig(), 'env')
     app.add_config_value('theme_config', ThemabasterConfig(), 'env')
     app.add_config_value('themester_plugins', [], 'env')
     app.connect('builder-inited', builder_init)

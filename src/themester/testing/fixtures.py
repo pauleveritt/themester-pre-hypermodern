@@ -19,6 +19,7 @@ from .. import themabaster
 from ..app import ThemesterApp
 from ..protocols import Resource
 from ..sphinx import PageContext, SphinxConfig
+from ..sphinx.config import HTMLConfig
 from ..sphinx.prevnext import PreviousLink, NextLink
 from ..themabaster.config import ThemabasterConfig
 
@@ -47,12 +48,13 @@ def themester_site_deep() -> Site:
 
 
 @pytest.fixture
-def themester_app(themester_site, sphinx_config, theme_config) -> ThemesterApp:
+def themester_app(themester_site, sphinx_config, html_config, theme_config) -> ThemesterApp:
     """ An app that depends on a root and a config """
 
     return ThemesterApp(
         root=themester_site,
         sphinx_config=sphinx_config,
+        html_config=html_config,
         theme_config=theme_config,
     )
 
@@ -80,9 +82,16 @@ def themester_config() -> ThemesterConfig:
 
 
 @pytest.fixture
+def html_config() -> HTMLConfig:
+    hc = HTMLConfig(
+        css_files=('site_first.css', 'site_second.css',),
+    )
+    return hc
+
+
+@pytest.fixture
 def theme_config() -> ThemabasterConfig:
     tc = ThemabasterConfig(
-        css_files=('site_first.css', 'site_second.css',),
         favicon='themabaster.ico',
         logo='site_logo.png',
         touch_icon='sometouchicon.ico'
@@ -91,11 +100,12 @@ def theme_config() -> ThemabasterConfig:
 
 
 @pytest.fixture
-def themabaster_app(themester_app, sphinx_config, theme_config):
+def themabaster_app(themester_app, sphinx_config, html_config, theme_config):
     """ Wire in the themabaster components, views, layout, etc. """
 
     themester_app.setup_plugin(themabaster)
     themester_app.registry.register_singleton(sphinx_config, SphinxConfig)
+    themester_app.registry.register_singleton(html_config, HTMLConfig)
     themester_app.registry.register_singleton(theme_config, ThemabasterConfig)
     return themester_app
 

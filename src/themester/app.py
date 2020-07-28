@@ -16,6 +16,7 @@ from wired import ServiceRegistry, ServiceContainer
 from themester import url
 from themester.protocols import Root, View, Resource
 from .sphinx import SphinxConfig
+from .sphinx.config import HTMLConfig
 from .themabaster.config import ThemabasterConfig
 
 
@@ -23,12 +24,13 @@ from .themabaster.config import ThemabasterConfig
 class ThemesterApp:
     root: InitVar[Root]
     sphinx_config: InitVar[Optional[SphinxConfig]]
+    html_config: InitVar[Optional[HTMLConfig]]
     theme_config: InitVar[Optional[ThemabasterConfig]]
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
     scanner: Scanner = field(init=False)
     container: ServiceContainer = field(init=False)
 
-    def __post_init__(self, root, sphinx_config=None, theme_config=None):
+    def __post_init__(self, root, sphinx_config=None, html_config=None, theme_config=None):
         # Make a site-wide container versus the per-render container. This
         # container uses the root as its context.
         self.container = self.registry.create_container(context=root)
@@ -42,6 +44,8 @@ class ThemesterApp:
         self.registry.register_singleton(scanner, Scanner)
         if sphinx_config:
             self.registry.register_singleton(sphinx_config, SphinxConfig)
+        if html_config:
+            self.registry.register_singleton(html_config, HTMLConfig)
         if theme_config:
             self.registry.register_singleton(theme_config, ThemabasterConfig)
         scanner.scan(url)
