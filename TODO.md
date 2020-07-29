@@ -2,15 +2,13 @@
 
 ## Now
 
-- Split the Sphinx events into smaller, more testable units with more sane/typed surface area
+- Don't make <link> for themabaster.css and <script> for etc. use css_files and js_files
 
 ## Next
 
-- Don't make <link> for themabaster.css and <script> for etc. use css_files and js_files
+- Switch integration tests to use myst
 
 ## Could Be Better
-
-- Switch integration tests to use myst
 
 - Split up `sphinx.models` into individual units
 
@@ -61,3 +59,5 @@
 - Remove `theme.conf` and any theme support in `setup`
 
 - Move more knobs off of `ThemabasterConfig` into `SphinxHTMLConfig` plus tests
+
+- Split the Sphinx events into smaller, more testable units with more sane/typed surface area
