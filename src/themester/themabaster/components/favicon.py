@@ -5,7 +5,8 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext, HTMLConfig
+from themester.sphinx.config import HTMLConfig
+from themester.sphinx.models import PageContext
 
 
 @component()

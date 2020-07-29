@@ -15,10 +15,10 @@ from wired import ServiceRegistry, ServiceContainer
 
 from themester import url
 from themester.protocols import Root, View, Resource
-from .sphinx import SphinxConfig
-from .sphinx.config import HTMLConfig
-from .testing.config import ThemesterConfig
-from .themabaster.config import ThemabasterConfig
+from themester.sphinx.config import SphinxConfig
+from themester.sphinx.config import HTMLConfig
+from themester.config import ThemesterConfig
+from themester.themabaster.config import ThemabasterConfig
 
 
 @dataclass

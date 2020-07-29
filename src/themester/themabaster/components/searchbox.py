@@ -9,8 +9,7 @@ from viewdom import VDOM, html
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext
-from themester.themabaster.config import ThemabasterConfig
+from themester.sphinx.models import PageContext
 
 
 @component()
@@ -21,7 +20,6 @@ class SearchBox:
     pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
 
     def __call__(self) -> VDOM:
-
         if self.pagename != 'search' and self.builder != 'singlehtml':
             pt = self.pathto('search')
             return html('''\n

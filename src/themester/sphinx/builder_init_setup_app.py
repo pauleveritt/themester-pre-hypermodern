@@ -10,9 +10,8 @@ This module provides some glue to "adapt" Sphinx to ThemesterApp.
 from sphinx.config import Config
 from venusian import Scanner
 
-from .. import themabaster
-from ..app import ThemesterApp
-from ..testing.resources import Site
+from themester import themabaster
+from themester.app import ThemesterApp
 
 
 def setup_app(
@@ -20,6 +19,8 @@ def setup_app(
 ) -> ThemesterApp:
     # TODO Hmm, is this the right place to put this? Should
     #    it be in ThemesterConfig?
+
+    from themester.testing.resources import Site
     site = Site()
 
     themester_app = ThemesterApp(

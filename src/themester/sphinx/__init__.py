@@ -1,12 +1,10 @@
-from markupsafe import Markup
 from sphinx.application import Sphinx
 
-from themester.protocols import Root
+from themester.sphinx.builder_init_setup_app import setup_app
 from themester.sphinx.config import SphinxConfig, HTMLConfig
-from themester.sphinx.models import PageContext, Link, Rellink
-from themester.testing.config import ThemesterConfig
+from themester.sphinx.inject_page import make_render_container, make_page_context
+from themester.config import ThemesterConfig
 from themester.themabaster.config import ThemabasterConfig
-from .builder_init_setup_app import setup_app
 
 
 def builder_init(app: Sphinx):
@@ -19,59 +17,18 @@ def builder_init(app: Sphinx):
 def inject_page(app, pagename, templatename, context, doctree):
     """ Store a resource-bound container in Sphinx context """
 
-    from themester.app import ThemesterApp
-
-    themester_app: ThemesterApp = app.themester_app
-    themester_root = themester_app.container.get(Root)
-
-    sphinx_config: SphinxConfig = app.config.sphinx_config
-
-    # If this is a Sphinx site that wants to do resource-oriented
-    # pages, get the current resource.
-    if getattr(sphinx_config, 'use_resources', False):
-        resource = themester_root[pagename]
-    else:
-        resource = themester_root
-
-    render_container = themester_app.container.bind(context=resource)
-    context['render_container'] = render_container
-
-    # Gather the Sphinx per-page render info into an object that
-    # can be retrieved from the container
-    display_toc = app.env.toc_num_entries[pagename] > 1 if 'pagename' in app.env.toc_num_entries else False
-    parents = tuple([
-        Link(title=link.title, link=link.title)
-        for link in context.get('parents')
-    ])
-    rellinks = tuple([
-        Rellink(
-            pagename=link[0],
-            link_text=link[3],
-            title=link[1],
-            accesskey=link[2],
-        )
-        for link in context.get('rellinks')
-    ])
-    page_context = PageContext(
-        body=Markup(context.get('body', '')),
-        css_files=context.get('css_files'),
-        display_toc=display_toc,
-        hasdoc=context.get('hasdoc'),
-        js_files=context.get('js_files'),
-        meta=app.env.metadata,
-        metatags=context.get('metatags'),
-        next=context.get('next'),
-        page_source_suffix=context.get('page_source_suffix'),
-        pagename=pagename,
-        pathto=context.get('pathto'),
-        prev=context.get('prev'),
-        sourcename=context.get('sourcename'),
-        rellinks=rellinks,
-        title=context.get('title'),
-        toc=Markup(context.get('toc')),
-        toctree=context.get('toctree'),
+    render_container = make_render_container(
+        app.themester_app,
+        pagename='',
     )
-    render_container.register_singleton(page_context, PageContext)
+    context['render_container'] = render_container
+    make_page_context(
+        render_container=render_container,
+        context=context,
+        pagename=pagename,
+        toc_num_entries=app.env.toc_num_entries,
+        sphinxenv_metadata=app.env.metadata,
+    )
 
 
 def setup(app: Sphinx):

@@ -9,9 +9,10 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
+from themester.sphinx.config import HTMLConfig
+from themester.sphinx.models import PageContext
 from ..components.relbar1 import Relbar1  # noqa: F401
 from ..components.relbar2 import Relbar2  # noqa: F401
-from ...sphinx import PageContext, HTMLConfig
 
 
 @component()

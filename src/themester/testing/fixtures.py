@@ -13,13 +13,13 @@ from venusian import Scanner
 from viewdom import render, VDOM
 from wired import ServiceContainer
 
-from .config import ThemesterConfig
 from .resources import Site, Document, Collection
 from .. import themabaster
 from ..app import ThemesterApp
+from ..config import ThemesterConfig
 from ..protocols import Resource
-from ..sphinx import PageContext, SphinxConfig
-from ..sphinx.config import HTMLConfig
+from ..sphinx.config import HTMLConfig, SphinxConfig
+from ..sphinx.models import PageContext
 from ..sphinx.prevnext import PreviousLink, NextLink
 from ..themabaster.config import ThemabasterConfig
 
@@ -48,11 +48,12 @@ def themester_site_deep() -> Site:
 
 
 @pytest.fixture
-def themester_app(themester_site, sphinx_config, html_config, theme_config) -> ThemesterApp:
+def themester_app(themester_site, themester_config, sphinx_config, html_config, theme_config) -> ThemesterApp:
     """ An app that depends on a root and a config """
 
     return ThemesterApp(
         root=themester_site,
+        themester_config=themester_config,
         sphinx_config=sphinx_config,
         html_config=html_config,
         theme_config=theme_config,

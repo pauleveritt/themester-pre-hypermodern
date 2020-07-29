@@ -54,6 +54,8 @@
 
 - Bring back mypy
     
+- Use Venusian categories to split factories for site_container and render_container
+
 ## Done
 
 - Remove `theme.conf` and any theme support in `setup`

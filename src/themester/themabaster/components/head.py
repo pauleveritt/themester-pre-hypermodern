@@ -14,8 +14,8 @@ from .jsfiles import JSFiles  # noqa: F401
 from .linktags import Linktags  # noqa: F401
 from .title import Title  # noqa: F401
 from ..config import ThemabasterConfig
-from ...sphinx import PageContext, SphinxConfig
-from ...sphinx.config import HTMLConfig
+from ...sphinx.config import HTMLConfig, SphinxConfig
+from ...sphinx.models import PageContext
 
 
 @component()

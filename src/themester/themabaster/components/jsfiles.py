@@ -5,7 +5,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext
+from themester.sphinx.models import PageContext
 
 
 def JSFile(src: str) -> VDOM:
