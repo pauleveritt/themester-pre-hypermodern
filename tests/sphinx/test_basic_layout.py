@@ -33,7 +33,7 @@ class TestBasicLayoutDefaults:
 
         node: Tag = page.select_one('title')
         # Nothing customized so suffix appears
-        assert 'Hello World — Python' == node.text
+        assert 'Hello Page - Python' == node.contents[0].strip()
 
     def test_sidebar(self, page):
         """ Ensure the sidebar container exists """
@@ -96,8 +96,8 @@ class TestBasicLayoutDefaults:
 
         assert not page.select_one('link[rel="author"]')
         assert not page.select_one('link[rel="copyright"]')
-        assert 'genindex' == page.select_one('link[rel="genindex"]').attrs['href']
-        assert 'search' == page.select_one('link[rel="search"]').attrs['href']
+        assert 'genindex.html' == page.select_one('link[rel="genindex"]').attrs['href']
+        assert 'search.html' == page.select_one('link[rel="search"]').attrs['href']
 
     def test_body_block(self, page):
         """ By default the body node should have no attributes on it """

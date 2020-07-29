@@ -1,18 +1,11 @@
 # TODO
 
-## Now
-
-- Switch integration tests to use myst
-
-## Next
-
 - Move `__call__` variables out and either into `__post_init__` or properties
 
-## Could Be Better
+## Now
 
-- Have a Layout with components which don't render anything, then Themabaster simply has the `__call__` which render
 
-    - Have a fixture, with a test, for each layout component and its props
+## Next
 
 - Stop registering Themabaster as a Sphinx extension
 
@@ -21,6 +14,12 @@
     - But allow it to do copy files as part of the Sphinx build process finishing
     
         - Perhaps by having a `sphinx_setup(app)` protocol on each plugin
+
+## Could Be Better
+
+- Have a Layout with components which don't render anything, then Themabaster simply has the `__call__` which render
+
+    - Have a fixture, with a test, for each layout component and its props
 
 - Allow arbitrary attributes on link and script
 
@@ -65,4 +64,6 @@
 - Split the Sphinx events into smaller, more testable units with more sane/typed surface area
 
 - Don't make <link> for themabaster.css and <script> for etc. use css_files and js_files
+
+- Switch integration tests to use myst
 

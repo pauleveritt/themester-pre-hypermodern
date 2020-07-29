@@ -34,7 +34,7 @@ class Linktags:
             dict(
                 rel=link['rel'],
                 title=link['title'],
-                href=self.pathto(link['docname'], 1)
+                href=self.pathto(link['docname'], 0)
             )
             for link in self.links
             if self.hasdoc(link['docname'])

@@ -14,3 +14,4 @@ class TestSetupFunction:
 
     def test_index(self, page):
         assert '_static/themabaster.css' in str(page)
+        assert 'brilliant' == page.select_one('strong').text

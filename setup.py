@@ -35,6 +35,7 @@ tests_require = [
     'flake8',
     'Sphinx',
     'beautifulsoup4',
+    'myst-parser',
 ]
 
 setup(
