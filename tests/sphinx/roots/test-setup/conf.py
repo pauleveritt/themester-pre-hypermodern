@@ -1,1 +1,1 @@
-extensions = ['themester', 'themester.themabaster']
+extensions = ['themester.sphinx', 'themester.themabaster']
