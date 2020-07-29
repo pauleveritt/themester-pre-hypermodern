@@ -2,17 +2,13 @@
 
 ## Now
 
-- Don't make <link> for themabaster.css and <script> for etc. use css_files and js_files
+- Switch integration tests to use myst
 
 ## Next
 
-- Switch integration tests to use myst
+- Move `__call__` variables out and either into `__post_init__` or properties
 
 ## Could Be Better
-
-- Split up `sphinx.models` into individual units
-
-- Move `__call__` variables out and either into `__post_init__` or properties
 
 - Have a Layout with components which don't render anything, then Themabaster simply has the `__call__` which render
 
@@ -28,7 +24,13 @@
 
 - Allow arbitrary attributes on link and script
 
+- Split up `sphinx.models` into individual units
+
 ## Future
+
+- Let PyCharm's smart string handling kick in with paths to static assets
+
+- Solve the circular import problem by moving things to Themester plugins
 
 - Generate `SphinxConfig` and `HTMLConfig` directly from Sphinx, not manually plus tests
 
@@ -61,3 +63,6 @@
 - Move more knobs off of `ThemabasterConfig` into `SphinxHTMLConfig` plus tests
 
 - Split the Sphinx events into smaller, more testable units with more sane/typed surface area
+
+- Don't make <link> for themabaster.css and <script> for etc. use css_files and js_files
+

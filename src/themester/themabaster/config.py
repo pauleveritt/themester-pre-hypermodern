@@ -39,5 +39,8 @@ class ThemabasterConfig:
     show_relbars: bool = False
     touch_icon: Optional[str] = None
 
-    # Custom/Other
-    doctype: str = 'html'
+    # Not in Sphinx/Alabaster
+    css_files: Tuple[str, ...] = (
+        '_static/themabaster.css',
+        '_static/pygments.css',
+    )

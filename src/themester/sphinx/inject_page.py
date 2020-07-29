@@ -51,12 +51,16 @@ def make_page_context(
     ])
     # TODO Make this into a service
     display_toc = toc_num_entries[pagename] > 1 if 'pagename' in toc_num_entries else False
+    ccf = context.get('css_files')
+    jcf = context.get('css_files')
+    css_files = tuple(ccf) if ccf else tuple()
+    js_files = tuple(jcf) if jcf else tuple()
     page_context = PageContext(
         body=Markup(context.get('body', '')),
-        css_files=context.get('css_files'),
+        css_files=css_files,
         display_toc=display_toc,
         hasdoc=context.get('hasdoc'),
-        js_files=context.get('js_files'),
+        js_files=js_files,
         meta=sphinxenv_metadata,
         metatags=context.get('metatags'),
         next=context.get('next'),

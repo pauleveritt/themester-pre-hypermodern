@@ -13,6 +13,7 @@ def this_props(this_resource, this_pathto):
         project='Some Project',
         touch_icon='sometouchicon.png',
         site_css_files=('site1.css', 'site2.css',),
+        theme_css_files=('theme1.css', 'theme2.css',),
         page_css_files=('page1.css', 'page2.css'),
         site_js_files=('site1.js', 'site2.js',),
         page_js_files=('page1.js', 'page2.js'),
@@ -30,7 +31,7 @@ def this_component(this_props):
 
 def test_vdom(this_vdom, this_props):
     from themester.themabaster.components.cssfiles import CSSFiles
-    assert 12 == len(this_vdom.children)
+    assert 10 == len(this_vdom.children)
     assert 'head' == this_vdom.tag
     assert 'meta' == this_vdom.children[0].tag
     assert 'meta' == this_vdom.children[1].tag
@@ -39,14 +40,15 @@ def test_vdom(this_vdom, this_props):
     assert Title == title.tag
     assert dict(page_title='Some Page', project='Some Project') == title.props
     assert [] == title.children
-    css = this_vdom.children[5]
+    css = this_vdom.children[3]
     assert CSSFiles == css.tag
     assert dict(
-        page_files=('page1.css', 'page2.css'),
         site_files=('site1.css', 'site2.css'),
+        theme_files=('theme1.css', 'theme2.css'),
+        page_files=('page1.css', 'page2.css'),
     ) == css.props
     assert [] == css.children
-    js = this_vdom.children[7]
+    js = this_vdom.children[5]
     from themester.themabaster.components.jsfiles import JSFiles
     assert JSFiles == js.tag
     assert js.props == dict(
@@ -54,9 +56,9 @@ def test_vdom(this_vdom, this_props):
         site_files=('site1.js', 'site2.js'),
     )
     assert [] == js.children
-    assert '../mock/sometouchicon.png' == this_vdom.children[9].props['href']
+    assert '../mock/sometouchicon.png' == this_vdom.children[7].props['href']
     # No children
-    assert None is this_vdom.children[11]
+    assert None is this_vdom.children[9]
 
 
 def test_vdom_extrahead(this_props):
@@ -79,7 +81,9 @@ def test_wired_render(themabaster_app, this_container):
     assert 'Some Page - Themester SiteConfig' == this_html.select_one('title').text
     links = this_html.select('link')
     assert 12 == len(links)
-    assert '../mock/site_first.css' == links[2].attrs['href']
+    assert '../mock/site_first.css' == links[0].attrs['href']
+    assert '../mock/_static/themabaster.css' == links[2].attrs['href']
+    assert '../mock/_static/pygments.css' == links[3].attrs['href']
     assert '../mock/page_first.css' == links[4].attrs['href']
     assert '../mock/_static/custom.css' == links[6].attrs['href']
     assert '../mock/sometouchicon.ico' == links[7].attrs['href']

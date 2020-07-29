@@ -17,12 +17,13 @@ def CSSFile(href: str) -> VDOM:
 @component()
 @dataclass(frozen=True)
 class CSSFiles:
-    site_files: Tuple[str, ...]
-    page_files: Tuple[str, ...]
-    pathto: Callable[[str], int] = injected(PageContext, attr='pathto')
+    pathto: Callable[[str, int], int] = injected(PageContext, attr='pathto')
+    site_files: Tuple[str, ...] = tuple()
+    theme_files: Tuple[str, ...] = tuple()
+    page_files: Tuple[str, ...] = tuple()
 
     def __call__(self) -> VDOM:
-        all_files = tuple(self.site_files) + tuple(self.page_files)
+        all_files = self.site_files + self.theme_files + self.page_files
         hrefs = [
             self.pathto(css_file, 1)
             for css_file in all_files
