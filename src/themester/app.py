@@ -17,12 +17,14 @@ from themester import url
 from themester.protocols import Root, View, Resource
 from .sphinx import SphinxConfig
 from .sphinx.config import HTMLConfig
+from .testing.config import ThemesterConfig
 from .themabaster.config import ThemabasterConfig
 
 
 @dataclass
 class ThemesterApp:
     root: InitVar[Root]
+    themester_config: InitVar[Optional[ThemesterConfig]]
     sphinx_config: InitVar[Optional[SphinxConfig]]
     html_config: InitVar[Optional[HTMLConfig]]
     theme_config: InitVar[Optional[ThemabasterConfig]]
@@ -30,7 +32,7 @@ class ThemesterApp:
     scanner: Scanner = field(init=False)
     container: ServiceContainer = field(init=False)
 
-    def __post_init__(self, root, sphinx_config=None, html_config=None, theme_config=None):
+    def __post_init__(self, root, themester_config=None, sphinx_config=None, html_config=None, theme_config=None):
         # Make a site-wide container versus the per-render container. This
         # container uses the root as its context.
         self.container = self.registry.create_container(context=root)
@@ -42,6 +44,8 @@ class ThemesterApp:
         self.registry.register_singleton(self, ThemesterApp)
         self.registry.register_singleton(root, Root)
         self.registry.register_singleton(scanner, Scanner)
+        if themester_config:
+            self.registry.register_singleton(themester_config, ThemesterConfig)
         if sphinx_config:
             self.registry.register_singleton(sphinx_config, SphinxConfig)
         if html_config:

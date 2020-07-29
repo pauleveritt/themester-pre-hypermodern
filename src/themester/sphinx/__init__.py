@@ -1,46 +1,19 @@
 from markupsafe import Markup
 from sphinx.application import Sphinx
-from venusian import Scanner
 
 from themester.protocols import Root
 from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.sphinx.models import PageContext, Link, Rellink
-from themester.testing.resources import Site
+from themester.testing.config import ThemesterConfig
 from themester.themabaster.config import ThemabasterConfig
+from .builder_init_setup_app import setup_app
 
 
 def builder_init(app: Sphinx):
     """ Wire up some global stuff after Sphinx startup """
 
-    # Circular import
-    from themester import themabaster
-    from themester.app import ThemesterApp
-
-    site = Site()
-
-    # Get all 4 of the configs: Sphinx, HTML, Themester, Themabaster
-    sphinx_config: SphinxConfig = getattr(app.config, 'sphinx_config')
-    html_config: HTMLConfig = getattr(app.config, 'html_config')
-    theme_config: ThemabasterConfig = getattr(app.config, 'theme_config')
-
-    themester_app = ThemesterApp(
-        root=site,
-        sphinx_config=sphinx_config,
-        html_config=html_config,
-        theme_config=theme_config,
-    )
-    themester_app.setup_plugin(themabaster)
-    scanner = themester_app.container.get(Scanner)
-    app.themester_app = themester_app  # noqa
-
-    # Go through the configuration and register stuff
-    themester_plugins = []  # sphinx_config['themester_plugins']
-    for plugin in themester_plugins:
-        try:
-            themester_app.setup_plugin(plugin)
-        except AttributeError:
-            # No wired_setup so scan it instead
-            scanner.scan(plugin)
+    themester_app = setup_app(app.config)
+    setattr(app, 'themester_app', themester_app)
 
 
 def inject_page(app, pagename, templatename, context, doctree):
@@ -102,6 +75,7 @@ def inject_page(app, pagename, templatename, context, doctree):
 
 
 def setup(app: Sphinx):
+    app.add_config_value('themester_config', ThemesterConfig(), 'env')
     app.add_config_value('sphinx_config', SphinxConfig(), 'env')
     app.add_config_value('html_config', HTMLConfig(), 'env')
     app.add_config_value('theme_config', ThemabasterConfig(), 'env')
