@@ -11,8 +11,7 @@ from wired.dataclasses import injected
 
 from ..components.relbar1 import Relbar1  # noqa: F401
 from ..components.relbar2 import Relbar2  # noqa: F401
-from ..config import ThemabasterConfig
-from ...sphinx import PageContext
+from ...sphinx import PageContext, HTMLConfig
 
 
 @component()
@@ -21,7 +20,7 @@ class Document:
     """ A block in content, holding most of the info on this resource """
 
     body: Markup = injected(PageContext, attr='body')
-    nosidebar: bool = injected(ThemabasterConfig, attr='nosidebar')
+    nosidebar: bool = injected(HTMLConfig, attr='nosidebar')
 
     def __call__(self) -> VDOM:
         # Alabaster wraps the main content in <div class="bodywrapper">

@@ -9,8 +9,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext, SphinxConfig
-from themester.themabaster.config import ThemabasterConfig
+from themester.sphinx import PageContext, SphinxConfig, HTMLConfig
 
 
 @component()
@@ -18,7 +17,7 @@ from themester.themabaster.config import ThemabasterConfig
 class SidebarLogo:
     """ The logo in the Sidebar block component """
 
-    logo: str = injected(ThemabasterConfig, attr='logo')
+    logo: str = injected(HTMLConfig, attr='logo')
     master_doc: str = injected(SphinxConfig, attr='master_doc')
     pathto: Callable[[str, Optional[int]], str] = injected(PageContext, attr='pathto')
 

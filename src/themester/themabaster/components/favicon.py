@@ -5,15 +5,14 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext
-from themester.themabaster.config import ThemabasterConfig
+from themester.sphinx import PageContext, HTMLConfig
 
 
 @component()
 @dataclass(frozen=True)
 class Favicon:
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
-    href: str = injected(ThemabasterConfig, attr='favicon')
+    href: str = injected(HTMLConfig, attr='favicon')
 
     def __call__(self) -> VDOM:
         href = self.pathto(self.href, 1)

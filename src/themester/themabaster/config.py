@@ -9,8 +9,6 @@ file then injected into the site container as a singleton.
 from dataclasses import dataclass, field
 from typing import Optional, Tuple, Callable
 
-from themester.utils import PropsFiles
-
 
 def get_sidebars():
     """ Escape circular import hell """
@@ -32,18 +30,7 @@ def get_sidebars():
 @dataclass(frozen=True)
 class ThemabasterConfig:
     # HTML Builder
-    favicon: Optional[str] = None
-    file_suffix: str = '.html'
-    show_copyright: bool = True
-    show_sourcelink: bool = True
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
-
-    # HTML Templating Global Variables
-    has_source: bool = True
-    logo: Optional[str] = None
-
-    # Sphinx Basic
-    nosidebar: bool = False
 
     # Alabaster
     show_powered_by: bool = True

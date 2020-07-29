@@ -5,11 +5,17 @@ Sphinx's configuration system is powerful but a bit scattered. Bring it
 all under one type-hinted roof and provide an "adapter" to get from
 Sphinx config -> Themester config. And perhaps back!
 
+HTMLConfig values come from
+https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+In theory these would disappear were a new Builder to be created.
+
 TODO Enable config-less conf.py by making an instance which then
     feeds sphinx.config.Config
 """
 from dataclasses import dataclass, field
 from typing import Optional, Dict, List
+
+from themester.utils import PropsFiles
 
 
 @dataclass
@@ -71,3 +77,23 @@ class SphinxConfig:
     pygments_style: List[str] = field(default_factory=lambda: [])
     smartquotes_excludes: Dict[str, str] = field(default_factory=lambda: {'languages': ['ja']})
 
+
+@dataclass
+class HTMLConfig:
+    """ Sphinx values from the HTML theming and builder """
+
+    baseurl: Optional[str] = None
+    copy_source: bool = True
+    css_files: PropsFiles = tuple()
+    favicon: Optional[str] = None
+    file_suffix: str = '.html'
+    has_source: bool = True
+    js_files: PropsFiles = tuple()
+    show_copyright: bool = True
+    show_sourcelink: bool = True
+
+    # HTML Templating Global Variables
+    logo: Optional[str] = None
+
+    # Sphinx Basic
+    nosidebar: bool = False

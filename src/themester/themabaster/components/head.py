@@ -21,7 +21,7 @@ from ...sphinx.config import HTMLConfig
 @component()
 @dataclass(frozen=True)
 class Head:
-    favicon: Optional[str] = injected(ThemabasterConfig, attr='favicon')
+    favicon: Optional[str] = injected(HTMLConfig, attr='favicon')
     page_title: str = injected(PageContext, attr='title')
     project: Optional[str] = injected(SphinxConfig, attr='project')
     site_css_files: Iterable[str] = injected(HTMLConfig, attr='css_files')

@@ -7,10 +7,10 @@ from themester.themabaster.components.footer import Footer
 
 
 @pytest.fixture
-def this_props(sphinx_config, theme_config, this_pagecontext):
+def this_props(sphinx_config, html_config, theme_config, this_pagecontext):
     tp = dict(
         copyright=sphinx_config.copyright,
-        show_copyright=theme_config.show_copyright,
+        show_copyright=html_config.show_copyright,
         show_powered_by=theme_config.show_powered_by,
         show_sourcelink=True,
         has_source=True,

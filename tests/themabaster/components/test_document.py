@@ -6,11 +6,11 @@ from markupsafe import Markup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import HTMLConfig
 from themester.sphinx.prevnext import PreviousLink, NextLink
 from themester.themabaster.components.document import Document
 from themester.themabaster.components.relbar1 import Relbar1
 from themester.themabaster.components.relbar2 import Relbar2
-from themester.themabaster.config import ThemabasterConfig
 
 
 @pytest.fixture
@@ -65,11 +65,11 @@ def test_wired_render_default(themabaster_app, this_container, this_props):
 
 
 def test_wired_render_without_sidebars(
-        themabaster_app, theme_config, this_container, this_props
+        themabaster_app, html_config, this_container, this_props
 ):
     # Change the themabaster settings in the container
-    tc = dataclasses.replace(theme_config, nosidebar=True)
-    this_container.register_singleton(tc, ThemabasterConfig)
+    tc = dataclasses.replace(html_config, nosidebar=True)
+    this_container.register_singleton(tc, HTMLConfig)
 
     this_vdom = html('<{Document} />')
     rendered = render(this_vdom, container=this_container)

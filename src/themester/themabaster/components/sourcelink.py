@@ -9,20 +9,19 @@ from viewdom import VDOM, html
 from viewdom_wired import component
 from wired.dataclasses import injected
 
-from themester.sphinx import PageContext
+from themester.sphinx import PageContext, HTMLConfig
 from themester.themabaster.config import ThemabasterConfig
 
 
 @component()
 @dataclass(frozen=True)
 class SourceLink:
-    show_sourcelink: bool = injected(ThemabasterConfig, attr='show_sourcelink')
-    has_source: bool = injected(ThemabasterConfig, attr='has_source')
+    show_sourcelink: bool = injected(HTMLConfig, attr='show_sourcelink')
+    has_source: bool = injected(HTMLConfig, attr='has_source')
     sourcename: str = injected(PageContext, attr='sourcename')
     pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
 
     def __call__(self) -> VDOM:
-
         if self.show_sourcelink and self.has_source and self.sourcename:
             pt = self.pathto(f'_sources/{self.sourcename}')
             return html('''\n

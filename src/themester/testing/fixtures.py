@@ -85,6 +85,8 @@ def themester_config() -> ThemesterConfig:
 def html_config() -> HTMLConfig:
     hc = HTMLConfig(
         css_files=('site_first.css', 'site_second.css',),
+        favicon='themabaster.ico',
+        logo='site_logo.png',
     )
     return hc
 
@@ -92,8 +94,6 @@ def html_config() -> HTMLConfig:
 @pytest.fixture
 def theme_config() -> ThemabasterConfig:
     tc = ThemabasterConfig(
-        favicon='themabaster.ico',
-        logo='site_logo.png',
         touch_icon='sometouchicon.ico'
     )
     return tc
