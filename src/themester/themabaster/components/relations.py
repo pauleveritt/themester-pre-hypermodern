@@ -2,7 +2,7 @@
 Sidebar to show related topics previous/next/parents.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Callable, Optional
 
 from markupsafe import Markup
@@ -15,16 +15,19 @@ from themester.sphinx.models import PageContext
 
 
 @component()
-@dataclass(frozen=True)
+@dataclass
 class Relations:
     master_doc: str = injected(SphinxConfig, attr='master_doc')
     pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
     toctree: Optional[Callable[[], str]] = injected(PageContext, attr='toctree')
+    resolved_pathto: str = field(init=False)
+    resolved_toctree: Markup = field(init=False)
+
+    def __post_init__(self):
+        self.resolved_pathto = self.pathto(self.master_doc)
+        self.resolved_toctree = Markup(self.toctree())
 
     def __call__(self) -> VDOM:
-        this_toctree = Markup(self.toctree())
-        pt = self.pathto(self.master_doc)
-
         # Alabaster has a weird relations.html which isn't really well-formed
         # on looping. This makes it not-well-formed on snippets.
         #
@@ -33,7 +36,7 @@ class Relations:
 <div class="relations">
     <h3>Related Topics</h3>
     <ul>
-        <li><a href={pt}>Documentation overview</a>
+        <li><a href={self.resolved_pathto}>Documentation overview</a>
         </li>
     </ul>
     <p><strong>UNIMPLEMENTED</strong></p>

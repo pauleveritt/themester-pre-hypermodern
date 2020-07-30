@@ -22,6 +22,10 @@ def this_component(this_props):
     return ci
 
 
+def test_construction(this_component: LocalToc):
+    assert '../mock/index' == this_component.resolved_pathto
+
+
 def test_vdom(this_vdom, this_props):
     assert 'h3' == this_vdom[0].tag
     assert 'a' == this_vdom[0].children[0].tag

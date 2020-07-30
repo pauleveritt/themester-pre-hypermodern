@@ -28,6 +28,11 @@ def this_component(this_props):
     return ci
 
 
+def test_construction(this_component: RellinkMarkup):
+    assert 'li' == this_component.resolved_previous.tag
+    assert 'li' == this_component.resolved_next.tag
+
+
 def test_vdom(this_vdom, this_props):
     assert 'nav' == this_vdom.tag
     assert dict(id='rellinks') == this_vdom.props

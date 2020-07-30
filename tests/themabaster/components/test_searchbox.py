@@ -21,6 +21,10 @@ def this_component(this_props):
     return ci
 
 
+def test_construction(this_component: SearchBox):
+    assert '../mock/search' == this_component.resolved_pathto
+
+
 def test_vdom(this_vdom, this_props):
     assert 'div' == this_vdom[0].tag
     assert '../mock/search' == this_vdom[0].children[1].children[0].props['action']

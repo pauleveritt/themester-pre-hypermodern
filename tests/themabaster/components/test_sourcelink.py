@@ -22,6 +22,10 @@ def this_component(this_props):
     return ci
 
 
+def test_construction(this_component: SourceLink):
+    assert '../mock/_sources/thispage.md' == this_component.resolved_pathto
+
+
 def test_vdom(this_vdom, this_props):
     assert 'div' == this_vdom.tag
     a = this_vdom.children[1].children[0].children[0]

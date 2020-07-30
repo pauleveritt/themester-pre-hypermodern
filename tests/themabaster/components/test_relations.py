@@ -21,6 +21,11 @@ def this_component(this_props):
     return ci
 
 
+def test_construction(this_component: Relations):
+    assert '../mock/index' == this_component.resolved_pathto
+    assert '<ul><li>First</li></ul>' == str(this_component.resolved_toctree)
+
+
 def test_vdom(this_vdom, this_props):
     assert 'div' == this_vdom.tag
     assert 'h3' == this_vdom.children[0].tag

@@ -8,7 +8,7 @@ the document, Relbar2 after the document. By default,
 both blocks are filled; to show the relbar only.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from viewdom import html, VDOM
 from viewdom_wired import component
@@ -19,15 +19,18 @@ from ..components.rellink_markup import RellinkMarkup  # noqa: F401
 
 
 @component()
-@dataclass(frozen=True)
+@dataclass
 class Relbar2:
     """ Relation bar usually at the bottom. """
 
     show_relbar_bottom: bool = injected(ThemabasterConfig, attr='show_relbar_top')
     show_relbars: bool = injected(ThemabasterConfig, attr='show_relbar_top')
+    show_relbar_top: bool = field(init=False)
+
+    def __post_init__(self):
+        self.show_relbar_top = self.show_relbar_bottom or self.show_relbars
 
     def __call__(self) -> VDOM:
-        show_relbar_top = self.show_relbar_bottom or self.show_relbars
         return html('''\n
 <div class="related top"><{RellinkMarkup} /> </div>        
-        ''') if show_relbar_top else []
+        ''') if self.show_relbar_top else []

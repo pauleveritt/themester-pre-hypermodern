@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Callable, TypedDict, Iterable
+from dataclasses import dataclass, field
+from typing import Callable, TypedDict, Iterable, List, Any, Dict
 
 from viewdom import html, VDOM
 from viewdom_wired import component
@@ -23,14 +23,15 @@ DEFAULT_LINKS = (
 
 
 @component()
-@dataclass(frozen=True)
+@dataclass
 class Linktags:
     hasdoc: Callable[[str], bool] = injected(PageContext, attr='hasdoc')
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
     links: Iterable[SemanticLink] = DEFAULT_LINKS
+    resolved_links: List[Dict[str, Any]] = field(init=False)
 
-    def __call__(self) -> VDOM:
-        resolved_links = (
+    def __post_init__(self):
+        self.resolved_links = [
             dict(
                 rel=link['rel'],
                 title=link['title'],
@@ -38,10 +39,12 @@ class Linktags:
             )
             for link in self.links
             if self.hasdoc(link['docname'])
-        )
+        ]
+
+    def __call__(self) -> VDOM:
         return html('''\n
 {[
 html('<link rel={link["rel"]} href={link["href"]} title={link["title"]} />')
-for link in resolved_links
+for link in self.resolved_links
 ]}
         ''')

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.linktags import SemanticLink
+from themester.themabaster.components.linktags import Linktags, SemanticLink
 
 
 @pytest.fixture
@@ -34,9 +34,13 @@ def this_props(this_pathto, this_hasdoc):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.linktags import Linktags
     ci = Linktags(**this_props)
     return ci
+
+
+def test_construction(this_component: Linktags):
+    assert 2 == len(this_component.resolved_links)
+    assert '../mock/genindex' == this_component.resolved_links[0]['href']
 
 
 def test_vdom(this_vdom):
@@ -56,7 +60,6 @@ def test_render(this_html):
 
 
 def test_wired_render(this_container, this_props, themabaster_app):
-    from themester.themabaster.components.linktags import Linktags  # noqa: F401
     del this_props['pathto']
     this_vdom = html('<{Linktags} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

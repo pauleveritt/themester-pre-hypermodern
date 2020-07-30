@@ -6,10 +6,10 @@ from themester.themabaster.components.sidebarlogo import SidebarLogo
 
 
 @pytest.fixture
-def this_props(theme_config, this_pagecontext):
+def this_props(sphinx_config, html_config, this_pagecontext):
     tp = dict(
-        logo=theme_config.logo,
-        master_doc=theme_config.master_doc,
+        logo=html_config.logo,
+        master_doc=sphinx_config.master_doc,
         pathto=this_pagecontext.pathto,
     )
     return tp
@@ -19,6 +19,11 @@ def this_props(theme_config, this_pagecontext):
 def this_component(this_props):
     ci = SidebarLogo(**this_props)
     return ci
+
+
+def test_construction(this_component: SidebarLogo):
+    assert '../mock/_static/site_logo.png' == this_component.resolved_logo
+    assert '../mock/index' == this_component.resolved_master
 
 
 def test_vdom(this_vdom, this_props):

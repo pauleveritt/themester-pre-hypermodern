@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.themabaster.components.head import Head
+
 
 @pytest.fixture
 def this_props(this_resource, this_pathto):
@@ -24,9 +26,15 @@ def this_props(this_resource, this_pathto):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.head import Head
     ci = Head(**this_props)
     return ci
+
+
+def test_construction(this_component: Head):
+    assert '../mock/_static/custom.css' == this_component.resolved_custom_css
+    assert '../mock/sometouchicon.png' == this_component.resolved_touch_icon.props['href']
+    assert '../mock/_static/documentation_options.js' == this_component.resolved_docs_src
+    assert '../mock/' == this_component.resolved_static_root
 
 
 def test_vdom(this_vdom, this_props):
@@ -62,8 +70,6 @@ def test_vdom(this_vdom, this_props):
 
 
 def test_vdom_extrahead(this_props):
-    from themester.themabaster.components.head import Head
-
     this_props['extrahead'] = html('''\n
 <link rel="first"/>
 <link rel="second"/>
@@ -74,7 +80,6 @@ def test_vdom_extrahead(this_props):
 
 
 def test_wired_render(themabaster_app, this_container):
-    from themester.themabaster.components.head import Head  # noqa: F401
     this_vdom = html('<{Head} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
@@ -90,7 +95,6 @@ def test_wired_render(themabaster_app, this_container):
 
 
 def test_wired_render_extrahead(themabaster_app, this_container):
-    from themester.themabaster.components.head import Head  # noqa: F401
     extrahead = html('''\n
     <link rel="extra" href="first" />
     <link rel="extra" href="second" />

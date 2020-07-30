@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Callable
 
 from viewdom import html, VDOM
@@ -10,11 +10,14 @@ from themester.sphinx.models import PageContext
 
 
 @component()
-@dataclass(frozen=True)
+@dataclass
 class Favicon:
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
     href: str = injected(HTMLConfig, attr='favicon')
+    resolved_href: str = field(init=False)
+
+    def __post_init__(self):
+        self.resolved_href = self.pathto(self.href, 1)
 
     def __call__(self) -> VDOM:
-        href = self.pathto(self.href, 1)
-        return html('<link rel="shortcut icon" href={href} />')
+        return html('<link rel="shortcut icon" href={self.resolved_href} />')

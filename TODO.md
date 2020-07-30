@@ -1,11 +1,6 @@
 # TODO
 
-- Move `__call__` variables out and either into `__post_init__` or properties
-
 ## Now
-
-
-## Next
 
 - Stop registering Themabaster as a Sphinx extension
 
@@ -15,7 +10,13 @@
     
         - Perhaps by having a `sphinx_setup(app)` protocol on each plugin
 
+## Next
+
+- Get autodoc into the integration tests
+
 ## Could Be Better
+
+- With resolved_some_attr = field(init=False), change to have the originals be InitVar and not stored on the instance
 
 - Have a Layout with components which don't render anything, then Themabaster simply has the `__call__` which render
 
@@ -67,3 +68,4 @@
 
 - Switch integration tests to use myst
 
+- Move `__call__` variables out and either into `__post_init__` or properties

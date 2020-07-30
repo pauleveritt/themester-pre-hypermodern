@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.themabaster.components.favicon import Favicon
+
 
 @pytest.fixture
 def this_props(this_pathto):
@@ -20,9 +22,8 @@ def this_component(this_props):
     return ci
 
 
-def test_construction(this_component, this_props):
-    for k, v in this_props.items():
-        assert getattr(this_component, k) == v
+def test_construction(this_component: Favicon, this_props):
+    assert '../mock/someicon.png' == this_component.resolved_href
 
 
 def test_vdom(this_vdom):

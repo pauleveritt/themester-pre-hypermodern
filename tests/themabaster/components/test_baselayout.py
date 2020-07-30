@@ -14,6 +14,14 @@ def doctype(soup):
     return items[0] if items else None
 
 
+def test_construction(sphinx_config):
+    ci = BaseLayout(
+        language=sphinx_config.language,
+        extrahead=None,
+    )
+    assert dict(lang='EN') == ci.html_props
+
+
 def test_defaults(themabaster_app, this_container):
     vdom = html('<{BaseLayout} />')
     rendered = render(vdom, container=this_container)

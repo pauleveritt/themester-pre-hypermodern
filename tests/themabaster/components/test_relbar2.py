@@ -5,9 +5,9 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx.prevnext import PreviousLink, NextLink
 from themester.themabaster.components.relbar2 import Relbar2
 from themester.themabaster.components.rellink_markup import RellinkMarkup
-from themester.sphinx.prevnext import PreviousLink, NextLink
 from themester.themabaster.config import ThemabasterConfig
 
 
@@ -34,6 +34,10 @@ def this_component(this_props):
     del this_props['next']
     ci = Relbar2(**this_props)
     return ci
+
+
+def test_construction(this_component: Relbar2):
+    assert this_component.show_relbar_top
 
 
 def test_vdom(this_vdom, this_props):

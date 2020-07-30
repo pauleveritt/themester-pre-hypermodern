@@ -1,7 +1,8 @@
 """
 The base layout, possibly extended by sublayouts.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Dict, Optional
 
 from markupsafe import Markup
 from viewdom import html, VDOM
@@ -17,14 +18,17 @@ from ...sphinx import SphinxConfig
 @dataclass
 class BaseLayout:
     language: str = injected(SphinxConfig, attr='language')
-    extrahead: VDOM = None
+    extrahead: Optional[VDOM] = None
     doctype: Markup = Markup('<!DOCTYPE html>\n')
+    html_props: Dict[str, str] = field(init=False)
+
+    def __post_init__(self):
+        self.html_props = dict(lang=self.language) if self.language else dict()
 
     def __call__(self) -> VDOM:
-        html_props = dict(lang=self.language) if self.language else dict()
         return html('''\n
 {self.doctype}
-<html ...{html_props}>
+<html ...{self.html_props}>
     <{Head} extrahead={self.extrahead} />
     <{Body} />
 </html>

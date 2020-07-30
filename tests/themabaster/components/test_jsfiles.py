@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.themabaster.components.jsfiles import JSFiles
+
 
 @pytest.fixture
 def this_props(this_pathto):
@@ -16,9 +18,13 @@ def this_props(this_pathto):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.jsfiles import JSFiles
     ci = JSFiles(**this_props)
     return ci
+
+
+def test_construction(this_component: JSFiles):
+    assert 4 == len(this_component.resolved_all_files)
+    assert '../mock/a' == this_component.resolved_all_files[0]
 
 
 def test_vdom(this_vdom):
@@ -33,7 +39,6 @@ def test_render(this_html):
 
 
 def test_wired_render(this_container, this_props, themabaster_app):
-    from themester.themabaster.components.jsfiles import JSFiles  # noqa: F401
     del this_props['pathto']
     this_vdom = html('<{JSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

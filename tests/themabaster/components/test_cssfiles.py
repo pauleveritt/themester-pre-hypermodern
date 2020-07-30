@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.themabaster.components.cssfiles import CSSFiles
+
 
 @pytest.fixture
 def this_props(this_pathto):
@@ -16,9 +18,12 @@ def this_props(this_pathto):
 
 @pytest.fixture
 def this_component(this_props):
-    from themester.themabaster.components.cssfiles import CSSFiles
     ci = CSSFiles(**this_props)
     return ci
+
+
+def test_construction(this_component: CSSFiles):
+    assert '../mock/c' == this_component.hrefs[0]
 
 
 def test_vdom(this_vdom):

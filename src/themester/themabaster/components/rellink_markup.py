@@ -10,7 +10,7 @@ This component expects to be passed an optional previous
 and/or next, each having link and title attributes.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from viewdom import html, VDOM
 from viewdom_wired import component
@@ -19,31 +19,35 @@ from themester.sphinx.prevnext import PreviousLink, NextLink
 
 
 @component()
-@dataclass(frozen=True)
+@dataclass
 class RellinkMarkup:
     """ Markup for rellink bars. """
 
     previous: PreviousLink
     next: NextLink
+    resolved_previous: VDOM = field(init=False)
+    resolved_next: VDOM = field(init=False)
 
-    def __call__(self) -> VDOM:
-        prev = html('''\n
+    def __post_init__(self):
+        self.resolved_previous = html('''\n
 <li>
     &larr;
     <a href="{self.previous.link}" title="Previous Document">{self.previous.title}</a>
 </li>
 ''') if self.previous else None
-        n = html('''\n
+        self.resolved_next = html('''\n
 <li>
     <a href="{self.next.link}" title="Next Document">{self.next.title}</a>
     &rarr;
 </li>
 ''') if self.previous else None
+
+    def __call__(self) -> VDOM:
         return html('''\n
 <nav id="rellinks">
     <ul>
-        {prev}
-        {n}
+        {self.resolved_previous}
+        {self.resolved_next}
     </ul>
 </nav>       
         ''')

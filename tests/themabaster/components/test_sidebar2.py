@@ -20,6 +20,12 @@ def this_component(this_props):
     return ci
 
 
+def test_construction(this_component: Sidebar2):
+    from themester.themabaster.components.localtoc import LocalToc
+    assert 5 == len(this_component.resolved_sidebars)
+    assert LocalToc == this_component.resolved_sidebars[0].tag
+
+
 def test_vdom(this_vdom, this_props):
     assert 'div' == this_vdom.tag
     assert SidebarLogo == this_vdom.children[0].children[0].tag
