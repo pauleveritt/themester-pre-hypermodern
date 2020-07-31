@@ -14,8 +14,6 @@ from viewdom import render, VDOM
 from wired import ServiceContainer
 
 from .resources import Site, Document, Collection
-from .. import themabaster
-from ..app import ThemesterApp
 from ..config import ThemesterConfig
 from ..protocols import Resource
 from ..sphinx.config import HTMLConfig, SphinxConfig
@@ -48,9 +46,10 @@ def themester_site_deep() -> Site:
 
 
 @pytest.fixture
-def themester_app(themester_site, themester_config, sphinx_config, html_config, theme_config) -> ThemesterApp:
+def themester_app(themester_site, themester_config, sphinx_config, html_config, theme_config):
     """ An app that depends on a root and a config """
 
+    from ..app import ThemesterApp
     return ThemesterApp(
         root=themester_site,
         themester_config=themester_config,
@@ -104,7 +103,6 @@ def theme_config() -> ThemabasterConfig:
 def themabaster_app(themester_app, sphinx_config, html_config, theme_config):
     """ Wire in the themabaster components, views, layout, etc. """
 
-    themester_app.setup_plugin(themabaster)
     themester_app.registry.register_singleton(sphinx_config, SphinxConfig)
     themester_app.registry.register_singleton(html_config, HTMLConfig)
     themester_app.registry.register_singleton(theme_config, ThemabasterConfig)

@@ -7,17 +7,18 @@ The ``ThemesterApp`` has all the contracts a system needs to fulfill.
 """
 
 from dataclasses import dataclass, field, InitVar
-from typing import Optional, Any, Union
+from importlib import import_module
+from pathlib import Path
+from typing import Optional, Any, Union, Tuple
 
 from venusian import Scanner
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
 from themester import url
-from themester.protocols import Root, View, Resource
-from themester.sphinx.config import SphinxConfig
-from themester.sphinx.config import HTMLConfig
 from themester.config import ThemesterConfig
+from themester.protocols import Root, View, Resource
+from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.themabaster.config import ThemabasterConfig
 
 
@@ -54,6 +55,11 @@ class ThemesterApp:
             self.registry.register_singleton(theme_config, ThemabasterConfig)
         scanner.scan(url)
 
+        # Now setup any configured Themester plugins
+        for plugin_string in themester_config.plugins:
+            plugin_module = import_module(plugin_string)
+            self.setup_plugin(plugin_module)
+
     def scan(self, module):
         """ Get the scanner and scan a module """
 
@@ -66,6 +72,25 @@ class ThemesterApp:
         scanner = self.container.get(Scanner)
         s = getattr(module, 'wired_setup')
         s(scanner)
+
+    def get_static_resources(self) -> Tuple[Path, ...]:
+        """ Any plugin that has static resources, return them """
+
+        # TODO This is dumb, to always re-import the plugins just to check
+        #   for static resources. Lots of alternatives. Perhaps if
+        #   "subscriptions" returns to wired (or here), we can let each
+        #   plugin be discovered and introspected. We can't really put
+        #   the plugins on the ThemesterApp instance as it might be
+        #   getting pickled in Sphinx.
+
+        tc: ThemesterConfig = self.container.get(ThemesterConfig)
+        plugins = [import_module(plugin_string) for plugin_string in tc.plugins]
+        static_resources = []
+        for plugin in plugins:
+            get_static_resources = getattr(plugin, 'get_static_resources')
+            if get_static_resources:
+                static_resources += get_static_resources()
+        return tuple(static_resources)
 
     def render(self,
                container: Optional[ServiceContainer] = None,

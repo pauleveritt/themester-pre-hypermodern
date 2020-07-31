@@ -1,1 +1,1 @@
-extensions = ['themester.sphinx', 'themester.themabaster', 'myst_parser']
+extensions = ['themester.sphinx', 'myst_parser']

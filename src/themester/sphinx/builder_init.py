@@ -10,7 +10,6 @@ This module provides some glue to "adapt" Sphinx to ThemesterApp.
 from sphinx.config import Config
 from venusian import Scanner
 
-from themester import themabaster
 from themester.app import ThemesterApp
 
 
@@ -30,17 +29,6 @@ def setup_app(
         html_config=getattr(sphinx_config, 'html_config'),
         theme_config=getattr(sphinx_config, 'theme_config'),
     )
-    themester_app.setup_plugin(themabaster)
     scanner = themester_app.container.get(Scanner)
-
-    # Go through the configuration and register stuff
-    # TODO Move these to ThemesterConfig
-    themester_plugins = []  # sphinx_config['themester_plugins']
-    for plugin in themester_plugins:
-        try:
-            themester_app.setup_plugin(plugin)
-        except AttributeError:
-            # No wired_setup so scan it instead
-            scanner.scan(plugin)
 
     return themester_app
