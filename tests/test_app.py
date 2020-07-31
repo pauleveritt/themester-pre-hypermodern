@@ -4,9 +4,8 @@ import pytest
 from venusian import Scanner
 from wired import ServiceContainer, ServiceRegistry
 
+from themester.app import ThemesterApp
 from themester.protocols import Root
-from themester.sphinx import SphinxConfig
-from themester.testing.fixtures import ThemesterApp
 from themester.views import register_view
 
 pytest_plugins = [
@@ -18,10 +17,12 @@ class Customer:
     name = 'Some Customer'
 
 
-def test_themester_app_default(themester_site):
+def test_themester_app_default(themester_site_deep, themester_config):
     ta = ThemesterApp(
-        root=themester_site,
+        root=themester_site_deep,
+        themester_config=themester_config,
         sphinx_config=None,
+        html_config=None,
         theme_config=None,
     )
     assert isinstance(ta.registry, ServiceRegistry)
@@ -29,8 +30,8 @@ def test_themester_app_default(themester_site):
 
     app: ThemesterApp = ta.container.get(ThemesterApp)
     assert app.registry == ta.registry
-    root: Root = ta.container.get(Root)
-    assert root == themester_site
+    container_root: Root = ta.container.get(Root)
+    assert themester_site_deep is container_root
     # Make sure the root/config attributes not on the dataclass instance,
     # as they are InitVars
     with pytest.raises(AttributeError):
@@ -39,50 +40,13 @@ def test_themester_app_default(themester_site):
     assert isinstance(scanner, Scanner)
 
 
-def test_themester_app_config(themester_site, sphinx_config, theme_config):
-    ta = ThemesterApp(
-        root=themester_site,
-        sphinx_config=sphinx_config,
-        theme_config=theme_config,
-    )
-    ta_config = ta.container.get(SphinxConfig)
-    assert ta_config == sphinx_config
-
-
-def test_themester_app_setup_plugin(themester_site):
+def test_themester_app_setup_plugin(themester_app):
     from themester.testing import views
     from themester.views import View
 
-    ta = ThemesterApp(
-        root=themester_site,
-        sphinx_config=None,
-        theme_config=None,
-    )
-    ta.setup_plugin(views)
-    view = ta.container.get(View)
+    themester_app.setup_plugin(views)
+    view = themester_app.container.get(View)
     assert view.name == 'Fixture View'
-
-
-# def test_themester_app_render_nocontext(themester_app):
-#     """ Use the app's ``site container`` """
-#
-#     expected = 'Hello somecustomer'
-#
-#     @dataclass
-#     class NoContextView:
-#
-#         def __call__(self):
-#             return expected
-#
-#     register_view(themester_app.registry, NoContextView)
-#
-#     # Fail with context
-#     with pytest.raises(LookupError):
-#         themester_app.render(context=Customer())
-#
-#     # Succeed with no context
-#     actual = themester_app.render()
-#     assert actual == expected
 
 
 def test_themester_app_render_context(themester_app):
@@ -123,10 +87,6 @@ def test_themester_app_render_container(themester_app):
             return expected
 
     register_view(themester_app.registry, ContainerView, context=Customer)
-
-    # Fail with no context
-    # with pytest.raises(LookupError):
-    #     themester_app.render()
 
     # Succeed with context
     customer = Customer()
