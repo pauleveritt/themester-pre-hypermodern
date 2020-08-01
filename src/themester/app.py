@@ -31,7 +31,6 @@ class ThemesterApp:
     theme_config: InitVar[Optional[ThemabasterConfig]]
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
     scanner: Scanner = field(init=False)
-    container: ServiceContainer = field(init=False)
 
     def __post_init__(self, themester_config=None, sphinx_config=None, html_config=None, theme_config=None):
         # Put some site-wide singletons into the registry, so you
@@ -94,7 +93,7 @@ class ThemesterApp:
         if container:
             this_container = container
         else:
-            this_container = self.registry.create_container(context=context)  #container if container is not None else self.container
+            this_container = self.registry.create_container(context=context)
         tc = this_container.get(ThemabasterConfig)
 
         # If we were passed in a context, make a container with it,

@@ -12,5 +12,5 @@ pytest_plugins = [
 @pytest.fixture
 def layouts_hello(themester_app):
     from . import components, views
-    themester_app.scan(components)
-    themester_app.scan(views)
+    themester_app.scanner.scan(components)
+    themester_app.scanner.scan(views)

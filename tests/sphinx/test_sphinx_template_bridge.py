@@ -18,7 +18,8 @@ def render_themester_bridge() -> ThemesterBridge:
 def render_context(themester_app: ThemesterApp):
     from themester.testing import views
     themester_app.setup_plugin(views)
-    c = dict(render_container=themester_app.container)
+    container = themester_app.registry.create_container()
+    c = dict(render_container=container)
     return c
 
 

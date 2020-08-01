@@ -8,4 +8,4 @@ pytest_plugins = [
 @pytest.fixture
 def views_context(themester_app):
     from . import views
-    themester_app.scan(views)
+    themester_app.scanner.scan(views)
