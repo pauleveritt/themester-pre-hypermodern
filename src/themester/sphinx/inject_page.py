@@ -11,18 +11,25 @@ from markupsafe import Markup
 from wired import ServiceContainer
 
 from themester.app import ThemesterApp
-from themester.protocols import Root
+from themester.protocols import Root, Document
 from themester.sphinx.models import PageContext, Link, Rellink
 
 
 def make_render_container(
+        document_metadata: Dict[str, Any],
         themester_app: ThemesterApp,
         pagename: str,
 ):
     """ Make a bound container for processing current page """
 
+    # To make the context, we need:
+    # - What resource type this page says it wants to be
+    # - A mapping from that string literal, to a dataclass
+    rt = document_metadata.get('type', 'document')
+    context = Root() if pagename == 'index' else Document(name=pagename, parent=None)
+
     render_container = themester_app.registry.create_container(
-        context=themester_app.root
+        context=context
     )
     return render_container
 
@@ -32,7 +39,7 @@ def make_page_context(
         context: Dict[str, Any],
         pagename: str,
         toc_num_entries: Dict[str, int],
-        sphinxenv_metadata: Dict[str, Dict[str, Any]],
+        document_metadata: Dict[str, Any],
 ):
     """ Given some Sphinx context information, register a singleton """
 
@@ -61,7 +68,7 @@ def make_page_context(
         display_toc=display_toc,
         hasdoc=context.get('hasdoc'),
         js_files=js_files,
-        meta=sphinxenv_metadata,
+        meta=document_metadata,
         metatags=context.get('metatags'),
         next=context.get('next'),
         page_source_suffix=context.get('page_source_suffix'),

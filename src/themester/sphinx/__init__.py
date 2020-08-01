@@ -19,6 +19,7 @@ def inject_page(app, pagename, templatename, context, doctree):
     """ Store a resource-bound container in Sphinx context """
 
     render_container = make_render_container(
+        app.env.metadata[pagename],
         app.themester_app,
         pagename=pagename,
     )
@@ -28,7 +29,7 @@ def inject_page(app, pagename, templatename, context, doctree):
         context=context,
         pagename=pagename,
         toc_num_entries=app.env.toc_num_entries,
-        sphinxenv_metadata=app.env.metadata,
+        document_metadata=app.env.metadata[pagename],
     )
     del render_container
 

@@ -6,6 +6,7 @@ registry.
 """
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Optional
 
 from viewdom import VDOM
@@ -21,6 +22,12 @@ class Root(Resource):
 
     name: str = ''
     parent: None = None
+
+
+@dataclass
+class Document(Resource):
+    name: str
+    parent: Optional[Resource]
 
 
 class View:
