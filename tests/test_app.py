@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import pytest
 from venusian import Scanner
 from wired import ServiceContainer, ServiceRegistry
+from wired.dataclasses import Context, injected
 
 from themester.app import ThemesterApp
 from themester.protocols import Root
@@ -13,8 +14,9 @@ pytest_plugins = [
 ]
 
 
+@dataclass
 class Customer:
-    name = 'Some Customer'
+    name: str
 
 
 def test_themester_app_default(themester_site_deep, themester_config):
@@ -66,11 +68,11 @@ def test_themester_app_render_context(themester_app):
         themester_app.render()
 
     # Succeed with context
-    actual = themester_app.render(context=Customer())
+    actual = themester_app.render(context=Customer(name='Some Customer'))
     assert actual == expected
 
 
-def test_themester_app_render_container(themester_app):
+def test_themester_app_multiple_renders(themester_app):
     """ Provide a per-render container
 
      The ``TemplateBridge`` wants Sphinx's ``inject_page`` to make a
@@ -78,21 +80,21 @@ def test_themester_app_render_container(themester_app):
      ``container.register_singleton``.
      """
 
-    expected = 'Hello containerview'
-
     @dataclass
     class ContainerView:
+        customer_name: str = injected(Context, attr='name')
 
         def __call__(self):
-            return expected
+            return self.customer_name
 
     register_view(themester_app.registry, ContainerView, context=Customer)
 
-    # Succeed with context
-    customer = Customer()
-    container = themester_app.container.bind(context=customer)
-    actual = themester_app.render(container=container)
-    assert actual == expected
+    # First render
+    customer1 = Customer(name='Some Customer')
+    assert 'Some Customer' == themester_app.render(context=customer1)
+
+    customer2 = Customer(name='Another Customer')
+    assert 'Another Customer' == themester_app.render(context=customer2)
 
 
 def test_themester_app_render_named(themester_app):
@@ -107,12 +109,13 @@ def test_themester_app_render_named(themester_app):
             return expected
 
     register_view(themester_app.registry, NamedView, context=Customer, name='somename')
+    customer = Customer(name='Some Customer')
     # Fail with no name
     with pytest.raises(LookupError):
-        themester_app.render(context=Customer())
+        themester_app.render(context=customer)
 
     # Succeeds when looking up by name
-    actual = themester_app.render(context=Customer(), view_name='somename')
+    actual = themester_app.render(context=customer, view_name='somename')
     assert actual == expected
 
 

@@ -1,6 +1,0 @@
-Hello World
-===========
-
-.. toctree::
-
-    api

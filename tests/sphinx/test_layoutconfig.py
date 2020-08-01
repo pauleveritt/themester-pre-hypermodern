@@ -1,2 +1,5 @@
-def test_construction(theme_config):
-    assert 'Themester SiteConfig' == theme_config.site_name
+from themester.themabaster.config import ThemabasterConfig
+
+
+def test_construction(theme_config: ThemabasterConfig):
+    assert 'sometouchicon.ico' == theme_config.touch_icon

@@ -22,7 +22,7 @@ def make_render_container(
     """ Make a bound container for processing current page """
 
     themester_root = themester_app.container.get(Root)
-    context = themester_root  # TODO Replace later when there is a pagename
+    context = object()  # TODO Replace later when there is a pagename
     render_container = themester_app.container.bind(context=context)
     return render_container
 

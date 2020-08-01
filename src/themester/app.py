@@ -101,13 +101,13 @@ class ThemesterApp:
 
         # If a container was passed in, use it as the basis for a render
         # container. Otherwise, use the site container and bind to it.
-        this_container = container if container is not None else self.container
+        this_container = self.registry.create_container(context=context)  #container if container is not None else self.container
         tc = this_container.get(ThemabasterConfig)
 
         # If we were passed in a context, make a container with it,
         # bound to the site container. Otherwise, use the site container.
-        if context is not None:
-            this_container = this_container.bind(context=context)
+        # if context is not None:
+        #     this_container = this_container.bind(context=context)
 
         # Sometimes we want to use named views
         if view_name:

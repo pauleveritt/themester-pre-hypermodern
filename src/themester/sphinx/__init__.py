@@ -20,7 +20,7 @@ def inject_page(app, pagename, templatename, context, doctree):
 
     render_container = make_render_container(
         app.themester_app,
-        pagename='',
+        pagename=pagename,
     )
     context['render_container'] = render_container
     make_page_context(
@@ -30,6 +30,7 @@ def inject_page(app, pagename, templatename, context, doctree):
         toc_num_entries=app.env.toc_num_entries,
         sphinxenv_metadata=app.env.metadata,
     )
+    del render_container
 
 
 def setup(app: Sphinx):
