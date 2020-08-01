@@ -2,11 +2,9 @@
 
 ## Now
 
-- Get autodoc into the integration tests
+- Refactor BaseLayout to have SidebarLayout as a child
 
 ## Next
-
-- Refactor BaseLayout to have SidebarLayout as a child
 
 - Bulmabaster
 
@@ -87,3 +85,6 @@
     - But allow it to do copy files as part of the Sphinx build process finishing
     
         - Perhaps by having a `sphinx_setup(app)` protocol on each plugin
+
+- Get autodoc into the integration tests
+
