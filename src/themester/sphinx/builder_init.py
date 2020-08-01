@@ -8,7 +8,6 @@ then from there, is on its own.
 This module provides some glue to "adapt" Sphinx to ThemesterApp.
 """
 from sphinx.config import Config
-from venusian import Scanner
 
 from themester.app import ThemesterApp
 
@@ -29,6 +28,5 @@ def setup_app(
         html_config=getattr(sphinx_config, 'html_config'),
         theme_config=getattr(sphinx_config, 'theme_config'),
     )
-    scanner = themester_app.container.get(Scanner)
 
     return themester_app

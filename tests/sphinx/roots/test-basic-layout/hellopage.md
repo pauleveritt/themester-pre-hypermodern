@@ -1,5 +1,3 @@
-==========
-Hello Page
-==========
+# The Hello Page
 
 This is a child of the root page.

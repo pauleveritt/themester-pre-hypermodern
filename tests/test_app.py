@@ -28,17 +28,15 @@ def test_themester_app_default(themester_site_deep, themester_config):
         theme_config=None,
     )
     assert isinstance(ta.registry, ServiceRegistry)
-    assert isinstance(ta.container, ServiceContainer)
+    assert isinstance(ta.scanner, Scanner)
+    assert themester_site_deep is ta.root
 
-    app: ThemesterApp = ta.container.get(ThemesterApp)
+    container = ta.registry.create_container()
+    app: ThemesterApp = container.get(ThemesterApp)
     assert app.registry == ta.registry
-    container_root: Root = ta.container.get(Root)
+    container_root: Root = container.get(Root)
     assert themester_site_deep is container_root
-    # Make sure the root/config attributes not on the dataclass instance,
-    # as they are InitVars
-    with pytest.raises(AttributeError):
-        ta.root  # noqa
-    scanner: Scanner = ta.container.get(Scanner)
+    scanner: Scanner = container.get(Scanner)
     assert isinstance(scanner, Scanner)
 
 
@@ -47,7 +45,8 @@ def test_themester_app_setup_plugin(themester_app):
     from themester.views import View
 
     themester_app.setup_plugin(views)
-    view = themester_app.container.get(View)
+    container = themester_app.registry.create_container()
+    view = container.get(View)
     assert view.name == 'Fixture View'
 
 

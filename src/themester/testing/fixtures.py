@@ -61,7 +61,8 @@ def themester_app(themester_site, themester_config, sphinx_config, html_config, 
 
 @pytest.fixture
 def themester_scanner(themester_app) -> Scanner:
-    scanner: Scanner = themester_app.container.get(Scanner)
+    container = themester_app.registry.create_container()
+    scanner: Scanner = container.get(Scanner)
     return scanner
 
 
@@ -199,7 +200,7 @@ def this_container(
         this_resource,  # Should have local override
 ) -> ServiceContainer:
     """ Scan for modules and return a context-bound container """
-    this_container = themester_app.container.bind(context=this_resource)
+    this_container = themester_app.registry.create_container(context=this_resource)
 
     # For this per-page container, register the PageContext
     # TODO Consider splitting this garbage barge into isolated services

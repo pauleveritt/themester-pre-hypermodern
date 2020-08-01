@@ -24,7 +24,7 @@ from themester.themabaster.config import ThemabasterConfig
 
 @dataclass
 class ThemesterApp:
-    root: InitVar[Root]
+    root: Root
     themester_config: InitVar[Optional[ThemesterConfig]]
     sphinx_config: InitVar[Optional[SphinxConfig]]
     html_config: InitVar[Optional[HTMLConfig]]
@@ -33,18 +33,14 @@ class ThemesterApp:
     scanner: Scanner = field(init=False)
     container: ServiceContainer = field(init=False)
 
-    def __post_init__(self, root, themester_config=None, sphinx_config=None, html_config=None, theme_config=None):
-        # Make a site-wide container versus the per-render container. This
-        # container uses the root as its context.
-        self.container = self.registry.create_container(context=root)
-
+    def __post_init__(self, themester_config=None, sphinx_config=None, html_config=None, theme_config=None):
         # Put some site-wide singletons into the registry, so you
         # can get them there instead of always needing this app instance
-        scanner = Scanner(registry=self.registry)
+        self.scanner = Scanner(registry=self.registry)
 
         self.registry.register_singleton(self, ThemesterApp)
-        self.registry.register_singleton(root, Root)
-        self.registry.register_singleton(scanner, Scanner)
+        self.registry.register_singleton(self.root, Root)
+        self.registry.register_singleton(self.scanner, Scanner)
         if themester_config:
             self.registry.register_singleton(themester_config, ThemesterConfig)
         if sphinx_config:
@@ -53,25 +49,18 @@ class ThemesterApp:
             self.registry.register_singleton(html_config, HTMLConfig)
         if theme_config:
             self.registry.register_singleton(theme_config, ThemabasterConfig)
-        scanner.scan(url)
+        self.scanner.scan(url)
 
         # Now setup any configured Themester plugins
         for plugin_string in themester_config.plugins:
             plugin_module = import_module(plugin_string)
             self.setup_plugin(plugin_module)
 
-    def scan(self, module):
-        """ Get the scanner and scan a module """
-
-        scanner: Scanner = self.container.get(Scanner)
-        scanner.scan(module)
-
     def setup_plugin(self, module):
         """ Call a plugin's setup function """
 
-        scanner = self.container.get(Scanner)
         s = getattr(module, 'wired_setup')
-        s(scanner)
+        s(self.scanner)
 
     def get_static_resources(self) -> Tuple[Path, ...]:
         """ Any plugin that has static resources, return them """
@@ -83,7 +72,8 @@ class ThemesterApp:
         #   the plugins on the ThemesterApp instance as it might be
         #   getting pickled in Sphinx.
 
-        tc: ThemesterConfig = self.container.get(ThemesterConfig)
+        container = self.registry.create_container()
+        tc: ThemesterConfig = container.get(ThemesterConfig)
         plugins = [import_module(plugin_string) for plugin_string in tc.plugins]
         static_resources = []
         for plugin in plugins:
@@ -101,7 +91,10 @@ class ThemesterApp:
 
         # If a container was passed in, use it as the basis for a render
         # container. Otherwise, use the site container and bind to it.
-        this_container = self.registry.create_container(context=context)  #container if container is not None else self.container
+        if container:
+            this_container = container
+        else:
+            this_container = self.registry.create_container(context=context)  #container if container is not None else self.container
         tc = this_container.get(ThemabasterConfig)
 
         # If we were passed in a context, make a container with it,

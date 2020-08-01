@@ -21,9 +21,9 @@ def make_render_container(
 ):
     """ Make a bound container for processing current page """
 
-    themester_root = themester_app.container.get(Root)
-    context = object()  # TODO Replace later when there is a pagename
-    render_container = themester_app.container.bind(context=context)
+    render_container = themester_app.registry.create_container(
+        context=themester_app.root
+    )
     return render_container
 
 
