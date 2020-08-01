@@ -37,7 +37,7 @@ def test_vdom_nosidebar():
     assert [] == this_vdom
 
 
-def test_wired_render(themabaster_app, this_container):
+def test_wired_render(this_container):
     this_vdom = html('<{Sidebar2} />')
     rendered = render(this_vdom, container=this_container)
     assert 'Table of Contents' in rendered

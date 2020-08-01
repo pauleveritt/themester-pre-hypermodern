@@ -36,7 +36,7 @@ def test_vdom(this_vdom, this_props):
     assert '../mock/_sources/thispage.md' == this_vdom.children[2][1].props['href']
 
 
-def test_wired_render(themabaster_app, this_container):
+def test_wired_render(this_container):
     this_vdom = html('<{Footer} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

@@ -52,7 +52,7 @@ def test_render(this_html):
     assert 'Some Page - Some Project' == title
 
 
-def test_wired_render(themabaster_app, this_container, this_props):
+def test_wired_render(this_container, this_props):
     this_vdom = html('<{Title} page_title="Some Page" project="Some Project" />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
@@ -60,7 +60,7 @@ def test_wired_render(themabaster_app, this_container, this_props):
     assert 'Some Page - Some Project' == title
 
 
-def test_wired_render_no_site_name(themabaster_app, this_container, this_props):
+def test_wired_render_no_site_name(this_container, this_props):
     this_vdom = html('<{Title} page_title="Some Page" project={None} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

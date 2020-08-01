@@ -38,7 +38,7 @@ def test_render(this_html):
     assert '../mock/a' == srcs[0].attrs['src']
 
 
-def test_wired_render(this_container, this_props, themabaster_app):
+def test_wired_render(this_container, this_props):
     del this_props['pathto']
     this_vdom = html('<{JSFiles} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

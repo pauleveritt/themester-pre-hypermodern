@@ -34,7 +34,7 @@ def test_vdom(this_vdom, this_props):
     assert ['Table of Contents'] == this_vdom.children[0].children[0].children
 
 
-def test_wired_render(themabaster_app, this_container):
+def test_wired_render(this_container):
     this_vdom = html('<{GlobalToc} />')
     rendered = render(this_vdom, container=this_container)
     assert '../mock/index' in rendered

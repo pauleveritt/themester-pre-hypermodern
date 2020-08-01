@@ -46,15 +46,14 @@ def test_vdom(this_vdom, this_props):
     assert RellinkMarkup == this_vdom.children[0].tag
 
 
-def test_wired_render(themabaster_app, this_container):
+def test_wired_render(this_container):
     # By default, no relbars should be shown as config is False
     this_vdom = html('<{Relbar1} />')
     rendered = render(this_vdom, container=this_container)
     assert '' == rendered
 
 
-def test_wired_render_show_relbars(themabaster_app, this_container,
-                                   theme_config):
+def test_wired_render_show_relbars(this_container, theme_config):
     # Change the config to show relbars
     tc = dataclasses.replace(
         theme_config,

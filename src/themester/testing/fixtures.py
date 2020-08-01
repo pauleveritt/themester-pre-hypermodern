@@ -101,16 +101,6 @@ def theme_config() -> ThemabasterConfig:
 
 
 @pytest.fixture
-def themabaster_app(themester_app, sphinx_config, html_config, theme_config):
-    """ Wire in the themabaster components, views, layout, etc. """
-
-    themester_app.registry.register_singleton(sphinx_config, SphinxConfig)
-    themester_app.registry.register_singleton(html_config, HTMLConfig)
-    themester_app.registry.register_singleton(theme_config, ThemabasterConfig)
-    return themester_app
-
-
-@pytest.fixture
 def this_vdom(this_component) -> VDOM:
     """ Use a local ``this_component`` fixture and render to a VDOM """
     vdom = this_component()

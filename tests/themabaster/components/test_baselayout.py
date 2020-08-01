@@ -22,7 +22,7 @@ def test_construction(sphinx_config):
     assert dict(lang='EN') == ci.html_props
 
 
-def test_defaults(themabaster_app, this_container):
+def test_defaults(this_container):
     vdom = html('<{BaseLayout} />')
     rendered = render(vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
@@ -32,7 +32,7 @@ def test_defaults(themabaster_app, this_container):
     assert 'html' == doctype(this_html)
 
 
-def test_config(themabaster_app, this_container, sphinx_config):
+def test_config(this_container, sphinx_config):
     sc = dataclasses.replace(
         sphinx_config,
         language='FR'
@@ -44,7 +44,7 @@ def test_config(themabaster_app, this_container, sphinx_config):
     assert 'FR' == this_html.select_one('html').get('lang')
 
 
-def test_extrahead(themabaster_app, this_container):
+def test_extrahead(this_container):
     extrahead = html('<link rel="stylesheet" />')
     this_vdom = html('<{BaseLayout} extrahead={extrahead} />')
     rendered = render(this_vdom, container=this_container)
@@ -52,7 +52,7 @@ def test_extrahead(themabaster_app, this_container):
     assert 13 == len(this_html.select('html head link'))
 
 
-def test_doctype(themabaster_app, this_container):
+def test_doctype(this_container):
     this_doctype = Markup('<!DOCTYPE html5>\n')
     this_vdom = html('<{BaseLayout} doctype={this_doctype} />')
     rendered = render(this_vdom, container=this_container)

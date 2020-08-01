@@ -59,7 +59,7 @@ def test_render(this_html):
     assert '../mock/copyright' == links[1].attrs['href']
 
 
-def test_wired_render(this_container, this_props, themabaster_app):
+def test_wired_render(this_container, this_props):
     del this_props['pathto']
     this_vdom = html('<{Linktags} ...{this_props}/>')
     rendered = render(this_vdom, container=this_container)

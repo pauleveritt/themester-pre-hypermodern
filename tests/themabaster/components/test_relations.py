@@ -39,7 +39,7 @@ def test_vdom(this_vdom, this_props):
     assert ['Documentation overview'] == first_li.children[0].children
 
 
-def test_wired_render(themabaster_app, this_container):
+def test_wired_render(this_container):
     this_vdom = html('<{Relations} />')
     rendered = render(this_vdom, container=this_container)
     assert '<div class="relations">' in rendered

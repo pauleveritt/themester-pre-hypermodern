@@ -79,7 +79,7 @@ def test_vdom_extrahead(this_props):
     assert 'second' == head.extrahead[1].props['rel']
 
 
-def test_wired_render(themabaster_app, this_container):
+def test_wired_render(this_container):
     this_vdom = html('<{Head} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
@@ -94,7 +94,7 @@ def test_wired_render(themabaster_app, this_container):
     assert '../mock/sometouchicon.ico' == links[7].attrs['href']
 
 
-def test_wired_render_extrahead(themabaster_app, this_container):
+def test_wired_render_extrahead(this_container):
     extrahead = html('''\n
     <link rel="extra" href="first" />
     <link rel="extra" href="second" />

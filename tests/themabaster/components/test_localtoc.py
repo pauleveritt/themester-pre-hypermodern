@@ -41,7 +41,7 @@ def test_vdom_no_display_toc(this_props):
     assert [] == this_vdom
 
 
-def test_wired_render(themabaster_app, this_container):
+def test_wired_render(this_container):
     this_vdom = html('<{LocalToc} />')
     rendered = render(this_vdom, container=this_container)
     expected = '<h3><a href="../mock/index">Table of Contents</a></h3><li>toc</li>'

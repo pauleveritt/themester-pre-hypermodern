@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.rellink_markup import RellinkMarkup
 from themester.sphinx.prevnext import PreviousLink, NextLink
+from themester.themabaster.components.rellink_markup import RellinkMarkup
 
 
 @pytest.fixture
@@ -53,7 +53,7 @@ def test_vdom(this_vdom, this_props):
     assert 'Next' == n.children[0]
 
 
-def test_wired_render(themabaster_app, this_container, this_props):
+def test_wired_render(this_container, this_props):
     this_vdom = html('<{RellinkMarkup} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

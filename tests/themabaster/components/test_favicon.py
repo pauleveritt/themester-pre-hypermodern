@@ -39,8 +39,7 @@ def test_render(this_html):
     assert '../mock/someicon.png' == link.attrs['href']
 
 
-def test_wired_render(themabaster_app, this_container):
-    from themester.themabaster.components.favicon import Favicon  # noqa: F401
+def test_wired_render(this_container):
     this_vdom = html('<{Favicon} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

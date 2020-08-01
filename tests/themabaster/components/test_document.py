@@ -50,7 +50,7 @@ def test_vdom_default(this_vdom, this_props):
     assert Relbar2 == this_vdom.children[0].children[0][2].tag
 
 
-def test_wired_render_default(themabaster_app, this_container, this_props):
+def test_wired_render_default(this_container, this_props):
     # With sidebars
     this_vdom = html('<{Document} />')
     rendered = render(this_vdom, container=this_container)
@@ -64,9 +64,7 @@ def test_wired_render_default(themabaster_app, this_container, this_props):
     assert not div.select('div.bottom')
 
 
-def test_wired_render_without_sidebars(
-        themabaster_app, html_config, this_container, this_props
-):
+def test_wired_render_without_sidebars(html_config, this_container, this_props):
     # Change the themabaster settings in the container
     tc = dataclasses.replace(html_config, nosidebar=True)
     this_container.register_singleton(tc, HTMLConfig)
