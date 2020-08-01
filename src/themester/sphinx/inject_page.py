@@ -26,7 +26,7 @@ def make_render_container(
     # - What resource type this page says it wants to be
     # - A mapping from that string literal, to a dataclass
     rt = document_metadata.get('type', 'document')
-    context = Root() if pagename == 'index' else Document(name=pagename, parent=None)
+    context = Root() if rt == 'homepage' else Document(name=pagename, parent=None)
 
     render_container = themester_app.registry.create_container(
         context=context

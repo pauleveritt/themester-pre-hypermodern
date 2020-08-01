@@ -8,17 +8,9 @@
 
 - Bulmabaster
 
-- Bring back simplified resources
-
-    - No tree
-    
-    - Just Sphinx snippet in inject_page
-    
-    - Get the type: page value and match to configured resource types
-    
-        - themester_config.resource_types = dict(page=Page)
-
 ## Could Be Better
+
+- `@resource` to register `type: homepage` -> `HomePage`
 
 - Allow arbitrary attributes on link and script
 
@@ -92,3 +84,11 @@
 
 - Get autodoc into the integration tests
 
+- Bring back simplified resources
+
+    - No tree
+    
+    - Just Sphinx snippet in inject_page
+    
+    - Get the type: page value and match to configured resource types
+    
