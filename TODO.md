@@ -24,6 +24,10 @@
 
 - Split up `sphinx.models` into individual units
 
+- Get rid of PrevLink and NextLink and stop injecting into this_container fixture, get from page context
+
+    - Or, continue the effort of breaking into small pieces
+
 ## Future
 
 - Named views to allow a page to put in YAML a specific view, such as homepage
