@@ -22,6 +22,12 @@
 
 ## Future
 
+- Have a themester_conf.py alongside conf.py:
+
+    - Allow modules as values, that ordinarily can't be pickled
+    
+    - Add subdirs under conf.py dir that should be scanned
+
 - Named views to allow a page to put in YAML a specific view, such as homepage
 
 - With resolved_some_attr = field(init=False), change to have the originals be InitVar and not stored on the instance
