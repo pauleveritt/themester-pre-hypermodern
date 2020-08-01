@@ -8,6 +8,8 @@
 
 ## Next
 
+- Clean all resolved_ fields
+
 - Sidebars from alabaster
 
 - Clear out tests/examples and ./examples
