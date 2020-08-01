@@ -1,13 +1,26 @@
-extensions = ['goku']
-html_theme = 'goku'
+from themester.sphinx import SphinxConfig, HTMLConfig
+from themester.themabaster.config import ThemabasterConfig
+
+extensions = ['themester.sphinx', 'myst_parser']
+
+sphinx_config = SphinxConfig(
+    language='fr',
+    project='Themester Sidebars'
+)
+html_config = HTMLConfig(
+    baseurl='https://somewhere.com/mysite',
+)
+theme_config = ThemabasterConfig(
+    touch_icon='touch_icon1',
+)
 
 # The rest is normal Sphinx stuff
-master_doc = 'index'
-html_title = ''
-templates_path = ['_templates']
-exclude_patterns = ['_build']
-project = 'Goku Sidebars'
-language = 'fr'
+# master_doc = 'index'
+# html_title = ''
+# templates_path = ['_templates']
+# exclude_patterns = ['_build']
+# project = 'Goku Sidebars'
+# language = 'fr'
 html_output_encoding = 'ascii'
 
 html_sidebars = {
@@ -36,7 +49,6 @@ html_theme_options = dict(
     donate_url='donate_url1',
     opencollective='opencollective1',
     tidelift_url='tidelift_url1',
-    touch_icon='touch_icon1',
     canonical_url='canonical_url1',
     github_banner='true',
     show_relbar_bottom=True,

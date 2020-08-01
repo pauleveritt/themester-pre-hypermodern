@@ -7,8 +7,11 @@ from themester.themabaster.components.head import Head
 
 
 @pytest.fixture
-def this_props(this_resource, this_pathto):
+def this_props(this_resource, this_pathto, html_config, this_pagecontext):
     props = dict(
+        baseurl='https://site.com',
+        file_suffix=html_config.file_suffix,
+        pagename=this_pagecontext.pagename,
         extrahead=None,
         favicon='someicon.png',
         page_title='Some Page',
@@ -32,14 +35,14 @@ def this_component(this_props):
 
 def test_construction(this_component: Head):
     assert '../mock/_static/custom.css' == this_component.resolved_custom_css
-    assert '../mock/sometouchicon.png' == this_component.resolved_touch_icon.props['href']
+    assert '../mock/_static/sometouchicon.png' == this_component.resolved_touch_icon.props['href']
     assert '../mock/_static/documentation_options.js' == this_component.resolved_docs_src
     assert '../mock/' == this_component.resolved_static_root
 
 
 def test_vdom(this_vdom, this_props):
     from themester.themabaster.components.cssfiles import CSSFiles
-    assert 10 == len(this_vdom.children)
+    assert 11 == len(this_vdom.children)
     assert 'head' == this_vdom.tag
     assert 'meta' == this_vdom.children[0].tag
     assert 'meta' == this_vdom.children[1].tag
@@ -64,9 +67,9 @@ def test_vdom(this_vdom, this_props):
         site_files=('site1.js', 'site2.js'),
     )
     assert [] == js.children
-    assert '../mock/sometouchicon.png' == this_vdom.children[7].props['href']
+    assert '../mock/_static/sometouchicon.png' == this_vdom.children[8].props['href']
     # No children
-    assert None is this_vdom.children[9]
+    assert None is this_vdom.children[10]
 
 
 def test_vdom_extrahead(this_props):
@@ -91,7 +94,7 @@ def test_wired_render(this_container):
     assert '../mock/_static/pygments.css' == links[3].attrs['href']
     assert '../mock/page_first.css' == links[4].attrs['href']
     assert '../mock/_static/custom.css' == links[6].attrs['href']
-    assert '../mock/sometouchicon.ico' == links[7].attrs['href']
+    assert '../mock/_static/sometouchicon.ico' == links[7].attrs['href']
 
 
 def test_wired_render_extrahead(this_container):

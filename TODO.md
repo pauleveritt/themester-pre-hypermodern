@@ -2,13 +2,37 @@
 
 ## Now
 
-- Refactor BaseLayout to have SidebarLayout as a child
+- Move canonical link to its own component
+
+- Get stuff out of Head and injected into component rather than passed as prop
 
 ## Next
 
-- Bulmabaster
+- Sidebars from alabaster
 
+- Clear out tests/examples and ./examples
+
+- More use of resources
+
+    - title
+    
+    - Moved out of "protocols"
+    
 ## Could Be Better
+
+- Have a themester_conf.py alongside conf.py:
+
+    - Allow modules as values, that ordinarily can't be pickled
+    
+    - Add subdirs under conf.py dir that should be scanned
+
+- Get rid of PrevLink and NextLink and stop injecting into this_container fixture, get from page context
+
+    - Or, continue the effort of breaking into small pieces
+
+- Fix remaining tests
+
+- Bulmabaster
 
 - `@resource` to register `type: homepage` -> `HomePage`
 
@@ -16,17 +40,7 @@
 
 - Split up `sphinx.models` into individual units
 
-- Get rid of PrevLink and NextLink and stop injecting into this_container fixture, get from page context
-
-    - Or, continue the effort of breaking into small pieces
-
 ## Future
-
-- Have a themester_conf.py alongside conf.py:
-
-    - Allow modules as values, that ordinarily can't be pickled
-    
-    - Add subdirs under conf.py dir that should be scanned
 
 - Named views to allow a page to put in YAML a specific view, such as homepage
 

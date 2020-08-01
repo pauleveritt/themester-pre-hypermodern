@@ -44,7 +44,7 @@ def make_page_context(
     """ Given some Sphinx context information, register a singleton """
 
     parents = tuple([
-        Link(title=link.title, link=link.title)
+        Link(title=link['title'], link=link['link'])
         for link in context.get('parents')
     ])
     rellinks = tuple([
