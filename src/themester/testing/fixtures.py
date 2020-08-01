@@ -4,13 +4,14 @@ Fixtures to construct parts of themester for tests in pluggable ways.
 Quickly construct an app using defaults. Override those defaults with
 local fixtures of the same name.
 """
+from dataclasses import dataclass
 from typing import Optional, Dict, Any, Callable
 
 import pytest
 from bs4 import BeautifulSoup
 from markupsafe import Markup
 from venusian import Scanner
-from viewdom import render, VDOM
+from viewdom import render, VDOM, html
 from wired import ServiceContainer
 
 from .resources import Site, Document, Collection
@@ -20,6 +21,14 @@ from ..sphinx.config import HTMLConfig, SphinxConfig
 from ..sphinx.models import PageContext
 from ..sphinx.prevnext import PreviousLink, NextLink
 from ..themabaster.config import ThemabasterConfig
+
+
+@dataclass
+class ThisComponent:
+    name: str = 'This Component'
+
+    def __call__(self) -> VDOM:
+        return html('<div>{self.name}</div>')
 
 
 @pytest.fixture
@@ -101,6 +110,22 @@ def theme_config() -> ThemabasterConfig:
 
 
 @pytest.fixture
+def this_props(this_resource) -> Dict[str, Any]:
+    """ Should be implemented by local fixture. Used to construct component. """
+    props: Dict[str, Any] = dict()
+    return props
+
+
+@pytest.fixture
+def this_component(this_props):
+    """ Intended to be overriden """
+
+    ci = ThisComponent(**this_props)
+
+    return ci
+
+
+@pytest.fixture
 def this_vdom(this_component) -> VDOM:
     """ Use a local ``this_component`` fixture and render to a VDOM """
     vdom = this_component()
@@ -158,13 +183,6 @@ def this_pagecontext(this_hasdoc, this_pathto, this_toctree):
         toctree=this_toctree,
     )
     return pc
-
-
-@pytest.fixture
-def this_props(this_resource) -> Dict[str, Any]:
-    """ Should be implemented by local fixture. Used to construct component. """
-    props: Dict[str, Any] = dict()
-    return props
 
 
 @pytest.fixture

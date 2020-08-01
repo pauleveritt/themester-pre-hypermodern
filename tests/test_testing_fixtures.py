@@ -45,4 +45,44 @@ def test_theme_config(theme_config):
     assert 'sometouchicon.ico' == theme_config.touch_icon
 
 
+def test_this_vdom(this_vdom):
+    assert 'div' == this_vdom.tag
+    assert 'This Component' == this_vdom.children[0]
 
+
+def test_this_html(this_html):
+    assert 'This Component' == this_html.select_one('div').text
+
+
+def test_this_pathto(this_pathto):
+    assert '../mock/somedoc' == this_pathto('somedoc', 0)
+
+
+def test_this_hasdoc(this_hasdoc):
+    assert True is this_hasdoc('somedoc')
+
+
+def test_this_toctree(this_toctree):
+    assert '<ul><li>First</li></ul>' == this_toctree()
+
+
+def test_this_pagecontext(this_pagecontext):
+    assert 'somedoc' == this_pagecontext.pagename
+
+
+def test_this_props(this_props):
+    assert {} == this_props
+
+
+def test_this_resource(this_resource):
+    assert 'd2' == this_resource.name
+
+
+def test_this_static_url(this_static_url):
+    assert 'mock/foo.css' == this_static_url('foo.css')
+
+
+def test_this_container(this_container):
+    from themester.sphinx.models import PageContext
+    pagecontext: PageContext = this_container.get(PageContext)
+    assert 'Some Page' == pagecontext.title
