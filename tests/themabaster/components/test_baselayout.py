@@ -6,7 +6,7 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.sphinx import SphinxConfig
-from themester.themabaster.components.base_layout import BaseLayout  # noqa: F401
+from themester.themabaster.components.base_layout import BaseLayout
 
 
 def doctype(soup):
