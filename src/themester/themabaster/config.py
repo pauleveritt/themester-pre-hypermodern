@@ -31,6 +31,7 @@ class Favicons:
         FaviconSize(size='144x144', filename='apple-touch-icon-72x72-precomposed.png'),
     )
 
+
 def get_sidebars():
     """ Escape circular import hell """
 
@@ -54,19 +55,21 @@ class ThemabasterConfig:
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
 
     # Alabaster
+    badge_branch: str = 'master'
+    codecov_button: bool = False
+    codecov_path: Optional[str] = None
     description: Optional[str] = None
+    github_button: bool = True
+    github_count: str = 'true'
+    github_repo: Optional[str] = None
+    github_type: str = 'watch'
+    github_user: Optional[str] = None
     show_powered_by: bool = True
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
-    github_user: Optional[str] = None
-    github_repo: Optional[str] = None
-    github_button: bool = True
-    github_type: str = 'watch'
-    github_count: str = 'true'
     travis_button: bool = False
     travis_path: Optional[str] = None
-    badge_branch: str = 'master'
 
     favicons: Favicons = Favicons()
 
