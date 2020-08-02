@@ -7,10 +7,8 @@ from themester.themabaster.components.head import Head
 
 
 @pytest.fixture
-def this_props(this_resource, this_pathto, html_config, this_pagecontext):
+def this_props(this_resource, this_pathto, this_pagecontext):
     props = dict(
-        baseurl='https://site.com',
-        file_suffix=html_config.file_suffix,
         pagename=this_pagecontext.pagename,
         extrahead=None,
         favicon='someicon.png',

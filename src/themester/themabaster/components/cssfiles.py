@@ -5,7 +5,9 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
 
+from themester.sphinx.config import HTMLConfig
 from themester.sphinx.models import PageContext
+from themester.themabaster.config import ThemabasterConfig
 
 
 def CSSFile(href: str) -> VDOM:
@@ -18,9 +20,9 @@ def CSSFile(href: str) -> VDOM:
 @dataclass
 class CSSFiles:
     pathto: Callable[[str, int], int] = injected(PageContext, attr='pathto')
-    site_files: Tuple[str, ...] = tuple()
-    theme_files: Tuple[str, ...] = tuple()
-    page_files: Tuple[str, ...] = tuple()
+    site_files: Tuple[str, ...] = injected(HTMLConfig, attr='css_files')
+    theme_files: Tuple[str, ...] = injected(ThemabasterConfig, attr='css_files')
+    page_files: Tuple[str, ...] = injected(PageContext, attr='css_files')
     hrefs: List = field(init=False)
 
     def __post_init__(self):
