@@ -15,8 +15,8 @@ from themester.sphinx.models import PageContext
 
 @component()
 @dataclass
-class SidebarLogo:
-    """ The logo in the Sidebar block component """
+class AboutLogo:
+    """ The logo block in the About sidebar """
 
     logo: str = injected(HTMLConfig, attr='logo')
     master_doc: str = injected(SphinxConfig, attr='master_doc')
@@ -28,7 +28,7 @@ class SidebarLogo:
         self.resolved_master = self.pathto(self.master_doc, 0)
         self.resolved_logo = self.pathto(f'_static/{self.logo}', 1)
 
-    def __call__(self) -> VDOM:
+    def __call__(self) -> Optional[VDOM]:
         if self.logo:
             return html('''\n
 <p class="logo">
@@ -37,4 +37,4 @@ class SidebarLogo:
     </a>
 </p>
                     ''')
-        return html('')
+        return None

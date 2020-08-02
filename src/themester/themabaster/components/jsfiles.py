@@ -13,7 +13,7 @@ from themester.themabaster.config import ThemabasterConfig
 def JSFile(src: str) -> VDOM:
     """ Small anonymous component used with the parent """
     # language=HTML
-    return html('<script type="text/javascript" src="{src}"></script>')
+    return html('<script type="text/javascript" src={src}>//</script>')
 
 
 @component()

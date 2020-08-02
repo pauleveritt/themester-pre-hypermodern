@@ -3,7 +3,7 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.components.sidebar2 import Sidebar2
-from themester.themabaster.components.sidebarlogo import SidebarLogo
+from themester.themabaster.sidebars.about_logo import AboutLogo
 
 
 @pytest.fixture
@@ -28,7 +28,7 @@ def test_construction(this_component: Sidebar2):
 
 def test_vdom(this_vdom, this_props):
     assert 'div' == this_vdom.tag
-    assert SidebarLogo == this_vdom.children[0].children[0].tag
+    assert AboutLogo == this_vdom.children[0].children[0].tag
 
 
 def test_vdom_nosidebar():

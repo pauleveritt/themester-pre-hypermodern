@@ -54,10 +54,12 @@ class ThemabasterConfig:
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
 
     # Alabaster
+    description: Optional[str] = None
     show_powered_by: bool = True
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
+
     favicons: Favicons = Favicons()
 
     # Not in Sphinx/Alabaster

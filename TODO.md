@@ -36,6 +36,8 @@
 
 - Split up `sphinx.models` into individual units
 
+- GitHub banner
+
 ## Future
 
 - Named views to allow a page to put in YAML a specific view, such as homepage

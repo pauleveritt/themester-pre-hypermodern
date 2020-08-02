@@ -10,7 +10,7 @@ from viewdom_wired import component
 from wired.dataclasses import injected
 
 from themester.themabaster.config import ThemabasterConfig
-from ..components.sidebarlogo import SidebarLogo  # noqa: F401
+from themester.themabaster.sidebars.about_logo import AboutLogo  # noqa: F401
 
 
 @component()
