@@ -1,3 +1,5 @@
+import dataclasses
+
 import pytest
 from bs4 import BeautifulSoup
 from viewdom import html
@@ -9,7 +11,7 @@ from themester.themabaster.components.faviconset import FaviconSet
 @pytest.fixture(scope='function')
 def this_props(theme_config, this_pathto):
     props = dict(
-        favicons=theme_config.favicons,
+        favicons=dataclasses.replace(theme_config.favicons),
         pathto=this_pathto,
     )
     return props

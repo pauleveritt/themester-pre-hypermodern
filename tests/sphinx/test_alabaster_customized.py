@@ -4,6 +4,7 @@ from bs4.element import Tag
 pytestmark = pytest.mark.sphinx('html', testroot='alabaster-customized')
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize('page', ['subdir/subfile.html', ], indirect=True)
 class TestAlabasterCustomizedConf:
     """ Twiddle a bunch of knobs in the conf file """

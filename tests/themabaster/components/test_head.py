@@ -10,9 +10,8 @@ from themester.themabaster.components.title import Title
 
 
 @pytest.fixture
-def this_props(this_resource, this_pathto, this_pagecontext):
+def this_props(this_pathto):
     props = dict(
-        pagename=this_pagecontext.pagename,
         extrahead=None,
         pathto=this_pathto,
     )
@@ -57,12 +56,12 @@ def test_vdom_extrahead(this_props):
 
 
 def test_wired_render(this_container):
-    this_vdom = html('<{Head} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    assert 'Some Page - Themester SiteConfig' == this_html.select_one('title').text
-    links = this_html.select('link')
-    assert 13 == len(links)
+    vdom = html('<{Head} />')
+    rendered = render(vdom, container=this_container)
+    local_html = BeautifulSoup(rendered, 'html.parser')
+    assert 'Some Page - Themester SiteConfig' == local_html.select_one('title').text
+    links = local_html.select('link')
+    assert 17 == len(links)
     assert '../mock/site_first.css' == links[0].attrs['href']
     assert '../mock/_static/themabaster.css' == links[2].attrs['href']
     assert '../mock/_static/pygments.css' == links[3].attrs['href']
@@ -75,9 +74,9 @@ def test_wired_render_extrahead(this_container):
     <link rel="extra" href="first" />
     <link rel="extra" href="second" />
     ''')
-    this_vdom = html('<{Head} extrahead={extrahead}/>')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    links = this_html.select('link[rel="extra"]')
+    local_vdom = html('<{Head} extrahead={extrahead}/>')
+    rendered = render(local_vdom, container=this_container)
+    local_html = BeautifulSoup(rendered, 'html.parser')
+    links = local_html.select('link[rel="extra"]')
     assert len(links) == 2
     assert 'first' == links[0].attrs['href']

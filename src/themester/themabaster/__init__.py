@@ -12,7 +12,7 @@ from typing import Tuple
 
 from venusian import Scanner
 
-from . import components, views
+from . import components, sidebars, views
 from .components import cssfiles
 
 
@@ -27,4 +27,5 @@ def get_static_resources() -> Tuple[Path, ...]:
 def wired_setup(scanner: Scanner):
     scanner.scan(components)
     scanner.scan(cssfiles)
+    scanner.scan(sidebars)
     scanner.scan(views)
