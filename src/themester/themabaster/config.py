@@ -59,6 +59,12 @@ class ThemabasterConfig:
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
+    github_user: Optional[str] = None
+    github_repo: Optional[str] = None
+    github_button: bool = True
+    github_type: str = 'watch'
+    github_count: str = 'true'
+
 
     favicons: Favicons = Favicons()
 

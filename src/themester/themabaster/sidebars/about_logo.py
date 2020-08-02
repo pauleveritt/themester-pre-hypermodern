@@ -1,5 +1,5 @@
 """
-SidebarLogo is a block in the Sidebar component.
+AboutLogo is a block in the About component.
 """
 
 from dataclasses import dataclass, field
