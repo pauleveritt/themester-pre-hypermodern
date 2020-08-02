@@ -2,15 +2,9 @@
 
 ## Now
 
-- Move canonical link to its own component
-
-- Get stuff out of Head and injected into component rather than passed as prop
+- Sidebars from alabaster
 
 ## Next
-
-- Clean all resolved_ fields
-
-- Sidebars from alabaster
 
 - Clear out tests/examples and ./examples
 
@@ -114,3 +108,7 @@
     
     - Get the type: page value and match to configured resource types
     
+- Move canonical link to its own component
+
+- Get stuff out of Head and injected into component rather than passed as prop
+

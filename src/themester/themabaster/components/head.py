@@ -21,7 +21,6 @@ from ...sphinx.models import PageContext
 @component()
 @dataclass
 class Head:
-    pagename: str = injected(PageContext, attr='pagename')
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
     extrahead: Optional[Tuple[VDOM, ...]] = None
     charset: str = 'utf-8'
