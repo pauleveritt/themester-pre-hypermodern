@@ -4,13 +4,17 @@ from typing import Optional
 from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
+from wired.dataclasses import injected
+
+from themester.sphinx import SphinxConfig
+from themester.sphinx.models import PageContext
 
 
 @component()
 @dataclass
 class Title:
-    page_title: str
-    project: Optional[str] = ''
+    page_title: str = injected(PageContext, attr='title')
+    project: Optional[str] = injected(SphinxConfig, attr='project')
     resolved_title: str = field(init=False)
 
     def __post_init__(self):

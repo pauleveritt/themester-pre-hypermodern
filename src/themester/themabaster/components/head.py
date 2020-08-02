@@ -15,7 +15,7 @@ from .jsfiles import JSFiles  # noqa: F401
 from .linktags import Linktags  # noqa: F401
 from .title import Title  # noqa: F401
 from ..config import ThemabasterConfig
-from ...sphinx.config import HTMLConfig, SphinxConfig
+from ...sphinx.config import HTMLConfig
 from ...sphinx.models import PageContext
 
 
@@ -23,8 +23,6 @@ from ...sphinx.models import PageContext
 @dataclass
 class Head:
     favicon: Optional[str] = injected(HTMLConfig, attr='favicon')
-    page_title: str = injected(PageContext, attr='title')
-    project: Optional[str] = injected(SphinxConfig, attr='project')
     touch_icon: Optional[str] = injected(ThemabasterConfig, attr='touch_icon')
     pagename: str = injected(PageContext, attr='pagename')
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
@@ -51,7 +49,7 @@ class Head:
 <head>
   <meta charset="{self.charset}" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <{Title} page_title={self.page_title} project={self.project} />
+  <{Title} />
   <{CSSFiles} />
   <script id="documentation_options" data-url_root="{self.resolved_static_root}" src="{self.resolved_docs_src}">//</script>
   <{JSFiles} />

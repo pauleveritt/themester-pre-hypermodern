@@ -7,10 +7,10 @@ from themester.themabaster.components.title import Title
 
 
 @pytest.fixture
-def this_props(this_resource):
+def this_props(sphinx_config, this_pagecontext):
     props = dict(
-        page_title='Some Page',
-        project='Some Project',
+        page_title=this_pagecontext.title,
+        project=sphinx_config.project,
     )
     return props
 
@@ -22,11 +22,11 @@ def this_component(this_props):
 
 
 def test_construction(this_component: Title):
-    assert 'Some Page - Some Project' == this_component.resolved_title
+    assert 'Some Page - Themester SiteConfig' == this_component.resolved_title
 
 
 def test_vdom(this_vdom):
-    assert this_vdom.children == ['Some Page - Some Project']
+    assert this_vdom.children == ['Some Page - Themester SiteConfig']
 
 
 def test_vdom_no_site_name():
@@ -49,15 +49,15 @@ def test_vdom_raw_html():
 
 def test_render(this_html):
     title = this_html.select_one('title').text
-    assert 'Some Page - Some Project' == title
+    assert 'Some Page - Themester SiteConfig' == title
 
 
 def test_wired_render(this_container, this_props):
-    this_vdom = html('<{Title} page_title="Some Page" project="Some Project" />')
+    this_vdom = html('<{Title} page_title="Some Page" project="Themester SiteConfig" />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     title = this_html.select_one('title').text
-    assert 'Some Page - Some Project' == title
+    assert 'Some Page - Themester SiteConfig' == title
 
 
 def test_wired_render_no_site_name(this_container, this_props):

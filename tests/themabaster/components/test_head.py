@@ -15,8 +15,6 @@ def this_props(this_resource, this_pathto, this_pagecontext):
         pagename=this_pagecontext.pagename,
         extrahead=None,
         favicon='someicon.png',
-        page_title='Some Page',
-        project='Some Project',
         touch_icon='sometouchicon.png',
         pathto=this_pathto,
     )
@@ -43,8 +41,6 @@ def test_vdom(this_vdom, this_props):
     assert 'meta' == this_vdom.children[1].tag
     title = this_vdom.children[2]
     assert Title == title.tag
-    assert dict(page_title='Some Page', project='Some Project') == title.props
-    assert [] == title.children
     css = this_vdom.children[3]
     assert CSSFiles == css.tag
     js = this_vdom.children[5]
