@@ -64,7 +64,9 @@ class ThemabasterConfig:
     github_button: bool = True
     github_type: str = 'watch'
     github_count: str = 'true'
-
+    travis_button: bool = False
+    travis_path: Optional[str] = None
+    badge_branch: str = 'master'
 
     favicons: Favicons = Favicons()
 

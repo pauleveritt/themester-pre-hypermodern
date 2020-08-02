@@ -1,5 +1,5 @@
 """
-SidebarLogo is a block in the Sidebar component.
+AboutGitHubButton is a block in the Sidebar component.
 """
 
 from dataclasses import dataclass, field
