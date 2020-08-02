@@ -30,7 +30,6 @@ def test_construction(this_component: CSSFiles):
 
 
 def test_vdom(this_vdom):
-    # TODO Need to re-invent VDOM data type to be tuple-ish at the root.
     assert 6 == len(this_vdom)
     assert '../mock/site_first.css' == this_vdom[0].props['href']
 

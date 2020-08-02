@@ -4,6 +4,9 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.components.head import Head
+from themester.themabaster.components.cssfiles import CSSFiles
+from themester.themabaster.components.jsfiles import JSFiles
+from themester.themabaster.components.title import Title
 
 
 @pytest.fixture
@@ -15,11 +18,6 @@ def this_props(this_resource, this_pathto, this_pagecontext):
         page_title='Some Page',
         project='Some Project',
         touch_icon='sometouchicon.png',
-        site_css_files=('site1.css', 'site2.css',),
-        theme_css_files=('theme1.css', 'theme2.css',),
-        page_css_files=('page1.css', 'page2.css'),
-        site_js_files=('site1.js', 'site2.js',),
-        page_js_files=('page1.js', 'page2.js'),
         pathto=this_pathto,
     )
     return props
@@ -39,32 +37,18 @@ def test_construction(this_component: Head):
 
 
 def test_vdom(this_vdom, this_props):
-    from themester.themabaster.components.cssfiles import CSSFiles
     assert 11 == len(this_vdom.children)
     assert 'head' == this_vdom.tag
     assert 'meta' == this_vdom.children[0].tag
     assert 'meta' == this_vdom.children[1].tag
     title = this_vdom.children[2]
-    from themester.themabaster.components.title import Title
     assert Title == title.tag
     assert dict(page_title='Some Page', project='Some Project') == title.props
     assert [] == title.children
     css = this_vdom.children[3]
     assert CSSFiles == css.tag
-    assert dict(
-        site_files=('site1.css', 'site2.css'),
-        theme_files=('theme1.css', 'theme2.css'),
-        page_files=('page1.css', 'page2.css'),
-    ) == css.props
-    assert [] == css.children
     js = this_vdom.children[5]
-    from themester.themabaster.components.jsfiles import JSFiles
     assert JSFiles == js.tag
-    assert js.props == dict(
-        page_files=('page1.js', 'page2.js'),
-        site_files=('site1.js', 'site2.js'),
-    )
-    assert [] == js.children
     assert '../mock/_static/sometouchicon.png' == this_vdom.children[8].props['href']
     # No children
     assert None is this_vdom.children[10]

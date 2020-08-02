@@ -33,6 +33,4 @@ class CSSFiles:
         ]
 
     def __call__(self) -> VDOM:
-        return html('''\n
-{[CSSFile(href) for href in self.hrefs]}
-        ''')
+        return html('{[CSSFile(href) for href in self.hrefs]}')

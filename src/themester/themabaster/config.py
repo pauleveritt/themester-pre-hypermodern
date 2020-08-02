@@ -44,3 +44,5 @@ class ThemabasterConfig:
         '_static/themabaster.css',
         '_static/pygments.css',
     )
+    js_files: Tuple[str, ...] = tuple()
+

@@ -25,9 +25,7 @@ class Head:
     favicon: Optional[str] = injected(HTMLConfig, attr='favicon')
     page_title: str = injected(PageContext, attr='title')
     project: Optional[str] = injected(SphinxConfig, attr='project')
-    site_js_files: Tuple[str, ...] = injected(HTMLConfig, attr='js_files')
     touch_icon: Optional[str] = injected(ThemabasterConfig, attr='touch_icon')
-    page_js_files: Tuple[str, ...] = injected(PageContext, attr='css_files')
     pagename: str = injected(PageContext, attr='pagename')
     pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
     extrahead: Optional[Tuple[VDOM, ...]] = None
@@ -56,7 +54,7 @@ class Head:
   <{Title} page_title={self.page_title} project={self.project} />
   <{CSSFiles} />
   <script id="documentation_options" data-url_root="{self.resolved_static_root}" src="{self.resolved_docs_src}">//</script>
-  <{JSFiles} page_files={self.page_js_files} site_files={self.site_js_files} />
+  <{JSFiles} />
   <link rel="stylesheet" href="{self.resolved_custom_css}" type="text/css"/>
   <{CanonicalLink} />
   {self.resolved_touch_icon}
