@@ -26,12 +26,12 @@ def this_component(this_props):
 
 
 def test_construction(this_component: CanonicalLink):
-    expected = 'https://somewhere.com/mysite/somedoc.html'
-    assert expected == this_component.canonical_href
+    assert 'https://somewhere.com/mysite/somedoc.html' == this_component.canonical_href
 
 
 def test_vdom(this_vdom):
-    assert this_vdom.children == ['Some Page - Some Project']
+    assert 'canonical' == this_vdom.props['rel']
+    assert 'https://somewhere.com/mysite/somedoc.html' == this_vdom.props['href']
 
 
 def test_no_baseurl(this_props):
@@ -40,7 +40,7 @@ def test_no_baseurl(this_props):
     expected = 'https://somewhere.com/mysite/somedoc.html'
     assert None is ci.canonical_href
     vdom = ci()
-    assert 9 is None
+    assert None is vdom
 
 
 def test_render(this_html):

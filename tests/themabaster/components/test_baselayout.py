@@ -28,7 +28,7 @@ def test_defaults(this_container):
     this_html = BeautifulSoup(rendered, 'html.parser')
 
     assert 'EN' == this_html.select_one('html').get('lang')
-    assert 12 == len(this_html.select('html head link'))
+    assert 17 == len(this_html.select('html head link'))
     assert 'html' == doctype(this_html)
 
 
@@ -49,7 +49,7 @@ def test_extrahead(this_container):
     this_vdom = html('<{BaseLayout} extrahead={extrahead} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    assert 13 == len(this_html.select('html head link'))
+    assert 18 == len(this_html.select('html head link'))
 
 
 def test_doctype(this_container):

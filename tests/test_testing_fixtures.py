@@ -42,7 +42,7 @@ def test_themester_html_config(html_config):
 
 
 def test_theme_config(theme_config):
-    assert 'sometouchicon.ico' == theme_config.touch_icon
+    assert 'favicon.ico' == theme_config.favicons.shortcut
 
 
 def test_this_vdom(this_vdom):

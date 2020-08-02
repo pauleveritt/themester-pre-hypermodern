@@ -103,9 +103,7 @@ def html_config() -> HTMLConfig:
 
 @pytest.fixture
 def theme_config() -> ThemabasterConfig:
-    tc = ThemabasterConfig(
-        touch_icon='sometouchicon.ico'
-    )
+    tc = ThemabasterConfig()
     return tc
 
 

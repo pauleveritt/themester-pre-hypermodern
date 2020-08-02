@@ -7,8 +7,29 @@ file then injected into the site container as a singleton.
 """
 
 from dataclasses import dataclass, field
-from typing import Optional, Tuple, Callable
+from typing import Optional, Tuple, Callable, Sequence
 
+
+@dataclass
+class FaviconSize:
+    size: str
+    filename: str
+
+
+@dataclass
+class Favicons:
+    """ Configure a potential set of ico/png images at different sizes.
+
+    Presumes images are in the static directory once deployed and are relative to it.
+     """
+
+    shortcut: Optional[str] = 'favicon.ico'
+    png: Optional[str] = 'apple-touch-icon-precomposed.png'
+    sizes: Optional[Sequence[FaviconSize]] = (
+        FaviconSize(size='72x72', filename='apple-touch-icon-144x144-precomposed.png'),
+        FaviconSize(size='114x114', filename='apple-touch-icon-114x114-precomposed.png'),
+        FaviconSize(size='144x144', filename='apple-touch-icon-72x72-precomposed.png'),
+    )
 
 def get_sidebars():
     """ Escape circular import hell """
@@ -37,7 +58,7 @@ class ThemabasterConfig:
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
-    touch_icon: Optional[str] = None
+    favicons: Favicons = Favicons()
 
     # Not in Sphinx/Alabaster
     css_files: Tuple[str, ...] = (
@@ -45,4 +66,3 @@ class ThemabasterConfig:
         '_static/pygments.css',
     )
     js_files: Tuple[str, ...] = tuple()
-
