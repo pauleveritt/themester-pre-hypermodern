@@ -40,6 +40,11 @@ def test_vdom_nosidebar(this_props):
     assert None is this_vdom
 
 
+def test_render(this_html):
+    assert '../mock/index' == this_html.select_one('p.logo a').get('href')
+    assert '../mock/_static/site_logo.png' == this_html.select_one('p.logo img').get('src')
+
+
 def test_wired_render(this_container):
     this_vdom = html('<{AboutLogo} />')
     rendered = render(this_vdom, container=this_container)

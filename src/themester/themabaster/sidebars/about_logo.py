@@ -18,7 +18,7 @@ from themester.sphinx.models import PageContext
 class AboutLogo:
     """ The logo block in the About sidebar """
 
-    logo: str = injected(HTMLConfig, attr='logo')
+    logo: Optional[str] = injected(HTMLConfig, attr='logo')
     master_doc: str = injected(SphinxConfig, attr='master_doc')
     pathto: Callable[[str, Optional[int]], str] = injected(PageContext, attr='pathto')
     resolved_master: str = field(init=False)
@@ -26,7 +26,7 @@ class AboutLogo:
 
     def __post_init__(self):
         self.resolved_master = self.pathto(self.master_doc, 0)
-        self.resolved_logo = self.pathto(f'_static/{self.logo}', 1)
+        self.resolved_logo = self.pathto(f'_static/{self.logo}', 1) if self.logo else ''
 
     def __call__(self) -> Optional[VDOM]:
         if self.logo:

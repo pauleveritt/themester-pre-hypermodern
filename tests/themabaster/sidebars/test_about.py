@@ -4,39 +4,32 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.themabaster.sidebars.about import About
+from themester.themabaster.sidebars.about_description import AboutDescription
+from themester.themabaster.sidebars.about_github_button import AboutGitHubButton
+from themester.themabaster.sidebars.about_logo import AboutLogo
+from themester.themabaster.sidebars.about_travis_button import AboutTravisButton
 
 
 @pytest.fixture
-def this_props(sphinx_config, this_pagecontext):
-    props = dict(
-        page_title=this_pagecontext.title,
-        project=sphinx_config.project,
-    )
-    return props
-
-
-@pytest.fixture
-def this_component(this_props):
-    ci = About(**this_props)
+def this_component():
+    ci = About()
     return ci
 
 
 def test_construction(this_component: About):
-    assert 'Some Page - Themester SiteConfig' == this_component.resolved_title
+    assert this_component
 
 
 def test_vdom(this_vdom):
-    assert this_vdom.children == ['Some Page - Themester SiteConfig']
-
-
-def test_render(this_html):
-    title = this_html.select_one('title').text
-    assert 'Some Page - Themester SiteConfig' == title
+    assert AboutLogo == this_vdom[0].tag
+    assert AboutDescription == this_vdom[1].tag
+    assert AboutGitHubButton == this_vdom[2].tag
+    assert AboutTravisButton == this_vdom[3].tag
 
 
 def test_wired_render(this_container, this_props):
-    this_vdom = html('<{About} page_title="Some Page" project="Themester SiteConfig" />')
+    this_vdom = html('<{About}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
-    title = this_html.select_one('title').text
-    assert 'Some Page - Themester SiteConfig' == title
+    href = this_html.select_one('p.logo a').get('href')
+    assert '../mock/index' == href
