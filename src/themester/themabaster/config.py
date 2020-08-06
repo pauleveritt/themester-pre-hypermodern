@@ -9,6 +9,8 @@ file then injected into the site container as a singleton.
 from dataclasses import dataclass, field
 from typing import Optional, Tuple, Callable, Sequence
 
+from themester.sphinx.models import Links
+
 
 @dataclass
 class FaviconSize:
@@ -35,14 +37,14 @@ class Favicons:
 def get_sidebars():
     """ Escape circular import hell """
 
-    from .components.globaltoc import GlobalToc  # noqa: F401
-    from .components.localtoc import LocalToc  # noqa: F401
+    # from .components.globaltoc import GlobalToc  # noqa: F401
+    # from .components.localtoc import LocalToc  # noqa: F401
     from .components.relations import Relations  # noqa: F401
     from .components.searchbox import SearchBox  # noqa: F401
     from .components.sourcelink import SourceLink  # noqa: F401
     return (
-        LocalToc,
-        GlobalToc,
+        # LocalToc,
+        # GlobalToc,
         Relations,
         SourceLink,
         SearchBox,
@@ -59,15 +61,22 @@ class ThemabasterConfig:
     codecov_button: bool = False
     codecov_path: Optional[str] = None
     description: Optional[str] = None
+    donate_url: Optional[str] = None
+    extra_nav_links: Links = None
     github_button: bool = True
     github_count: str = 'true'
     github_repo: Optional[str] = None
     github_type: str = 'watch'
     github_user: Optional[str] = None
+    opencollective: Optional[str] = None
+    opencollective_button_color: str = 'white'
     show_powered_by: bool = True
     show_relbar_bottom: bool = False
     show_relbar_top: bool = False
     show_relbars: bool = False
+    sidebar_collapse: bool = True
+    sidebar_includehidden = True
+    tidelift_url: Optional[str] = None
     travis_button: bool = False
     travis_path: Optional[str] = None
 

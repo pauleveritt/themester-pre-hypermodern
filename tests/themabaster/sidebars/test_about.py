@@ -27,7 +27,7 @@ def test_vdom(this_vdom):
     assert AboutTravisButton == this_vdom[3].tag
 
 
-def test_wired_render(this_container, this_props):
+def test_wired_render(this_container):
     this_vdom = html('<{About}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

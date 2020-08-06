@@ -156,8 +156,8 @@ def this_hasdoc() -> Callable[[str], bool]:
 
 
 @pytest.fixture
-def this_toctree() -> Callable[[], str]:
-    def _this_toctree() -> str:
+def this_toctree() -> Callable[[bool, bool], str]:
+    def _this_toctree(sidebar_collapse: bool = True, sidebar_includehidden: bool = True) -> str:
         """ Sphinx page context function to return string of toctree """
         return '<ul><li>First</li></ul>'
 

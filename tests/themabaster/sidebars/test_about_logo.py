@@ -26,7 +26,7 @@ def test_construction(this_component: AboutLogo):
     assert '../mock/index' == this_component.resolved_master
 
 
-def test_vdom(this_vdom, this_props):
+def test_vdom(this_vdom):
     assert 'p' == this_vdom.tag
     assert '../mock/index' == this_vdom.children[0].props['href']
     logo = '../mock/_static/site_logo.png'

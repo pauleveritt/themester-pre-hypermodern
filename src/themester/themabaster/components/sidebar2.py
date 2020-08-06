@@ -32,7 +32,6 @@ class Sidebar2:
             return html('''\n
 <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
     <div class="sphinxsidebarwrapper">
-        <{SidebarLogo} />
         {[sidebar for sidebar in self.resolved_sidebars]}
     </div>
 </div>

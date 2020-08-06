@@ -4,6 +4,7 @@ from viewdom_wired import render
 
 from themester.themabaster.components.sidebar2 import Sidebar2
 from themester.themabaster.sidebars.about_logo import AboutLogo
+from themester.themabaster.sidebars.localtoc import LocalToc
 
 
 @pytest.fixture
@@ -21,7 +22,6 @@ def this_component(this_props):
 
 
 def test_construction(this_component: Sidebar2):
-    from themester.themabaster.components.localtoc import LocalToc
     assert 5 == len(this_component.resolved_sidebars)
     assert LocalToc == this_component.resolved_sidebars[0].tag
 

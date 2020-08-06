@@ -2,7 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.localtoc import LocalToc
+from themester.themabaster.sidebars.localtoc import LocalToc
 
 
 @pytest.fixture
