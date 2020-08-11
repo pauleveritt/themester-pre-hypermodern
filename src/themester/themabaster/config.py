@@ -39,9 +39,9 @@ def get_sidebars():
 
     # from .components.globaltoc import GlobalToc  # noqa: F401
     # from .components.localtoc import LocalToc  # noqa: F401
-    from .components.relations import Relations  # noqa: F401
-    from .components.searchbox import SearchBox  # noqa: F401
-    from .components.sourcelink import SourceLink  # noqa: F401
+    from .sidebars.relations import Relations  # noqa: F401
+    from .sidebars.searchbox import SearchBox  # noqa: F401
+    from .sidebars.sourcelink import SourceLink  # noqa: F401
     return (
         # LocalToc,
         # GlobalToc,

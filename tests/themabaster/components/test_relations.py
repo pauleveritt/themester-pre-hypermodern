@@ -2,7 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.relations import Relations
+from themester.themabaster.sidebars.relations import Relations
 
 
 @pytest.fixture

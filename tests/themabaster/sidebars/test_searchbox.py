@@ -2,7 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.searchbox import SearchBox
+from themester.themabaster.sidebars.searchbox import SearchBox
 
 
 @pytest.fixture

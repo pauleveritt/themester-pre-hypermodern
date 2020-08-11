@@ -25,7 +25,6 @@ class SourceLink:
     def __post_init__(self):
         self.resolved_pathto = self.pathto(f'_sources/{self.sourcename}')
 
-
     def __call__(self) -> VDOM:
         if self.show_sourcelink and self.has_source and self.sourcename:
             return html('''\n

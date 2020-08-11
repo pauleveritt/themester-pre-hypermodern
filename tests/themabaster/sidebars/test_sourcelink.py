@@ -2,7 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.sourcelink import SourceLink
+from themester.themabaster.sidebars.sourcelink import SourceLink
 
 
 @pytest.fixture
