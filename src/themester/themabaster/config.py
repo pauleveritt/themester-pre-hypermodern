@@ -37,14 +37,12 @@ class Favicons:
 def get_sidebars():
     """ Escape circular import hell """
 
-    # from .components.globaltoc import GlobalToc  # noqa: F401
-    # from .components.localtoc import LocalToc  # noqa: F401
-    from .sidebars.relations import Relations  # noqa: F401
-    from .sidebars.searchbox import SearchBox  # noqa: F401
-    from .sidebars.sourcelink import SourceLink  # noqa: F401
+    from .sidebars.localtoc import LocalToc
+    from .sidebars.relations import Relations
+    from .sidebars.searchbox import SearchBox
+    from .sidebars.sourcelink import SourceLink
     return (
-        # LocalToc,
-        # GlobalToc,
+        LocalToc,
         Relations,
         SourceLink,
         SearchBox,

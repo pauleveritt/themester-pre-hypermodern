@@ -2,7 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.sidebar1 import Sidebar1
+from themester.themabaster.sidebars.sidebar1 import Sidebar1
 
 
 @pytest.fixture

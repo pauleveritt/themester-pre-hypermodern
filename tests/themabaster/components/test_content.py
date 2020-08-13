@@ -5,8 +5,8 @@ from viewdom_wired import render
 
 from themester.themabaster.components.content import Content
 from themester.themabaster.components.document import Document
-from themester.themabaster.components.sidebar1 import Sidebar1
-from themester.themabaster.components.sidebar2 import Sidebar2
+from themester.themabaster.sidebars.sidebar1 import Sidebar1
+from themester.themabaster.sidebars.sidebar2 import Sidebar2
 
 
 @pytest.fixture

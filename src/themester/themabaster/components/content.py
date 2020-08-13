@@ -8,8 +8,9 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 
 from .document import Document  # noqa: F401
-from .sidebar1 import Sidebar1  # noqa: F401
-from .sidebar2 import Sidebar2  # noqa: F401
+from ..sidebars.sidebar1 import Sidebar1  # noqa: F401
+from ..sidebars.sidebar2 import Sidebar2  # noqa: F401
+
 
 @component()
 @dataclass(frozen=True)

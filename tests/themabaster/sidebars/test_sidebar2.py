@@ -1,10 +1,13 @@
 import pytest
+from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.themabaster.components.sidebar2 import Sidebar2
-from themester.themabaster.sidebars.about_logo import AboutLogo
 from themester.themabaster.sidebars.localtoc import LocalToc
+from themester.themabaster.sidebars.relations import Relations
+from themester.themabaster.sidebars.searchbox import SearchBox
+from themester.themabaster.sidebars.sidebar2 import Sidebar2
+from themester.themabaster.sidebars.sourcelink import SourceLink
 
 
 @pytest.fixture
@@ -22,13 +25,19 @@ def this_component(this_props):
 
 
 def test_construction(this_component: Sidebar2):
-    assert 5 == len(this_component.resolved_sidebars)
+    assert 4 == len(this_component.resolved_sidebars)
     assert LocalToc == this_component.resolved_sidebars[0].tag
 
 
 def test_vdom(this_vdom, this_props):
     assert 'div' == this_vdom.tag
-    assert AboutLogo == this_vdom.children[0].children[0].tag
+    ssw = this_vdom.children[0]
+    sidebars = ssw.children[0]
+    assert 4 == len(sidebars)
+    assert LocalToc == sidebars[0].tag
+    assert Relations == sidebars[1].tag
+    assert SourceLink == sidebars[2].tag
+    assert SearchBox == sidebars[3].tag
 
 
 def test_vdom_nosidebar():
@@ -40,5 +49,6 @@ def test_vdom_nosidebar():
 def test_wired_render(this_container):
     this_vdom = html('<{Sidebar2} />')
     rendered = render(this_vdom, container=this_container)
-    assert 'Table of Contents' in rendered
-    assert '<li>First' in rendered
+    local_html = BeautifulSoup(rendered, 'html.parser')
+    assert 'Table of Contents' == local_html.select('h3 a')[0].text
+    assert 'Related Topics' == local_html.select_one('.relations h3').text
