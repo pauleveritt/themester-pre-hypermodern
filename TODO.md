@@ -4,7 +4,7 @@
 
 ## Next
 
-- Clear out tests/examples and ./examples
+## Could Be Better
 
 - More use of resources
 
@@ -12,7 +12,7 @@
     
     - Moved out of "protocols"
     
-## Could Be Better
+- Clear out tests/examples and ./examples
 
 - Have a themester_conf.py alongside conf.py:
 
