@@ -1,44 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @import url("basic.css");
 
 /* -- page layout ----------------------------------------------------------- */
@@ -103,12 +62,6 @@ p.caption {
     font-family: inherit;
     font-size: inherit;
 }
-
-
-div.relations {
-    display: none;
-}
-
 
 div.sphinxsidebar a {
     color: #444;

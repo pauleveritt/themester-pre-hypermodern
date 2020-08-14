@@ -28,7 +28,6 @@ class Sidebar2:
         if not self.sidebars:
             return html('')
         else:
-
             return html('''\n
 <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
     <div class="sphinxsidebarwrapper">

@@ -2,8 +2,6 @@
 
 ## Now
 
-- Sidebars from alabaster
-
 ## Next
 
 - Clear out tests/examples and ./examples
@@ -113,4 +111,6 @@
 - Move canonical link to its own component
 
 - Get stuff out of Head and injected into component rather than passed as prop
+
+- Sidebars from alabaster
 

@@ -30,15 +30,13 @@ class Relations:
     def __call__(self) -> VDOM:
         # Alabaster has a weird relations.html which isn't really well-formed
         # on looping. This makes it not-well-formed on snippets.
-        #
-        # TODO Let's skip relations.html for now, not sure it is used.
         return html('''\n
 <div class="relations">
-    <h3>Related Topics</h3>
+    <h3>Contents</h3>
     <ul>
         <li><a href={self.resolved_pathto}>Documentation overview</a>
         </li>
     </ul>
-    <p><strong>UNIMPLEMENTED</strong></p>
+    {self.resolved_toctree}
 </div>
         ''')

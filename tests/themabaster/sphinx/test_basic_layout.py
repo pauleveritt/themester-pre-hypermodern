@@ -86,7 +86,7 @@ class TestBasicLayoutDefaults:
         assert 'search.html' == search['href']
 
         # favicon
-        assert not page.find('link', attrs=dict(rel='shortcut icon'))
+        assert page.find('link', attrs=dict(rel='shortcut icon'))
 
     def test_linktags(self, page):
         """ The block for filling in link tags is UNUSED """

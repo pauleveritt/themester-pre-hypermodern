@@ -1,22 +1,22 @@
-import pytest
-from bs4.element import Tag
-
-pytestmark = pytest.mark.sphinx('html', testroot='alabaster-customized')
-
-
-@pytest.mark.skip
-@pytest.mark.parametrize('page', ['subdir/subfile.html', ], indirect=True)
-class TestAlabasterCustomizedConf:
-    """ Twiddle a bunch of knobs in the conf file """
-
-    def test_touch_icon(self, page):
-        icon = page.find('link', attrs=dict(rel='apple-touch-icon'))
-        assert '../_static/touch_icon1' == icon['href']
-
-    def test_canonical_url(self, page):
-        link: Tag = page.find('link', attrs=dict(rel='canonical'))
-        expected = 'https://somewhere.com/mysite/subdir/subfile.html'
-        assert expected == link['href']
+# import pytest
+# from bs4.element import Tag
+#
+# pytestmark = pytest.mark.sphinx('html', testroot='alabaster-customized')
+#
+#
+# @pytest.mark.skip
+# @pytest.mark.parametrize('page', ['subdir/subfile.html', ], indirect=True)
+# class TestAlabasterCustomizedConf:
+#     """ Twiddle a bunch of knobs in the conf file """
+#
+#     def test_touch_icon(self, page):
+#         icon = page.find('link', attrs=dict(rel='apple-touch-icon'))
+#         assert '../_static/touch_icon1' == icon['href']
+#
+#     def test_canonical_url(self, page):
+#         link: Tag = page.find('link', attrs=dict(rel='canonical'))
+#         expected = 'https://somewhere.com/mysite/subdir/subfile.html'
+#         assert expected == link['href']
 
 #     def test_footer_github_banner(self, page):
 #         """ Display "fork me", off by default """

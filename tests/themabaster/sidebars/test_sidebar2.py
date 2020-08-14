@@ -51,4 +51,4 @@ def test_wired_render(this_container):
     rendered = render(this_vdom, container=this_container)
     local_html = BeautifulSoup(rendered, 'html.parser')
     assert 'Table of Contents' == local_html.select('h3 a')[0].text
-    assert 'Related Topics' == local_html.select_one('.relations h3').text
+    assert 'Contents' == local_html.select_one('.relations h3').text
