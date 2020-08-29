@@ -9,7 +9,7 @@ The ``ThemesterApp`` has all the contracts a system needs to fulfill.
 from dataclasses import dataclass, field, InitVar
 from importlib import import_module
 from pathlib import Path
-from typing import Optional, Any, Union, Tuple
+from typing import Optional, Any, Union, Tuple, Sequence
 
 from venusian import Scanner
 from viewdom_wired import render
@@ -26,9 +26,10 @@ class ThemesterApp:
     themester_config: InitVar[Optional[ThemesterConfig]]
     root: Optional[Root] = None
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
+    singletons: InitVar[Sequence] = tuple()
     scanner: Scanner = field(init=False)
 
-    def __post_init__(self, themester_config=None):
+    def __post_init__(self, themester_config=None, singletons=tuple()):
         # Put some site-wide singletons into the registry, so you
         # can get them there instead of always needing this app instance
         self.scanner = Scanner(registry=self.registry)
@@ -40,6 +41,11 @@ class ThemesterApp:
             self.registry.register_singleton(themester_config, ThemesterConfig)
         self.scanner.scan(url)
 
+        # Before looking at plugins, register anything system-specific,
+        # e.g. sphinx.Config
+        for singleton in singletons:
+            self.registry.register_singleton(singleton, singleton.__class__)
+
         # Now setup any configured Themester plugins
         for plugin_string in themester_config.plugins:
             plugin_module = import_module(plugin_string)
@@ -49,7 +55,7 @@ class ThemesterApp:
         """ Call a plugin's setup function """
 
         s = getattr(module, 'wired_setup')
-        s(self.scanner)
+        s(self.registry, self.scanner)
 
     def get_static_resources(self) -> Tuple[Path, ...]:
         """ Any plugin that has static resources, return them """

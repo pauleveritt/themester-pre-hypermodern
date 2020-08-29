@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from typing import List
 
 from venusian import Scanner
 from viewdom import html, VDOM
+from wired import ServiceRegistry
 
-from themester import testing
+from themester.testing import views
 from themester.views import view, View
 
 
@@ -17,5 +17,8 @@ class FixtureView(View):
         return html('<div>View: {self.name}</div>')
 
 
-def wired_setup(scanner: Scanner):
-    scanner.scan(testing.views)
+def wired_setup(
+        registry: ServiceRegistry,
+        scanner: Scanner,
+):
+    scanner.scan(views)

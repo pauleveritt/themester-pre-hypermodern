@@ -24,11 +24,13 @@ def setup_app(
 
     themester_app = ThemesterApp(
         root=site,
+        singletons=(sphinx_config,),
         themester_config=getattr(sphinx_config, 'themester_config'),
     )
     sc = getattr(sphinx_config, 'sphinx_config')
     hc = getattr(sphinx_config, 'html_config')
     tc = getattr(sphinx_config, 'theme_config')
+    # themester_app.registry.register_singleton(sphinx_config, Config)
     themester_app.registry.register_singleton(sc, SphinxConfig)
     themester_app.registry.register_singleton(hc, HTMLConfig)
     themester_app.registry.register_singleton(tc, tc.__class__)

@@ -4,6 +4,10 @@
 
 - Decouple themester
 
+    - Change wired_setup protocol to send both registry and scanner
+    
+    - Move sphinx_config etc. singleton registration out of themester.sphinx into themabaster
+
 ## Next
 
 - Move `storytime` from goku to here

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import pytest
+from sphinx.config import Config
 from venusian import Scanner
 from wired import ServiceContainer, ServiceRegistry
 from wired.dataclasses import Context, injected
@@ -20,8 +21,10 @@ class Customer:
 
 
 def test_themester_app_default(themester_site_deep, themester_config):
+    config = Config()
     ta = ThemesterApp(
         root=themester_site_deep,
+        singletons=(config,),
         themester_config=themester_config,
     )
     assert isinstance(ta.registry, ServiceRegistry)

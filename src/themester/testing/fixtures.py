@@ -10,6 +10,7 @@ from typing import Optional, Dict, Any, Callable
 import pytest
 from bs4 import BeautifulSoup
 from markupsafe import Markup
+from sphinx.config import Config
 from venusian import Scanner
 from viewdom import render, VDOM, html
 from wired import ServiceContainer
@@ -59,11 +60,18 @@ def themester_app(themester_site, themester_config, sphinx_config, html_config, 
     """ An app that depends on a root and a config """
 
     from ..app import ThemesterApp
+    config = Config(
+        dict(
+            sphinx_config=sphinx_config,
+        )
+    )
     ta = ThemesterApp(
         root=themester_site,
+        singletons=(config,),
         themester_config=themester_config,
     )
-    ta.registry.register_singleton(sphinx_config, SphinxConfig)
+    # TODO Decouple
+    # ta.registry.register_singleton(sphinx_config, SphinxConfig)
     ta.registry.register_singleton(html_config, HTMLConfig)
     ta.registry.register_singleton(theme_config, ThemabasterConfig)
 
