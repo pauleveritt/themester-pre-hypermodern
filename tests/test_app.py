@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 
 import pytest
-from sphinx.config import Config
 from venusian import Scanner
-from wired import ServiceContainer, ServiceRegistry
+from wired import ServiceRegistry
 from wired.dataclasses import Context, injected
 
 from themester.app import ThemesterApp
@@ -21,15 +20,12 @@ class Customer:
 
 
 def test_themester_app_default(themester_site_deep, themester_config):
-    config = Config()
+    themester_config.root = themester_site_deep
     ta = ThemesterApp(
-        root=themester_site_deep,
-        singletons=(config,),
         themester_config=themester_config,
     )
     assert isinstance(ta.registry, ServiceRegistry)
     assert isinstance(ta.scanner, Scanner)
-    assert themester_site_deep is ta.root
 
     container = ta.registry.create_container()
     app: ThemesterApp = container.get(ThemesterApp)
@@ -48,6 +44,8 @@ def test_themester_app_setup_plugin(themester_app):
     container = themester_app.registry.create_container()
     view = container.get(View)
     assert view.name == 'Fixture View'
+    container_root: Root = container.get(Root)
+    assert None is container_root
 
 
 def test_themester_app_render_context(themester_app):

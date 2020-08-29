@@ -23,31 +23,29 @@ from themester.themabaster.config import ThemabasterConfig
 
 @dataclass
 class ThemesterApp:
-    themester_config: InitVar[Optional[ThemesterConfig]]
-    root: Optional[Root] = None
+    themester_config: Optional[ThemesterConfig] = None
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
-    singletons: InitVar[Sequence] = tuple()
     scanner: Scanner = field(init=False)
 
-    def __post_init__(self, themester_config=None, singletons=tuple()):
+    def __post_init__(self):
         # Put some site-wide singletons into the registry, so you
         # can get them there instead of always needing this app instance
         self.scanner = Scanner(registry=self.registry)
 
         self.registry.register_singleton(self, ThemesterApp)
-        self.registry.register_singleton(self.root, Root)
         self.registry.register_singleton(self.scanner, Scanner)
-        if themester_config:
-            self.registry.register_singleton(themester_config, ThemesterConfig)
+        if self.themester_config:
+            self.registry.register_singleton(self.themester_config, ThemesterConfig)
+        self.registry.register_singleton(self.themester_config.root, Root)
         self.scanner.scan(url)
 
-        # Before looking at plugins, register anything system-specific,
-        # e.g. sphinx.Config
-        for singleton in singletons:
-            self.registry.register_singleton(singleton, singleton.__class__)
+    def setup_plugins(self):
+        # Stop doing this as part of __post_init__ to let the
+        # system have a chance to register things before handing to
+        # plugins.
 
         # Now setup any configured Themester plugins
-        for plugin_string in themester_config.plugins:
+        for plugin_string in self.themester_config.plugins:
             plugin_module = import_module(plugin_string)
             self.setup_plugin(plugin_module)
 

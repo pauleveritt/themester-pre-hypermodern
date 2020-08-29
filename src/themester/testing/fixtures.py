@@ -60,20 +60,13 @@ def themester_app(themester_site, themester_config, sphinx_config, html_config, 
     """ An app that depends on a root and a config """
 
     from ..app import ThemesterApp
-    config = Config(
-        dict(
-            sphinx_config=sphinx_config,
-        )
-    )
     ta = ThemesterApp(
-        root=themester_site,
-        singletons=(config,),
         themester_config=themester_config,
     )
-    # TODO Decouple
-    # ta.registry.register_singleton(sphinx_config, SphinxConfig)
+    ta.registry.register_singleton(sphinx_config, SphinxConfig)
     ta.registry.register_singleton(html_config, HTMLConfig)
     ta.registry.register_singleton(theme_config, ThemabasterConfig)
+    ta.setup_plugins()
 
     return ta
 
