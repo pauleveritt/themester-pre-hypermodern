@@ -7,9 +7,23 @@ registry.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Protocol, Tuple
 
 from viewdom import VDOM
+
+
+class ThemeSphinxConfig(Protocol):
+    """ Let the theme tell Sphinx what it has/needs """
+
+    @staticmethod
+    def get_static_resources() -> Tuple[Path, ...]:
+        ...
+
+
+class ThemeConfig(Protocol):
+    """ The setup for the active theme in Themester """
+    sphinx: ThemeSphinxConfig
 
 
 class Resource:
