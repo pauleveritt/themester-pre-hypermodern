@@ -2,7 +2,13 @@
 
 ## Now
 
+- Decouple themester
+
 ## Next
+
+- Move `storytime` from goku to here
+
+- Convert themester to use stories
 
 ## Could Be Better
 

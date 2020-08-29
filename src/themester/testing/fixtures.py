@@ -87,7 +87,9 @@ def sphinx_config() -> SphinxConfig:
 
 @pytest.fixture
 def themester_config() -> ThemesterConfig:
-    tc = ThemesterConfig()
+    tc = ThemesterConfig(
+        plugins=('themester.themabaster',)
+    )
     return tc
 
 

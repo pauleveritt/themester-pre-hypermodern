@@ -24,11 +24,11 @@ from themester.themabaster.config import ThemabasterConfig
 
 @dataclass
 class ThemesterApp:
-    root: Root
     themester_config: InitVar[Optional[ThemesterConfig]]
     sphinx_config: InitVar[Optional[SphinxConfig]]
     html_config: InitVar[Optional[HTMLConfig]]
     theme_config: InitVar[Optional[ThemabasterConfig]]
+    root: Optional[Root] = None
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
     scanner: Scanner = field(init=False)
 
