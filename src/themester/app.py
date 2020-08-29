@@ -8,8 +8,7 @@ The ``ThemesterApp`` has all the contracts a system needs to fulfill.
 
 from dataclasses import dataclass, field
 from importlib import import_module
-from pathlib import Path
-from typing import Optional, Any, Union, Tuple
+from typing import Optional, Any, Union
 
 from venusian import Scanner
 from viewdom_wired import render
@@ -53,26 +52,6 @@ class ThemesterApp:
 
         s = getattr(module, 'wired_setup')
         s(self.registry, self.scanner)
-
-    def get_static_resources(self) -> Tuple[Path, ...]:
-        """ Any plugin that has static resources, return them """
-
-        # TODO This is dumb, to always re-import the plugins just to check
-        #   for static resources. Lots of alternatives. Perhaps if
-        #   "subscriptions" returns to wired (or here), we can let each
-        #   plugin be discovered and introspected. We can't really put
-        #   the plugins on the ThemesterApp instance as it might be
-        #   getting pickled in Sphinx.
-
-        container = self.registry.create_container()
-        tc: ThemesterConfig = container.get(ThemesterConfig)
-        plugins = [import_module(plugin_string) for plugin_string in tc.plugins]
-        static_resources = []
-        for plugin in plugins:
-            get_static_resources = getattr(plugin, 'get_static_resources')
-            if get_static_resources:
-                static_resources += get_static_resources()
-        return tuple(static_resources)
 
     def render(self,
                container: Optional[ServiceContainer] = None,

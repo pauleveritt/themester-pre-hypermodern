@@ -14,7 +14,7 @@ from themester.themabaster.views import PageView
 
 
 @pytest.fixture
-def themabaster_config():
+def themester_config():
     tc = ThemesterConfig(
         theme_config=ThemabasterConfig(),
         plugins=('themester.themabaster',)
@@ -23,15 +23,15 @@ def themabaster_config():
 
 
 @pytest.fixture
-def themabaster_app(themabaster_config):
-    na = ThemesterApp(themester_config=themabaster_config)
+def themabaster_app(themester_config):
+    na = ThemesterApp(themester_config=themester_config)
     na.setup_plugins()
     return na
 
 
-def test_wired_setup(themabaster_config):
+def test_wired_setup(themester_config):
     registry = ServiceRegistry()
-    registry.register_singleton(themabaster_config, ThemesterConfig)
+    registry.register_singleton(themester_config, ThemesterConfig)
     scanner = Scanner(registry=registry)
     wired_setup(registry, scanner)
 

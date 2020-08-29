@@ -114,12 +114,3 @@ def test_themester_app_render_named(themester_app):
     # Succeeds when looking up by name
     actual = themester_app.render(context=customer, view_name='somename')
     assert actual == expected
-
-
-def test_themester_app_get_static_resources(themester_app):
-    """ Combine each plugin's exported resources """
-
-    from typing import Tuple
-    from pathlib import Path
-    result: Tuple[Path] = themester_app.get_static_resources()
-    assert '.css' == result[0].name[-4:]

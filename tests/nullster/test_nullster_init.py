@@ -14,7 +14,7 @@ from themester.views import View
 
 
 @pytest.fixture
-def nullster_config():
+def themester_config():
     tc = ThemesterConfig(
         theme_config=NullsterConfig(),
         plugins=('themester.nullster',)
@@ -23,8 +23,8 @@ def nullster_config():
 
 
 @pytest.fixture
-def nullster_app(nullster_config):
-    na = ThemesterApp(themester_config=nullster_config)
+def nullster_app(themester_config):
+    na = ThemesterApp(themester_config=themester_config)
     na.setup_plugins()
     return na
 
@@ -64,4 +64,4 @@ def test_app_render(nullster_app):
 def test_app_get_static_resources(nullster_app):
     nullster_app = nullster_app.themester_config.theme_config.sphinx
     result: Tuple[Path] = nullster_app.get_static_resources()
-    assert 'index.css' == result[0].name
+    assert 'nullster.css' == result[0].name
