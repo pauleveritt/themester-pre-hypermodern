@@ -38,7 +38,6 @@ def setup(app: Sphinx):
     app.add_config_value('themester_config', ThemesterConfig(), 'env')
     app.add_config_value('sphinx_config', SphinxConfig(), 'env')
     app.add_config_value('html_config', HTMLConfig(), 'env')
-    app.add_config_value('theme_config', ThemabasterConfig(), 'env')
     app.connect('builder-inited', builder_init)
     app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'  # noqa
     app.connect('html-page-context', inject_page)

@@ -5,8 +5,14 @@ from pathlib import Path
 
 from sphinx.application import Sphinx
 from sphinx.util.fileutil import copy_asset
+from wired import ServiceContainer
 
 from themester.app import ThemesterApp
+from themester.config import ThemesterConfig
+
+
+class SerCon(object):
+    pass
 
 
 def copy_static_resources(
@@ -15,9 +21,16 @@ def copy_static_resources(
 ) -> None:
     """ Let each plugin tell Sphinx some files to copy to output """
 
-    static_outdir = Path(outdir) / '_static'
-    for static_resource in themester_app.get_static_resources():
-        copy_asset(str(static_resource), static_outdir)
+    # Grab the theme configuration from the container and get
+    # to the sphinx config.
+    container: ServiceContainer = themester_app.registry.create_container()
+    themester_config: ThemesterConfig = container.get(ThemesterConfig)
+    theme_config = themester_config.theme_config
+    if theme_config is not None:
+        static_outdir = Path(outdir) / '_static'
+        sphinx_config = theme_config.sphinx
+        for static_resource in sphinx_config.get_static_resources():
+            copy_asset(str(static_resource), static_outdir)
 
 
 def builder_finished_setup(

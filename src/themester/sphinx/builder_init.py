@@ -24,10 +24,8 @@ def setup_app(
     )
     sc = getattr(sphinx_config, 'sphinx_config')
     hc = getattr(sphinx_config, 'html_config')
-    tc = getattr(sphinx_config, 'theme_config')
     themester_app.registry.register_singleton(sc, SphinxConfig)
     themester_app.registry.register_singleton(hc, HTMLConfig)
-    themester_app.registry.register_singleton(tc, tc.__class__)
     themester_app.setup_plugins()
 
     return themester_app
