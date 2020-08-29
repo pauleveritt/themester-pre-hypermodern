@@ -12,7 +12,6 @@ from sphinx.config import Config
 from themester.app import ThemesterApp
 from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.testing.resources import Site
-from themester.themabaster.config import ThemabasterConfig
 
 
 def setup_app(
@@ -32,6 +31,6 @@ def setup_app(
     tc = getattr(sphinx_config, 'theme_config')
     themester_app.registry.register_singleton(sc, SphinxConfig)
     themester_app.registry.register_singleton(hc, HTMLConfig)
-    themester_app.registry.register_singleton(tc, ThemabasterConfig)
+    themester_app.registry.register_singleton(tc, tc.__class__)
 
     return themester_app

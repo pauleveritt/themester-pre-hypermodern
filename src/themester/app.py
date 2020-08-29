@@ -38,12 +38,6 @@ class ThemesterApp:
         self.registry.register_singleton(self.scanner, Scanner)
         if themester_config:
             self.registry.register_singleton(themester_config, ThemesterConfig)
-        # if sphinx_config:
-        #     self.registry.register_singleton(sphinx_config, SphinxConfig)
-        # if html_config:
-        #     self.registry.register_singleton(html_config, HTMLConfig)
-        # if theme_config:
-        #     self.registry.register_singleton(theme_config, ThemabasterConfig)
         self.scanner.scan(url)
 
         # Now setup any configured Themester plugins
