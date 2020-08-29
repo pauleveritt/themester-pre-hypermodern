@@ -10,6 +10,9 @@ This module provides some glue to "adapt" Sphinx to ThemesterApp.
 from sphinx.config import Config
 
 from themester.app import ThemesterApp
+from themester.sphinx.config import SphinxConfig, HTMLConfig
+from themester.testing.resources import Site
+from themester.themabaster.config import ThemabasterConfig
 
 
 def setup_app(
@@ -18,15 +21,17 @@ def setup_app(
     # TODO Hmm, is this the right place to put this? Should
     #    it be in ThemesterConfig?
 
-    from themester.testing.resources import Site
     site = Site()
 
     themester_app = ThemesterApp(
         root=site,
         themester_config=getattr(sphinx_config, 'themester_config'),
-        sphinx_config=getattr(sphinx_config, 'sphinx_config'),
-        html_config=getattr(sphinx_config, 'html_config'),
-        theme_config=getattr(sphinx_config, 'theme_config'),
     )
+    sc = getattr(sphinx_config, 'sphinx_config')
+    hc = getattr(sphinx_config, 'html_config')
+    tc = getattr(sphinx_config, 'theme_config')
+    themester_app.registry.register_singleton(sc, SphinxConfig)
+    themester_app.registry.register_singleton(hc, HTMLConfig)
+    themester_app.registry.register_singleton(tc, ThemabasterConfig)
 
     return themester_app

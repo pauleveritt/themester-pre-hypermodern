@@ -18,21 +18,17 @@ from wired import ServiceRegistry, ServiceContainer
 from themester import url
 from themester.config import ThemesterConfig
 from themester.protocols import Root, View, Resource
-from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.themabaster.config import ThemabasterConfig
 
 
 @dataclass
 class ThemesterApp:
     themester_config: InitVar[Optional[ThemesterConfig]]
-    sphinx_config: InitVar[Optional[SphinxConfig]]
-    html_config: InitVar[Optional[HTMLConfig]]
-    theme_config: InitVar[Optional[ThemabasterConfig]]
     root: Optional[Root] = None
     registry: ServiceRegistry = field(default_factory=ServiceRegistry)
     scanner: Scanner = field(init=False)
 
-    def __post_init__(self, themester_config=None, sphinx_config=None, html_config=None, theme_config=None):
+    def __post_init__(self, themester_config=None):
         # Put some site-wide singletons into the registry, so you
         # can get them there instead of always needing this app instance
         self.scanner = Scanner(registry=self.registry)
@@ -42,12 +38,12 @@ class ThemesterApp:
         self.registry.register_singleton(self.scanner, Scanner)
         if themester_config:
             self.registry.register_singleton(themester_config, ThemesterConfig)
-        if sphinx_config:
-            self.registry.register_singleton(sphinx_config, SphinxConfig)
-        if html_config:
-            self.registry.register_singleton(html_config, HTMLConfig)
-        if theme_config:
-            self.registry.register_singleton(theme_config, ThemabasterConfig)
+        # if sphinx_config:
+        #     self.registry.register_singleton(sphinx_config, SphinxConfig)
+        # if html_config:
+        #     self.registry.register_singleton(html_config, HTMLConfig)
+        # if theme_config:
+        #     self.registry.register_singleton(theme_config, ThemabasterConfig)
         self.scanner.scan(url)
 
         # Now setup any configured Themester plugins

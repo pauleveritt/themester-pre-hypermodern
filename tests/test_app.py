@@ -23,9 +23,6 @@ def test_themester_app_default(themester_site_deep, themester_config):
     ta = ThemesterApp(
         root=themester_site_deep,
         themester_config=themester_config,
-        sphinx_config=None,
-        html_config=None,
-        theme_config=None,
     )
     assert isinstance(ta.registry, ServiceRegistry)
     assert isinstance(ta.scanner, Scanner)

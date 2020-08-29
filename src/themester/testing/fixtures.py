@@ -59,13 +59,15 @@ def themester_app(themester_site, themester_config, sphinx_config, html_config, 
     """ An app that depends on a root and a config """
 
     from ..app import ThemesterApp
-    return ThemesterApp(
+    ta = ThemesterApp(
         root=themester_site,
         themester_config=themester_config,
-        sphinx_config=sphinx_config,
-        html_config=html_config,
-        theme_config=theme_config,
     )
+    ta.registry.register_singleton(sphinx_config, SphinxConfig)
+    ta.registry.register_singleton(html_config, HTMLConfig)
+    ta.registry.register_singleton(theme_config, ThemabasterConfig)
+
+    return ta
 
 
 @pytest.fixture
