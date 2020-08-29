@@ -6,10 +6,10 @@ The ``ThemesterApp`` has all the contracts a system needs to fulfill.
 
 """
 
-from dataclasses import dataclass, field, InitVar
+from dataclasses import dataclass, field
 from importlib import import_module
 from pathlib import Path
-from typing import Optional, Any, Union, Tuple, Sequence
+from typing import Optional, Any, Union, Tuple
 
 from venusian import Scanner
 from viewdom_wired import render
@@ -18,7 +18,6 @@ from wired import ServiceRegistry, ServiceContainer
 from themester import url
 from themester.config import ThemesterConfig
 from themester.protocols import Root, View, Resource
-from themester.themabaster.config import ThemabasterConfig
 
 
 @dataclass
@@ -88,7 +87,6 @@ class ThemesterApp:
             this_container = container
         else:
             this_container = self.registry.create_container(context=context)
-        tc = this_container.get(ThemabasterConfig)
 
         # If we were passed in a context, make a container with it,
         # bound to the site container. Otherwise, use the site container.
