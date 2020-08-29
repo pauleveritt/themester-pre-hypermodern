@@ -7,8 +7,6 @@ themester.
 
 This theme is resource-driven but only lightly.
 """
-from pathlib import Path
-from typing import Tuple
 
 from venusian import Scanner
 from wired import ServiceRegistry
@@ -16,14 +14,7 @@ from wired import ServiceRegistry
 from . import components, sidebars, views
 from .components import cssfiles
 from .config import ThemabasterConfig
-
-
-def get_static_resources() -> Tuple[Path, ...]:
-    """ Return all the files that should get copied to the static output """
-
-    static_dir = Path(__file__).parent.absolute() / 'static'
-    static_resources = static_dir.glob('**/*')
-    return tuple(static_resources)
+from ..config import ThemesterConfig
 
 
 def wired_setup(
@@ -34,3 +25,9 @@ def wired_setup(
     scanner.scan(cssfiles)
     scanner.scan(sidebars)
     scanner.scan(views)
+
+    # Get ThemabasterConfig from the container then register it directly
+    container = registry.create_container()
+    themester_config: ThemesterConfig = container.get(ThemesterConfig)
+    tc = themester_config.theme_config
+    registry.register_singleton(tc, ThemabasterConfig)

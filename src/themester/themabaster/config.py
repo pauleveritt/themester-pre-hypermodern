@@ -7,8 +7,10 @@ file then injected into the site container as a singleton.
 """
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional, Tuple, Callable, Sequence
 
+from themester.protocols import ThemeSphinxConfig
 from themester.sphinx.models import Links
 
 
@@ -50,7 +52,21 @@ def get_sidebars():
 
 
 @dataclass(frozen=True)
+class ThemabasterSphinxConfig(ThemeSphinxConfig):
+
+    @staticmethod
+    def get_static_resources() -> Tuple[Path, ...]:
+        """ Return all the files that should get copied to the static output """
+
+        static_dir = Path(__file__).parent.absolute() / 'static'
+        static_resources = static_dir.glob('**/*')
+        return tuple(static_resources)
+
+
+@dataclass(frozen=True)
 class ThemabasterConfig:
+    sphinx: ThemabasterSphinxConfig = field(default_factory=ThemabasterSphinxConfig)
+
     # HTML Builder
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
 
