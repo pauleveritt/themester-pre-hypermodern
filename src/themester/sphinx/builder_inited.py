@@ -10,22 +10,15 @@ This module provides some glue to "adapt" Sphinx to ThemesterApp.
 from sphinx.config import Config
 
 from themester.app import ThemesterApp
-from themester.sphinx.config import SphinxConfig, HTMLConfig
+from themester.config import ThemesterConfig
 
 
-def setup_app(
-        sphinx_config: Config
-) -> ThemesterApp:
-    # site = Site()  # TODO Move this to ThemesterConfig
-    themester_config = getattr(sphinx_config, 'themester_config')
+def setup_app(sphinx_config: Config) -> ThemesterApp:
+    themester_config: ThemesterConfig = getattr(sphinx_config, 'themester_config')
 
     themester_app = ThemesterApp(
         themester_config=themester_config,
     )
-    sc = getattr(sphinx_config, 'sphinx_config')
-    hc = getattr(sphinx_config, 'html_config')
-    themester_app.registry.register_singleton(sc, SphinxConfig)
-    themester_app.registry.register_singleton(hc, HTMLConfig)
     themester_app.setup_plugins()
 
     return themester_app

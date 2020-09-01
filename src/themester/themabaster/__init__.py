@@ -15,6 +15,7 @@ from . import components, sidebars, views
 from .components import cssfiles
 from .config import ThemabasterConfig
 from ..config import ThemesterConfig
+from ..sphinx import HTMLConfig, SphinxConfig
 
 
 def wired_setup(
@@ -29,5 +30,11 @@ def wired_setup(
     # Get ThemabasterConfig from the container then register it directly
     container = registry.create_container()
     themester_config: ThemesterConfig = container.get(ThemesterConfig)
-    tc = themester_config.theme_config
+    tc: ThemabasterConfig = getattr(themester_config, 'theme_config')
     registry.register_singleton(tc, ThemabasterConfig)
+
+    # Add some of the sub-config as top-level services
+    html_config = tc.html_config
+    registry.register_singleton(html_config, HTMLConfig)
+    sphinx_config = tc.sphinx_config
+    registry.register_singleton(sphinx_config, SphinxConfig)

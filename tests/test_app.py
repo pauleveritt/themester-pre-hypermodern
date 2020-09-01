@@ -20,7 +20,6 @@ class Customer:
 
 
 def test_themester_app_default(themester_site_deep, themester_config):
-    themester_config.root = themester_site_deep
     ta = ThemesterApp(
         themester_config=themester_config,
     )
@@ -44,8 +43,6 @@ def test_themester_app_setup_plugin(themester_app):
     container = themester_app.registry.create_container()
     view = container.get(View)
     assert view.name == 'Fixture View'
-    container_root: Root = container.get(Root)
-    assert None is container_root
 
 
 def test_themester_app_render_context(themester_app):

@@ -2,10 +2,9 @@ from sphinx.application import Sphinx
 
 from themester.config import ThemesterConfig
 from themester.sphinx.builder_finished import builder_finished_setup
-from themester.sphinx.builder_init import setup_app
+from themester.sphinx.builder_inited import setup_app
 from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.sphinx.inject_page import make_render_container, make_page_context
-from themester.themabaster.config import ThemabasterConfig
 
 
 def builder_init(app: Sphinx):

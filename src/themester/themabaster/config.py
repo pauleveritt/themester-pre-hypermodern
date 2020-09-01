@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Optional, Tuple, Callable, Sequence
 
 from themester.protocols import ThemeSphinxConfig
+from themester.sphinx import HTMLConfig, SphinxConfig
 from themester.sphinx.models import Links
 
 
@@ -66,6 +67,8 @@ class ThemabasterSphinxConfig(ThemeSphinxConfig):
 @dataclass(frozen=True)
 class ThemabasterConfig:
     sphinx: ThemabasterSphinxConfig = field(default_factory=ThemabasterSphinxConfig)
+    sphinx_config: SphinxConfig = field(default_factory=SphinxConfig)
+    html_config: HTMLConfig = field(default_factory=HTMLConfig)
 
     # HTML Builder
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)

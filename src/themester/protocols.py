@@ -10,7 +10,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Protocol, Tuple
 
+from sphinx.application import Sphinx
 from viewdom import VDOM
+from wired import ServiceRegistry
 
 
 class ThemeSphinxConfig(Protocol):
@@ -18,6 +20,9 @@ class ThemeSphinxConfig(Protocol):
 
     @staticmethod
     def get_static_resources() -> Tuple[Path, ...]:
+        ...
+
+    def setup_sphinx(self, registry: ServiceRegistry, sphinx_app: Sphinx):
         ...
 
 

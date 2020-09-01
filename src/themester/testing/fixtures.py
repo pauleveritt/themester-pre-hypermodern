@@ -10,7 +10,6 @@ from typing import Optional, Dict, Any, Callable
 import pytest
 from bs4 import BeautifulSoup
 from markupsafe import Markup
-from sphinx.config import Config
 from venusian import Scanner
 from viewdom import render, VDOM, html
 from wired import ServiceContainer
@@ -18,10 +17,8 @@ from wired import ServiceContainer
 from .resources import Site, Document, Collection
 from ..config import ThemesterConfig
 from ..protocols import Resource
-from ..sphinx.config import HTMLConfig, SphinxConfig
 from ..sphinx.models import PageContext
 from ..sphinx.prevnext import PreviousLink, NextLink
-from ..themabaster.config import ThemabasterConfig
 
 
 @dataclass
@@ -56,16 +53,19 @@ def themester_site_deep() -> Site:
 
 
 @pytest.fixture
-def themester_app(themester_site, themester_config, sphinx_config, html_config, theme_config):
+def themester_config(themester_site_deep) -> ThemesterConfig:
+    tc = ThemesterConfig(root=themester_site_deep)
+    return tc
+
+
+@pytest.fixture
+def themester_app(themester_site, themester_config):
     """ An app that depends on a root and a config """
 
     from ..app import ThemesterApp
     ta = ThemesterApp(
         themester_config=themester_config,
     )
-    ta.registry.register_singleton(sphinx_config, SphinxConfig)
-    ta.registry.register_singleton(html_config, HTMLConfig)
-    ta.registry.register_singleton(theme_config, ThemabasterConfig)
     ta.setup_plugins()
 
     return ta
@@ -76,40 +76,6 @@ def themester_scanner(themester_app) -> Scanner:
     container = themester_app.registry.create_container()
     scanner: Scanner = container.get(Scanner)
     return scanner
-
-
-@pytest.fixture
-def sphinx_config() -> SphinxConfig:
-    tc = SphinxConfig(
-        copyright='Bazinga',
-        language='EN',
-        project='Themester SiteConfig',
-    )
-    return tc
-
-
-@pytest.fixture
-def themester_config() -> ThemesterConfig:
-    tc = ThemesterConfig(
-        plugins=('themester.themabaster',)
-    )
-    return tc
-
-
-@pytest.fixture
-def html_config() -> HTMLConfig:
-    hc = HTMLConfig(
-        css_files=('site_first.css', 'site_second.css',),
-        favicon='themabaster.ico',
-        logo='site_logo.png',
-    )
-    return hc
-
-
-@pytest.fixture
-def theme_config() -> ThemabasterConfig:
-    tc = ThemabasterConfig()
-    return tc
 
 
 @pytest.fixture
@@ -138,8 +104,8 @@ def this_vdom(this_component) -> VDOM:
 @pytest.fixture
 def this_html(this_vdom) -> BeautifulSoup:
     rendered = render(this_vdom)
-    html = BeautifulSoup(rendered, 'html.parser')
-    return html
+    this_html = BeautifulSoup(rendered, 'html.parser')
+    return this_html
 
 
 @pytest.fixture
