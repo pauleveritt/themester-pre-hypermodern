@@ -5,7 +5,8 @@ Quickly construct an app using defaults. Override those defaults with
 local fixtures of the same name.
 """
 from dataclasses import dataclass
-from typing import Optional, Dict, Any, Callable
+from importlib import import_module
+from typing import Optional, Dict, Any, Callable, Tuple
 
 import pytest
 from bs4 import BeautifulSoup
@@ -18,6 +19,7 @@ from .resources import Site, Document, Collection
 from ..config import ThemesterConfig
 from ..protocols import Resource
 from ..sphinx.models import PageContext, Link
+from ..storytime import Story
 
 
 @dataclass
@@ -190,3 +192,11 @@ def this_container(
     this_container.register_singleton(this_pagecontext, PageContext)
 
     return this_container
+
+
+@pytest.fixture
+def these_stories(component_package) -> Tuple[Story]:
+    # Now get the default story
+    stories = import_module(component_package.__name__ + '.stories')
+    all_stories = getattr(stories, 'all_stories')()
+    return all_stories
