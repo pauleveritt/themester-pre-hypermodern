@@ -14,8 +14,9 @@ from dataclasses import dataclass, field
 
 from viewdom import html, VDOM
 from viewdom_wired import component
+from wired.dataclasses import injected
 
-from themester.sphinx.prevnext import PreviousLink, NextLink
+from themester.sphinx.models import Link, PageContext
 
 
 @component()
@@ -23,8 +24,8 @@ from themester.sphinx.prevnext import PreviousLink, NextLink
 class RellinkMarkup:
     """ Markup for rellink bars. """
 
-    previous: PreviousLink
-    next: NextLink
+    previous: Link = injected(PageContext, attr='prev')
+    next: Link = injected(PageContext, attr='next')
     resolved_previous: VDOM = field(init=False)
     resolved_next: VDOM = field(init=False)
 

@@ -59,12 +59,11 @@ class PageContext:
     sourcename: Optional[str]
     title: str
     toc: Markup
-
     builder: str = 'html'
     meta: Meta = None
     metatags: str = ''
-    next: Links = None
+    next: Optional[Link] = None
     parents: Links = None
-    prev: Links = None
+    prev: Optional[Link] = None
     rellinks: Rellinks = None
     toctree: Optional[Callable] = None

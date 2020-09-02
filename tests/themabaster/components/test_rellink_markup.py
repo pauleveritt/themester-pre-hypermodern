@@ -3,18 +3,18 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.sphinx.prevnext import PreviousLink, NextLink
+from themester.sphinx.models import Link
 from themester.themabaster.components.rellink_markup import RellinkMarkup
 
 
 @pytest.fixture
 def this_props():
     tp = dict(
-        previous=PreviousLink(
+        previous=Link(
             title='Previous',
             link='/previous/',
         ),
-        next=NextLink(
+        next=Link(
             title='Next',
             link='/next/',
         )

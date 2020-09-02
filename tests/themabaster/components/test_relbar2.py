@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.sphinx.prevnext import PreviousLink, NextLink
+from themester.sphinx.models import Link
 from themester.themabaster.components.relbar2 import Relbar2
 from themester.themabaster.components.rellink_markup import RellinkMarkup
 from themester.themabaster.config import ThemabasterConfig
@@ -16,11 +16,11 @@ def this_props():
     tp = dict(
         show_relbar_bottom=True,
         show_relbars=True,
-        previous=PreviousLink(
+        previous=Link(
             title='Previous',
             link='/previous/',
         ),
-        next=NextLink(
+        next=Link(
             title='Next',
             link='/next/',
         )

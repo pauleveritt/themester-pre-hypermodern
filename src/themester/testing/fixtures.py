@@ -17,8 +17,7 @@ from wired import ServiceContainer
 from .resources import Site, Document, Collection
 from ..config import ThemesterConfig
 from ..protocols import Resource
-from ..sphinx.models import PageContext
-from ..sphinx.prevnext import PreviousLink, NextLink
+from ..sphinx.models import PageContext, Link
 
 
 @dataclass
@@ -146,6 +145,14 @@ def this_pagecontext(this_hasdoc, this_pathto, this_toctree):
         pagename='somedoc',
         page_source_suffix='.html',
         pathto=this_pathto,
+        prev=Link(
+            title='Previous',
+            link='/previous/',
+        ),
+        next=Link(
+            title='Next',
+            link='/next/',
+        ),
         sourcename='somedoc.rst',
         title='Some Page',
         toc=Markup('<li>toc</li>'),
@@ -180,15 +187,6 @@ def this_container(
     this_container = themester_app.registry.create_container(context=this_resource)
 
     # For this per-page container, register the PageContext
-    # TODO Consider splitting this garbage barge into isolated services
-    #   such as PreviousLink and NextLink below
     this_container.register_singleton(this_pagecontext, PageContext)
-
-    # Register singletons for Previous/Next, to mimic the Sphinx "adapter"
-    # doing so in html_context, just for this per-request container.
-    if this_props.get('previous'):
-        this_container.register_singleton(this_props['previous'], PreviousLink)
-    if this_props.get('next'):
-        this_container.register_singleton(this_props['next'], NextLink)
 
     return this_container

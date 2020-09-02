@@ -7,7 +7,6 @@ from viewdom import html
 from viewdom_wired import render
 
 from themester.sphinx import HTMLConfig
-from themester.sphinx.prevnext import PreviousLink, NextLink
 from themester.themabaster.components.document import Document
 from themester.themabaster.components.relbar1 import Relbar1
 from themester.themabaster.components.relbar2 import Relbar2
@@ -18,22 +17,12 @@ def this_props():
     tp = dict(
         body=Markup('<p>Some content</p>'),
         nosidebar=False,
-        previous=PreviousLink(
-            title='Previous',
-            link='/previous/',
-        ),
-        next=NextLink(
-            title='Next',
-            link='/next/',
-        )
     )
     return tp
 
 
 @pytest.fixture
 def this_component(this_props):
-    del this_props['previous']
-    del this_props['next']
     ci = Document(**this_props)
     return ci
 

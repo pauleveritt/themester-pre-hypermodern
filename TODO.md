@@ -2,17 +2,9 @@
 
 ## Now
 
-- Decouple themester
-
-    - Change wired_setup protocol to send both registry and scanner
-    
-    - Move sphinx_config etc. singleton registration out of themester.sphinx into themabaster
-
 ## Next
 
-- Move `storytime` from goku to here
-
-- Convert themester to use stories
+- Allow arbitrary attributes on link and script
 
 ## Could Be Better
 
@@ -30,17 +22,9 @@
     
     - Add subdirs under conf.py dir that should be scanned
 
-- Get rid of PrevLink and NextLink and stop injecting into this_container fixture, get from page context
-
-    - Or, continue the effort of breaking into small pieces
-
 - Fix remaining tests
 
-- Bulmabaster
-
 - `@resource` to register `type: homepage` -> `HomePage`
-
-- Allow arbitrary attributes on link and script
 
 - Split up `sphinx.models` into individual units
 
@@ -69,16 +53,6 @@
 - Write a custom builder
 
 - Local/native rewrite of `toc` and `toctree`
-
-- htmx
-
-    - Partial page replacement
-    
-    - Integrated with minx
-    
-    - Integration into layouts and blocks
-    
-    - Hashed partials
 
 - Bring back mypy
     
@@ -124,3 +98,12 @@
 
 - Sidebars from alabaster
 
+- Decouple themester
+
+    - Change wired_setup protocol to send both registry and scanner
+    
+    - Move sphinx_config etc. singleton registration out of themester.sphinx into themabaster
+
+- Move `storytime` from goku to here
+
+- Get rid of PrevLink and NextLink and stop injecting into this_container fixture, get from page context
