@@ -2,8 +2,6 @@
 
 ## Now
 
-- Switch storytime to use a themester app
-
 ## Next
 
 - Allow arbitrary attributes on link and script
@@ -109,3 +107,5 @@
 - Move `storytime` from goku to here
 
 - Get rid of PrevLink and NextLink and stop injecting into this_container fixture, get from page context
+
+- Switch storytime to use a themester app
