@@ -9,11 +9,12 @@ be used in tests etc.
 from venusian import Scanner
 from wired import ServiceRegistry
 
-from . import views
+from . import components, views
 
 
 def wired_setup(
         registry: ServiceRegistry,
         scanner: Scanner,
 ):
+    scanner.scan(components)
     scanner.scan(views)

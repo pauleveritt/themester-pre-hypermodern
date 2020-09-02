@@ -34,7 +34,7 @@ class Story:
 
     def __post_init__(self, props, extra_props, singletons):
         if hasattr(props, '__annotations__'):
-            # It's a dataclass so asdict to turn into dictionary
+            # props is a dataclass so asdict to turn into dictionary
             self.combined_props = asdict(props)
         elif props is not None:
             self.combined_props: Dict[str, Any] = props

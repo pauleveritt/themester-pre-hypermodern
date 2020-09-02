@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from viewdom import html, VDOM
 
+from themester.nullster.components.hello_world import HelloWorld
 from themester.views import view
 
 
@@ -12,4 +13,5 @@ class AllView:
     name = 'Nullster View'
 
     def __call__(self) -> VDOM:
-        return html('<div>Hello World</div>')
+        assert HelloWorld
+        return html('<div><{HelloWorld} name="Nullster" /></div>')

@@ -2,6 +2,8 @@
 
 ## Now
 
+- Switch storytime to use a themester app
+
 ## Next
 
 - Allow arbitrary attributes on link and script

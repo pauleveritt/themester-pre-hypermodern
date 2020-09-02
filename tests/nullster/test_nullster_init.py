@@ -58,7 +58,7 @@ def test_app_get_view(nullster_app):
 
 def test_app_render(nullster_app):
     html = nullster_app.render()
-    assert '<div>Hello World</div>' == html
+    assert '<div><span>Hello Nullster</span></div>' == html
 
 
 def test_app_get_static_resources(nullster_app):
