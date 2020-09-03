@@ -60,6 +60,15 @@
 
 - Let plugins register in site_container their own factories for get_static_resources 
 
+- minx or some other kind of reloader
+
+- Injector "predicates"
+
+    - Dataclass flattener
+    
+    - static url
+    
+    - resource url
 ## Done
 
 - Remove `theme.conf` and any theme support in `setup`
