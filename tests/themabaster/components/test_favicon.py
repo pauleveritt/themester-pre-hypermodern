@@ -7,10 +7,9 @@ from themester.themabaster.components.favicon import Favicon
 
 
 @pytest.fixture
-def this_props(this_pathto):
+def this_props():
     props = dict(
         href='someicon.png',
-        pathto=this_pathto,
     )
     return props
 
@@ -23,20 +22,20 @@ def this_component(this_props):
 
 
 def test_construction(this_component: Favicon, this_props):
-    assert '../mock/someicon.png' == this_component.resolved_href
+    assert 'someicon.png' == this_component.href
 
 
 def test_vdom(this_vdom):
     assert 'link' == this_vdom.tag
     assert 'shortcut icon' == this_vdom.props['rel']
-    assert '../mock/someicon.png' == this_vdom.props['href']
+    assert 'someicon.png' == this_vdom.props['href']
     assert [] == this_vdom.children
 
 
 def test_render(this_html):
     link = this_html.select_one('link')
     assert ['shortcut', 'icon'] == link.attrs['rel']
-    assert '../mock/someicon.png' == link.attrs['href']
+    assert 'someicon.png' == link.attrs['href']
 
 
 def test_wired_render(this_container):
