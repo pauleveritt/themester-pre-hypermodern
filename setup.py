@@ -15,6 +15,7 @@ requires = [
     'viewdom_wired',
     'venusian',
     'wired',
+    'wired_injector',
     'markupsafe'
 ]
 
