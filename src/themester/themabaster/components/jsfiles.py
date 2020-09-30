@@ -1,13 +1,19 @@
 from dataclasses import dataclass, field
-from typing import Tuple, Callable, List
+from typing import Tuple
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get, Attr
 
+from themester.operators import StaticPathTo, Paths
 from themester.sphinx import HTMLConfig
 from themester.sphinx.models import PageContext
 from themester.themabaster.config import ThemabasterConfig
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 def JSFile(src: str) -> VDOM:
@@ -19,18 +25,28 @@ def JSFile(src: str) -> VDOM:
 @component()
 @dataclass
 class JSFiles:
-    pathto: Callable[[str, int], int] = injected(PageContext, attr='pathto')
-    site_files: Tuple[str, ...] = injected(HTMLConfig, attr='css_files')
-    theme_files: Tuple[str, ...] = injected(ThemabasterConfig, attr='css_files')
-    page_files: Tuple[str, ...] = injected(PageContext, attr='css_files')
-    srcs: List = field(init=False)
+    site_files: Annotated[
+        Paths,
+        Get(HTMLConfig),
+        Attr('css_files'),
+        StaticPathTo(),
+    ]
+    theme_files: Annotated[
+        Paths,
+        Get(ThemabasterConfig),
+        Attr('css_files'),
+        StaticPathTo(),
+    ]
+    page_files: Annotated[
+        Paths,
+        Get(PageContext),
+        Attr('css_files'),
+        StaticPathTo(),
+    ]
+    srcs: Tuple[str, ...] = field(init=False)
 
     def __post_init__(self):
-        all_files = self.site_files + self.theme_files + self.page_files
-        self.srcs = [
-            self.pathto(js_file, 1)
-            for js_file in all_files
-        ]
+        self.srcs = self.site_files + self.theme_files + self.page_files
 
     def __call__(self) -> VDOM:
         return html('{[JSFile(src) for src in self.srcs]}')

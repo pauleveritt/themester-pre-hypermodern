@@ -12,7 +12,6 @@ def this_props(this_pathto, html_config, theme_config, this_pagecontext):
         site_files=html_config.js_files,
         theme_files=theme_config.js_files,
         page_files=this_pagecontext.js_files,
-        pathto=this_pathto,
     )
     return props
 
@@ -25,25 +24,24 @@ def this_component(this_props):
 
 def test_construction(this_component: JSFiles):
     assert 2 == len(this_component.srcs)
-    assert '../mock/page_first.js' == this_component.srcs[0]
+    assert 'page_first.js' == this_component.srcs[0]
 
 
 def test_vdom(this_vdom):
     assert 2 == len(this_vdom)
-    assert '../mock/page_first.js' == this_vdom[0].props['src']
+    assert 'page_first.js' == this_vdom[0].props['src']
 
 
 def test_render(this_html):
     srcs = this_html.select('script')
     assert 2 == len(srcs)
-    assert '../mock/page_first.js' == srcs[0].attrs['src']
+    assert 'page_first.js' == srcs[0].attrs['src']
 
 
 def test_wired_render(this_container, this_props):
-    del this_props['pathto']
-    this_vdom = html('<{JSFiles} ...{this_props}/>')
+    this_vdom = html('<{JSFiles} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     scripts = this_html.select('script')
-    assert 2 == len(scripts)
-    assert '../mock/page_first.js' == scripts[0].attrs['src']
+    assert 6 == len(scripts)
+    assert '../mock/site_first.css' == scripts[0].attrs['src']
