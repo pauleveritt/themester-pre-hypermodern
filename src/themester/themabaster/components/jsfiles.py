@@ -28,19 +28,19 @@ class JSFiles:
     site_files: Annotated[
         Paths,
         Get(HTMLConfig),
-        Attr('css_files'),
+        Attr('js_files'),
         StaticPathTo(),
     ]
     theme_files: Annotated[
         Paths,
         Get(ThemabasterConfig),
-        Attr('css_files'),
+        Attr('js_files'),
         StaticPathTo(),
     ]
     page_files: Annotated[
         Paths,
         Get(PageContext),
-        Attr('css_files'),
+        Attr('js_files'),
         StaticPathTo(),
     ]
     srcs: Tuple[str, ...] = field(init=False)

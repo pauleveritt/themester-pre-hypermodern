@@ -43,5 +43,5 @@ def test_wired_render(this_container, this_props):
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     scripts = this_html.select('script')
-    assert 6 == len(scripts)
-    assert '../mock/site_first.css' == scripts[0].attrs['src']
+    assert 2 == len(scripts)
+    assert '../mock/page_first.js' == scripts[0].attrs['src']

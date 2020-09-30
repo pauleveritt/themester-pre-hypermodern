@@ -7,12 +7,11 @@ from themester.themabaster.components.cssfiles import CSSFiles
 
 
 @pytest.fixture
-def this_props(this_pathto, html_config, theme_config, this_pagecontext):
+def this_props(html_config, theme_config, this_pagecontext):
     props = dict(
         site_files=html_config.css_files,
         theme_files=theme_config.css_files,
         page_files=this_pagecontext.css_files,
-        pathto=this_pathto,
     )
     return props
 
@@ -24,20 +23,20 @@ def this_component(this_props):
 
 
 def test_construction(this_component: CSSFiles):
-    assert '../mock/site_first.css' == this_component.hrefs[0]
-    assert '../mock/_static/themabaster.css' == this_component.hrefs[2]
-    assert '../mock/page_first.css' == this_component.hrefs[4]
+    assert 'site_first.css' == this_component.hrefs[0]
+    assert '_static/themabaster.css' == this_component.hrefs[2]
+    assert 'page_first.css' == this_component.hrefs[4]
 
 
 def test_vdom(this_vdom):
     assert 6 == len(this_vdom)
-    assert '../mock/site_first.css' == this_vdom[0].props['href']
+    assert 'site_first.css' == this_vdom[0].props['href']
 
 
 def test_render(this_html):
     links = this_html.select('link')
     assert 6 == len(links)
-    assert '../mock/site_first.css' == links[0].attrs['href']
+    assert 'site_first.css' == links[0].attrs['href']
 
 
 def test_wired_render(this_container):
