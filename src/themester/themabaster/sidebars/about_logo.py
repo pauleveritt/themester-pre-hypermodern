@@ -8,9 +8,15 @@ from typing import Callable, Optional
 from viewdom import html, VDOM
 from viewdom_wired import component
 from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.sphinx.models import PageContext
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
@@ -18,9 +24,9 @@ from themester.sphinx.models import PageContext
 class AboutLogo:
     """ The logo block in the About sidebar """
 
-    logo: Optional[str] = injected(HTMLConfig, attr='logo')
-    master_doc: str = injected(SphinxConfig, attr='master_doc')
-    pathto: Callable[[str, Optional[int]], str] = injected(PageContext, attr='pathto')
+    logo: Annotated[Optional[str], Get(HTMLConfig, attr='logo')]
+    master_doc: Annotated[str, Get(SphinxConfig, attr='master_doc')]
+    pathto: Annotated[Callable[[str, Optional[int]], str], Get(PageContext, attr='pathto')]
     resolved_master: str = field(init=False)
     resolved_logo: str = field(init=False)
 

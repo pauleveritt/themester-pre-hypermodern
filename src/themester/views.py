@@ -6,7 +6,7 @@ from typing import Callable, Optional, Type
 
 from venusian import Scanner, attach
 from wired import ServiceContainer, ServiceRegistry
-from wired.dataclasses.injector import Injector
+from wired_injector.injector import Injector
 
 from themester.protocols import View
 

@@ -12,10 +12,15 @@ from dataclasses import dataclass, field
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from themester.themabaster.config import ThemabasterConfig
-from ..components.rellink_markup import RellinkMarkup  # noqa: F401
+from ..components.rellink_markup import RellinkMarkup
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
@@ -23,14 +28,15 @@ from ..components.rellink_markup import RellinkMarkup  # noqa: F401
 class Relbar2:
     """ Relation bar usually at the bottom. """
 
-    show_relbar_bottom: bool = injected(ThemabasterConfig, attr='show_relbar_top')
-    show_relbars: bool = injected(ThemabasterConfig, attr='show_relbar_top')
+    show_relbar_bottom: Annotated[bool, Get(ThemabasterConfig, attr='show_relbar_top')]
+    show_relbars: Annotated[bool, Get(ThemabasterConfig, attr='show_relbar_top')]
     show_relbar_top: bool = field(init=False)
 
     def __post_init__(self):
         self.show_relbar_top = self.show_relbar_bottom or self.show_relbars
 
     def __call__(self) -> VDOM:
+        assert RellinkMarkup
         return html('''\n
 <div class="related top"><{RellinkMarkup} /> </div>        
         ''') if self.show_relbar_top else []

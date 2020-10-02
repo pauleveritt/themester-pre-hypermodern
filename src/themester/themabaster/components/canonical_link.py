@@ -8,19 +8,36 @@ from typing import Optional
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get, Attr
 
 from themester.sphinx import HTMLConfig
 from themester.sphinx.models import PageContext
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
 @dataclass
 class CanonicalLink:
-    baseurl: Optional[str] = injected(HTMLConfig, attr='baseurl')
+    baseurl: Annotated[
+        Optional[str],
+        Get(HTMLConfig),
+        Attr('baseurl')
+    ]
     canonical_href: Optional[str] = field(init=False)
-    file_suffix: str = injected(HTMLConfig, attr='file_suffix')
-    pagename: str = injected(PageContext, attr='pagename')
+    file_suffix: Annotated[
+        str,
+        Get(HTMLConfig),
+        Attr('file_suffix'),
+    ]
+    pagename: Annotated[
+        str,
+        Get(PageContext),
+        Attr('pagename')
+    ]
 
     def __post_init__(self):
         if self.baseurl:

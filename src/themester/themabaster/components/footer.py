@@ -7,11 +7,16 @@ from typing import Optional, Callable
 
 from viewdom import VDOM, html
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get, Attr
 
 from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.sphinx.models import PageContext
 from themester.themabaster.config import ThemabasterConfig
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
@@ -19,13 +24,41 @@ from themester.themabaster.config import ThemabasterConfig
 class Footer:
     """ A block in the body below the content block. """
 
-    copyright: Optional[str] = injected(SphinxConfig, attr='copyright')
-    has_source: bool = injected(HTMLConfig, attr='has_source')
-    pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
-    show_powered_by: bool = injected(ThemabasterConfig, attr='show_powered_by')
-    show_copyright: bool = injected(HTMLConfig, attr='show_copyright')
-    show_sourcelink: bool = injected(HTMLConfig, attr='show_sourcelink')
-    sourcename: str = injected(PageContext, attr='sourcename')
+    copyright: Annotated[
+        Optional[str],
+        Get(SphinxConfig),
+        Attr('copyright'),
+    ]
+    has_source: Annotated[
+        bool,
+        Get(HTMLConfig),
+        Attr('has_source'),
+    ]
+    pathto: Annotated[
+        Callable[[str], str],
+        Get(PageContext),
+        Attr('pathto')
+    ]
+    show_powered_by: Annotated[
+        bool,
+        Get(ThemabasterConfig),
+        Attr('show_powered_by'),
+    ]
+    show_copyright: Annotated[
+        bool,
+        Get(HTMLConfig),
+        Attr('show_copyright'),
+    ]
+    show_sourcelink: Annotated[
+        bool,
+        Get(HTMLConfig),
+        Attr('show_sourcelink'),
+    ]
+    sourcename: Annotated[
+        str,
+        Get(PageContext),
+        Attr('sourcename'),
+    ]
     resolved_copyright: str = field(init=False)
     resolved_powered_by: VDOM = field(init=False)
     resolved_page_source: VDOM = field(init=False)

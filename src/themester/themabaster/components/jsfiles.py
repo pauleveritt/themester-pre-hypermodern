@@ -18,7 +18,6 @@ except ImportError:
 
 def JSFile(src: str) -> VDOM:
     """ Small anonymous component used with the parent """
-    # language=HTML
     return html('<script type="text/javascript" src={src}>//</script>')
 
 

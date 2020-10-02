@@ -3,10 +3,15 @@ from typing import Optional
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from ..config import ThemabasterConfig
 from ...sphinx import SphinxConfig
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 # TODO Break each badge into its own component file, sigh
@@ -65,11 +70,11 @@ Professionally-supported {self.project} is available with the
 @component()
 @dataclass
 class Donate:
-    donate_url: Optional[str] = injected(ThemabasterConfig, attr='donate_url')
-    opencollective: Optional[str] = injected(ThemabasterConfig, attr='opencollective')
-    opencollective_button_color: str = injected(ThemabasterConfig, attr='opencollective_button_color')
-    project: str = injected(SphinxConfig, attr='project')
-    tidelift_url: Optional[str] = injected(ThemabasterConfig, attr='tidelift_url')
+    donate_url: Annotated[Optional[str], Get(ThemabasterConfig, attr='donate_url')]
+    opencollective: Annotated[Optional[str], Get(ThemabasterConfig, attr='opencollective')]
+    opencollective_button_color: Annotated[str, Get(ThemabasterConfig, attr='opencollective_button_color')]
+    project: Annotated[str, Get(SphinxConfig, attr='project')]
+    tidelift_url: Annotated[Optional[str], Get(ThemabasterConfig, attr='tidelift_url')]
     show_donate: bool = field(init=False)
 
     def __post_init__(self):

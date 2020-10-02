@@ -4,17 +4,30 @@ from typing import Optional
 from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get, Attr
 
 from themester.sphinx import SphinxConfig
 from themester.sphinx.models import PageContext
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
 @dataclass
 class Title:
-    page_title: str = injected(PageContext, attr='title')
-    project: Optional[str] = injected(SphinxConfig, attr='project')
+    page_title: Annotated[
+        str,
+        Get(PageContext),
+        Attr('title'),
+    ]
+    project: Annotated[
+        Optional[str],
+        Get(SphinxConfig),
+        Attr('project'),
+    ]
     resolved_title: str = field(init=False)
 
     def __post_init__(self):

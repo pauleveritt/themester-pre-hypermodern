@@ -11,17 +11,30 @@ from typing import Callable, Optional
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get, Attr
 
 from themester.sphinx.models import PageContext
 from themester.themabaster.config import ThemabasterConfig, Favicons
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
 @dataclass
 class FaviconSet:
-    favicons: Favicons = injected(ThemabasterConfig, attr='favicons')
-    pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
+    favicons: Annotated[
+        Favicons,
+        Get(ThemabasterConfig),
+        Attr('favicons')
+    ]
+    pathto: Annotated[
+        Callable[[str, int], str],
+        Get(PageContext),
+        Attr('pathto'),
+    ]
     shortcut_href: Optional[str] = field(init=False)
     png_href: Optional[str] = field(init=False)
 
@@ -31,9 +44,11 @@ class FaviconSet:
         self.png_href = self.pathto(join('static', favicons.png), 1) if favicons.png else None
 
     def __call__(self) -> VDOM:
-        shortcut = html('<link rel="shortcut icon" type="image/x-icon" href={self.shortcut_href} />') if self.shortcut_href else None
+        shortcut = html(
+            '<link rel="shortcut icon" type="image/x-icon" href={self.shortcut_href} />') if self.shortcut_href else None
         png = html('<link rel="shortcut icon" type="image/x-icon" href={self.png_href} />') if self.png_href else None
-        precomposed = html('<link rel="apple-touch-icon-precomposed" type="image/x-icon" href={self.png_href} />') if self.png_href else None
+        precomposed = html(
+            '<link rel="apple-touch-icon-precomposed" type="image/x-icon" href={self.png_href} />') if self.png_href else None
         if self.favicons.sizes:
             sizes = []
             for size in self.favicons.sizes:

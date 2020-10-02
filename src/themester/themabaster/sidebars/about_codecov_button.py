@@ -7,9 +7,14 @@ from typing import Optional
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from themester.themabaster.config import ThemabasterConfig
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
@@ -17,11 +22,11 @@ from themester.themabaster.config import ThemabasterConfig
 class AboutCodeCovButton:
     """ The travis button block in the About sidebar """
 
-    github_repo: Optional[str] = injected(ThemabasterConfig, attr='github_repo')
-    github_user: Optional[str] = injected(ThemabasterConfig, attr='github_user')
-    codecov_button: bool = injected(ThemabasterConfig, attr='codecov_button')
-    codecov_path: Optional[str] = injected(ThemabasterConfig, attr='codecov_path')
-    badge_branch: str = injected(ThemabasterConfig, attr='badge_branch')
+    github_repo: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_repo')]
+    github_user: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_user')]
+    codecov_button: Annotated[bool, Get(ThemabasterConfig, attr='codecov_button')]
+    codecov_path: Annotated[str, Get(ThemabasterConfig, attr='codecov_path')]
+    badge_branch: Annotated[str, Get(ThemabasterConfig, attr='badge_branch')]
     resolved_path: str = field(init=False)
 
     def __post_init__(self):

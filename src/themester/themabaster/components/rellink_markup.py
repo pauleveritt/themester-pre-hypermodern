@@ -14,9 +14,14 @@ from dataclasses import dataclass, field
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get, Attr
 
 from themester.sphinx.models import Link, PageContext
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
@@ -24,8 +29,16 @@ from themester.sphinx.models import Link, PageContext
 class RellinkMarkup:
     """ Markup for rellink bars. """
 
-    previous: Link = injected(PageContext, attr='prev')
-    next: Link = injected(PageContext, attr='next')
+    previous: Annotated[
+        Link,
+        Get(PageContext),
+        Attr('prev'),
+    ]
+    next: Annotated[
+        Link,
+        Get(PageContext),
+        Attr('next'),
+    ]
     resolved_previous: VDOM = field(init=False)
     resolved_next: VDOM = field(init=False)
 

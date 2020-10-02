@@ -5,9 +5,14 @@ A view specific to a container's context.
 from dataclasses import dataclass
 
 from viewdom import html
-from wired.dataclasses import injected, Context
-
 from themester.views import view
+from wired_injector.operators import Context, Attr
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
+
 
 EXPECTED = '<div>Hello Customer</div>'
 
@@ -21,7 +26,7 @@ class Customer:
 @view(context=Customer)
 @dataclass
 class ContextView:
-    name: str = injected(Context, attr='name')
+    name: Annotated[str, Context(), Attr('name')]
 
     def __call__(self) -> str:
         return html('<div>Hello Customer</div>')

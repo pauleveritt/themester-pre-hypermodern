@@ -7,21 +7,30 @@ from typing import Optional, Callable, Tuple
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get, Attr
 
-from .canonical_link import CanonicalLink  # noqa: F401
-from .cssfiles import CSSFiles  # noqa: F401
-from .faviconset import FaviconSet  # noqa: F401
-from .jsfiles import JSFiles  # noqa: F401
-from .linktags import Linktags  # noqa: F401
-from .title import Title  # noqa: F401
+from .canonical_link import CanonicalLink
+from .cssfiles import CSSFiles
+from .faviconset import FaviconSet
+from .jsfiles import JSFiles
+from .linktags import Linktags
+from .title import Title
 from ...sphinx.models import PageContext
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
 @dataclass
 class Head:
-    pathto: Callable[[str, int], str] = injected(PageContext, attr='pathto')
+    pathto: Annotated[
+        Callable[[str, int], str],
+        Get(PageContext),
+        Attr('pathto')
+    ]
     extrahead: Optional[Tuple[VDOM, ...]] = None
     charset: str = 'utf-8'
     resolved_custom_css: str = field(init=False)
@@ -34,6 +43,7 @@ class Head:
         self.resolved_static_root = self.pathto('', 1)
 
     def __call__(self) -> VDOM:
+        assert (CanonicalLink, CSSFiles, FaviconSet, JSFiles, Linktags, Title)
         return html('''\n
 <head>
   <meta charset="{self.charset}" />

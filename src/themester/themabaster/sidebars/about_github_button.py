@@ -7,9 +7,14 @@ from typing import Optional
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from themester.themabaster.config import ThemabasterConfig
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
@@ -17,11 +22,11 @@ from themester.themabaster.config import ThemabasterConfig
 class AboutGitHubButton:
     """ The github button block in the About sidebar """
 
-    github_button: bool = injected(ThemabasterConfig, attr='github_button')
-    github_count: str = injected(ThemabasterConfig, attr='github_count')
-    github_repo: Optional[str] = injected(ThemabasterConfig, attr='github_repo')
-    github_type: str = injected(ThemabasterConfig, attr='github_type')
-    github_user: Optional[str] = injected(ThemabasterConfig, attr='github_user')
+    github_button: Annotated[bool, Get(ThemabasterConfig, attr='github_button')]
+    github_count: Annotated[str, Get(ThemabasterConfig, attr='github_count')]
+    github_repo: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_repo')]
+    github_type: Annotated[str, Get(ThemabasterConfig, attr='github_type')]
+    github_user: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_user')]
     show_button: bool = field(init=False)
 
     def __post_init__(self):

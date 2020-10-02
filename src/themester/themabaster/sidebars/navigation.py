@@ -11,21 +11,27 @@ from markupsafe import Markup
 from viewdom import VDOM, html
 from viewdom_wired import component
 from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext
-from .navigation_extra_links import NavigationExtraLinks  # noqa: F401
+from .navigation_extra_links import NavigationExtraLinks
 from ..config import ThemabasterConfig
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
 @dataclass
 class Navigation:
-    master_doc: str = injected(SphinxConfig, attr='master_doc')
-    pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
-    sidebar_collapse: bool = injected(ThemabasterConfig, attr='sidebar_collapse')
-    sidebar_includehidden: bool = injected(ThemabasterConfig, attr='sidebar_includehidden')
-    toctree: Optional[Callable] = injected(PageContext, attr='toctree')
+    master_doc: Annotated[str, Get(SphinxConfig, attr='master_doc')]
+    pathto: Annotated[Callable[[str], str], Get(PageContext, attr='pathto')]
+    sidebar_collapse: Annotated[bool, Get(ThemabasterConfig, attr='sidebar_collapse')]
+    sidebar_includehidden: Annotated[bool, Get(ThemabasterConfig, attr='sidebar_includehidden')]
+    toctree: Annotated[Optional[Callable], Get(PageContext, attr='toctree')]
     resolved_pathto: str = field(init=False)
     resolved_toctree: Markup = field(init=False)
 
@@ -38,6 +44,7 @@ class Navigation:
             ))
 
     def __call__(self) -> VDOM:
+        assert NavigationExtraLinks
         return html('''\n
 <div>
     <h3><a href={self.resolved_pathto}>Table of Contents</a></h3>

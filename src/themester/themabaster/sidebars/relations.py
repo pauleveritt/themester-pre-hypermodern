@@ -9,17 +9,23 @@ from markupsafe import Markup
 from viewdom import VDOM, html
 from viewdom_wired import component
 from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
 @dataclass
 class Relations:
-    master_doc: str = injected(SphinxConfig, attr='master_doc')
-    pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
-    toctree: Optional[Callable[[], str]] = injected(PageContext, attr='toctree')
+    master_doc: Annotated[str, Get(SphinxConfig, attr='master_doc')]
+    pathto: Annotated[Callable[[str], str], Get(PageContext, attr='pathto')]
+    toctree: Annotated[Optional[Callable[[], str]], Get(PageContext, attr='toctree')]
     resolved_pathto: str = field(init=False)
     resolved_toctree: Markup = field(init=False)
 

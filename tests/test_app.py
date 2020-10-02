@@ -3,12 +3,16 @@ from dataclasses import dataclass
 import pytest
 from venusian import Scanner
 from wired import ServiceRegistry
-from wired.dataclasses import Context, injected
+from wired_injector.operators import Context, Attr
 
 from themester.app import ThemesterApp
 from themester.protocols import Root
 from themester.views import register_view
 
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 pytest_plugins = [
     'themester.testing.fixtures',
 ]
@@ -76,7 +80,7 @@ def test_themester_app_multiple_renders(themester_app):
 
     @dataclass
     class ContainerView:
-        customer_name: str = injected(Context, attr='name')
+        customer_name: Annotated[str, Context(), Attr('name')]
 
         def __call__(self):
             return self.customer_name

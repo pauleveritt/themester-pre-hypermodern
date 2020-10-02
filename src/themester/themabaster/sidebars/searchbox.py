@@ -8,16 +8,22 @@ from typing import Callable
 from viewdom import VDOM, html
 from viewdom_wired import component
 from wired.dataclasses import injected
+from wired_injector.operators import Get
 
 from themester.sphinx.models import PageContext
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 @component()
 @dataclass
 class SearchBox:
-    builder: str = injected(PageContext, attr='builder')
-    pagename: str = injected(PageContext, attr='pagename')
-    pathto: Callable[[str], str] = injected(PageContext, attr='pathto')
+    builder: Annotated[str, Get(PageContext, attr='builder')]
+    pagename: Annotated[str, Get(PageContext, attr='pagename')]
+    pathto: Annotated[Callable[[str], str], Get(PageContext, attr='pathto')]
     resolved_pathto: str = field(init=False)
 
     def __post_init__(self):
