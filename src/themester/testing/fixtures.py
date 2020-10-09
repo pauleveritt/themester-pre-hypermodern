@@ -17,7 +17,7 @@ from wired import ServiceContainer
 
 from .resources import Site, Document, Collection
 from ..config import ThemesterConfig
-from ..protocols import Resource
+from ..protocols import Resource, Root
 from ..sphinx.models import PageContext, Link
 from ..storytime import Story
 
@@ -55,7 +55,7 @@ def themester_site_deep() -> Site:
 
 @pytest.fixture
 def themester_config(themester_site_deep) -> ThemesterConfig:
-    tc = ThemesterConfig(root=themester_site_deep)
+    tc = ThemesterConfig()
     return tc
 
 
@@ -68,6 +68,7 @@ def themester_app(themester_site, themester_config):
         themester_config=themester_config,
     )
     ta.setup_plugins()
+    ta.registry.register_singleton(themester_site, Root)
 
     return ta
 

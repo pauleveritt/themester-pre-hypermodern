@@ -16,7 +16,7 @@ from wired import ServiceRegistry, ServiceContainer
 
 from themester import url
 from themester.config import ThemesterConfig
-from themester.protocols import Root, View, Resource
+from themester.protocols import View, Resource
 
 
 @dataclass
@@ -34,7 +34,6 @@ class ThemesterApp:
         self.registry.register_singleton(self.scanner, Scanner)
         if self.themester_config:
             self.registry.register_singleton(self.themester_config, ThemesterConfig)
-        self.registry.register_singleton(self.themester_config.root, Root)
         self.scanner.scan(url)
 
     def setup_plugins(self):
@@ -56,6 +55,7 @@ class ThemesterApp:
     def render(self,
                container: Optional[ServiceContainer] = None,
                context: Optional[Union[Resource, Any]] = None,
+               resource: Optional[Union[Resource, Any]] = None,
                view_name: Optional[str] = None,
                ) -> str:
         """ Render a vdom via a view from a container """
@@ -66,11 +66,9 @@ class ThemesterApp:
             this_container = container
         else:
             this_container = self.registry.create_container(context=context)
-
-        # If we were passed in a context, make a container with it,
-        # bound to the site container. Otherwise, use the site container.
-        # if context is not None:
-        #     this_container = this_container.bind(context=context)
+            # If we were passed a resource, register it as a singleton in
+            # the container.
+            this_container.register_singleton(resource, Resource)
 
         # Sometimes we want to use named views
         if view_name:

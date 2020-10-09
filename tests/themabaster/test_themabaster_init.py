@@ -43,8 +43,6 @@ def test_app_default(themabaster_app):
     container = themabaster_app.registry.create_container()
     app: ThemesterApp = container.get(ThemesterApp)
     assert app.registry == themabaster_app.registry
-    container_root: Root = container.get(Root)
-    assert None is container_root
     scanner: Scanner = container.get(Scanner)
     assert isinstance(scanner, Scanner)
 
@@ -53,8 +51,6 @@ def test_app_get_view(themabaster_app):
     container = themabaster_app.registry.create_container()
     view = container.get(View)
     assert PageView == view.__class__
-    container_root: Root = container.get(Root)
-    assert None is container_root
 
 
 def test_app_render(themabaster_app, html_config, sphinx_config, this_pagecontext):

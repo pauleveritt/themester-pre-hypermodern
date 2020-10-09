@@ -23,9 +23,10 @@ def themester_config():
 
 
 @pytest.fixture
-def nullster_app(themester_config):
+def nullster_app(themester_site, themester_config):
     na = ThemesterApp(themester_config=themester_config)
     na.setup_plugins()
+    na.registry.register_singleton(themester_site, Root)
     return na
 
 
@@ -35,7 +36,7 @@ def test_wired_setup():
     wired_setup(registry, scanner)
 
 
-def test_app_default(nullster_app):
+def test_app_default(nullster_app, themester_site):
     assert isinstance(nullster_app.registry, ServiceRegistry)
     assert isinstance(nullster_app.scanner, Scanner)
 
@@ -43,7 +44,7 @@ def test_app_default(nullster_app):
     app: ThemesterApp = container.get(ThemesterApp)
     assert app.registry == nullster_app.registry
     container_root: Root = container.get(Root)
-    assert None is container_root
+    assert themester_site is container_root
     scanner: Scanner = container.get(Scanner)
     assert isinstance(scanner, Scanner)
 
@@ -52,13 +53,13 @@ def test_app_get_view(nullster_app):
     container = nullster_app.registry.create_container()
     view = container.get(View)
     assert 'Nullster View' == view.name
-    container_root: Root = container.get(Root)
-    assert None is container_root
 
 
-def test_app_render(nullster_app):
-    html = nullster_app.render()
-    assert '<div><span>Hello Nullster</span></div>' == html
+def test_app_render(nullster_app, themester_site_deep):
+    resource = themester_site_deep['d1']
+    html = nullster_app.render(resource=resource)
+    expected = '<div><h1>Resource: D1</h1><span>Hello Nullster</span></div>'
+    assert expected == html
 
 
 def test_app_get_static_resources(nullster_app):

@@ -29,10 +29,6 @@ def test_themester_scanner(themester_app: ThemesterApp):
     assert isinstance(themester_app.scanner, Scanner)
 
 
-def test_themester_config(themester_config, themester_site_deep):
-    assert themester_site_deep == themester_config.root
-
-
 def test_this_vdom(this_vdom):
     assert 'div' == this_vdom.tag
     assert 'This Component' == this_vdom.children[0]

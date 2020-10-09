@@ -19,4 +19,4 @@ class HelloWorld:
     title: Annotated[str, Get(Resource, attr='title')]
 
     def __call__(self) -> VDOM:
-        return html('<h1>Site: {self.title}</h1><span>Hello {self.name}</span>')
+        return html('<h1>Resource: {self.title}</h1><span>Hello {self.name}</span>')

@@ -23,7 +23,7 @@ class Customer:
     name: str
 
 
-def test_themester_app_default(themester_site_deep, themester_config):
+def test_themester_app_default(themester_config):
     ta = ThemesterApp(
         themester_config=themester_config,
     )
@@ -33,8 +33,6 @@ def test_themester_app_default(themester_site_deep, themester_config):
     container = ta.registry.create_container()
     app: ThemesterApp = container.get(ThemesterApp)
     assert app.registry == ta.registry
-    container_root: Root = container.get(Root)
-    assert themester_site_deep is container_root
     scanner: Scanner = container.get(Scanner)
     assert isinstance(scanner, Scanner)
 

@@ -29,7 +29,7 @@ def make_render_container(
     rt = document_metadata.get('type', 'document')
     container = themester_app.registry.create_container()
     site = container.get(Root)
-    context = Site() if rt == 'homepage' else Document(name=pagename, parent=site)
+    context = Site() if rt == 'homepage' else Document(name=pagename, parent=site, title='XXX999')
 
     render_container = themester_app.registry.create_container(
         context=context

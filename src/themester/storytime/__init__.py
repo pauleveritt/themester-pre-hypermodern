@@ -16,6 +16,7 @@ from wired import ServiceRegistry
 
 from themester.app import ThemesterApp
 from themester.config import ThemesterConfig
+from themester.protocols import Root
 
 C = TypeVar('C')  # Component
 S = TypeVar('S')  # Singletons
@@ -24,8 +25,9 @@ S1 = TypeVar('S1')  # Singletons
 
 @dataclass
 class Story:
-    package: Any
     component: C
+    package: Any
+    root: InitVar[Root]
     other_packages: Optional[Tuple] = tuple()
     themester_app: ThemesterApp = field(init=False)
     usage: Optional[VDOM] = None
@@ -36,7 +38,7 @@ class Story:
     services: InitVar[Tuple[Tuple[S, S1], ...]] = tuple()
     title: Optional[str] = None
 
-    def __post_init__(self, props, extra_props, singletons, services):
+    def __post_init__(self, root, props, extra_props, singletons, services):
         self.themester_app = ThemesterApp(
             themester_config=ThemesterConfig()
         )
@@ -46,6 +48,8 @@ class Story:
         self.themester_app.scanner = Scanner(registry=self.themester_app.registry)
         self.themester_app.scanner.scan(self.package)
         [self.themester_app.scanner.scan(pkg) for pkg in self.other_packages]
+
+        self.themester_app.registry.register_singleton(root, Root)
 
         # Register any story singletons
         for singleton in singletons:

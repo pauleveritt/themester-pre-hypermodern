@@ -12,5 +12,5 @@ def test_stories(these_stories: Tuple[Story, ...]):
     assert 'Nullster' == story0.instance.name
     assert 'h1' == story0.vdom[0].tag
     assert 'span' == story0.vdom[1].tag
-    assert 'Site: Story Site' == story0.html.select_one('h1').text
+    assert 'Resource: Story Site' == story0.html.select_one('h1').text
     assert 'Hello Nullster' == story0.html.select_one('span').text
