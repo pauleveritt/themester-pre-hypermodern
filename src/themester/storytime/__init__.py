@@ -19,6 +19,7 @@ from themester.config import ThemesterConfig
 
 C = TypeVar('C')  # Component
 S = TypeVar('S')  # Singletons
+S1 = TypeVar('S1')  # Singletons
 
 
 @dataclass
@@ -32,9 +33,10 @@ class Story:
     extra_props: InitVar[Optional[Dict]] = None
     combined_props: Dict[str, Any] = field(init=False, default_factory=dict)
     singletons: InitVar[Tuple[S, ...]] = tuple()
+    services: InitVar[Tuple[Tuple[S, S1], ...]] = tuple()
     title: Optional[str] = None
 
-    def __post_init__(self, props, extra_props, singletons):
+    def __post_init__(self, props, extra_props, singletons, services):
         self.themester_app = ThemesterApp(
             themester_config=ThemesterConfig()
         )
@@ -48,6 +50,12 @@ class Story:
         # Register any story singletons
         for singleton in singletons:
             self.themester_app.registry.register_singleton(singleton, singleton.__class__)
+
+        # Register any story services
+        for service in services:
+            inst = service[0]
+            protocol = service[1]
+            self.themester_app.registry.register_singleton(inst, protocol)
 
         # Props: dataclass or dict?
         if hasattr(props, '__annotations__'):

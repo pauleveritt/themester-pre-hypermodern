@@ -11,7 +11,7 @@ from markupsafe import Markup
 from wired import ServiceContainer
 
 from themester.app import ThemesterApp
-from themester.protocols import Root
+from themester.protocols import Root, Resource
 from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.resources import Site, Document
 
@@ -34,6 +34,12 @@ def make_render_container(
     render_container = themester_app.registry.create_container(
         context=context
     )
+
+    # Instead of using "context" as the resource that is being rendered,
+    # let's just register Resource. This lets us render widgets for a
+    # context other than the resource (e.g. a parent) but still be
+    # able to reach the currently-processed resource.
+    render_container.register_singleton(context, Resource)
     return render_container
 
 

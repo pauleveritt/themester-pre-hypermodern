@@ -10,7 +10,7 @@ from themester.views import view
 @dataclass
 class AllView:
     """ One view for all pages in the site"""
-    name = 'Nullster View'
+    name: str = 'Nullster View'
 
     def __call__(self) -> VDOM:
         assert HelloWorld

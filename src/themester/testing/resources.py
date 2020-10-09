@@ -15,6 +15,7 @@ class Site(Root, dict):
 
     name: str = ''
     parent: None = None
+    title: Optional[str] = None
 
     def __post_init__(self):
         super(dict).__init__()
