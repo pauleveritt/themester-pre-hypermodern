@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
 
-from themester.protocols import Root
 from themester.sphinx.models import PageContext
+from themester.testing.resources import Site
 
 
 def test_wired_render_root_view(themester_app, this_pagecontext):
-    context = Root()
+    context = Site()
     render_container = themester_app.registry.create_container(context=context)
     render_container.register_singleton(this_pagecontext, PageContext)
     rendered = themester_app.render(container=render_container)

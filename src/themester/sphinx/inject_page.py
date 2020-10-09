@@ -11,8 +11,9 @@ from markupsafe import Markup
 from wired import ServiceContainer
 
 from themester.app import ThemesterApp
-from themester.protocols import Root, Document
+from themester.protocols import Root
 from themester.sphinx.models import PageContext, Link, Rellink
+from themester.testing.resources import Site, Document
 
 
 def make_render_container(
@@ -26,7 +27,9 @@ def make_render_container(
     # - What resource type this page says it wants to be
     # - A mapping from that string literal, to a dataclass
     rt = document_metadata.get('type', 'document')
-    context = Root() if rt == 'homepage' else Document(name=pagename, parent=None)
+    container = themester_app.registry.create_container()
+    site = container.get(Root)
+    context = Site() if rt == 'homepage' else Document(name=pagename, parent=site)
 
     render_container = themester_app.registry.create_container(
         context=context

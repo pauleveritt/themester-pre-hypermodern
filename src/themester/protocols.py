@@ -6,13 +6,17 @@ registry.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Protocol, Tuple
+from typing import Optional, Tuple
 
 from sphinx.application import Sphinx
 from viewdom import VDOM
 from wired import ServiceRegistry
+
+try:
+    from typing import Protocol
+except ImportError:
+    from typing_extensions import Protocol
 
 
 class ThemeSphinxConfig(Protocol):
@@ -31,24 +35,18 @@ class ThemeConfig(Protocol):
     sphinx: ThemeSphinxConfig
 
 
-class Resource:
+class Resource(Protocol):
     name: str
     parent: Optional[Resource]
 
 
-class Root(Resource):
+class Root(Resource, Protocol):
     """ The root of the resource tree """
 
     name: str = ''
     parent: None = None
 
 
-@dataclass
-class Document(Resource):
-    name: str
-    parent: Optional[Resource]
-
-
-class View:
+class View(Protocol):
     def __call__(self) -> VDOM:
         ...
