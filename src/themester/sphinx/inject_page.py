@@ -7,8 +7,10 @@ As Sphinx renders a resource, it has a lot of magic stashed into the
 """
 from typing import Dict, Any
 
+from docutils.nodes import Node
 from markupsafe import Markup
-from wired import ServiceContainer
+from sphinx.environment import BuildEnvironment
+from wired import ServiceContainer, ServiceRegistry
 
 from themester.app import ThemesterApp
 from themester.protocols import Root, Resource
@@ -16,30 +18,42 @@ from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.resources import Site, Document
 
 
+def make_resource(
+        root: Root,
+        env: BuildEnvironment,
+        pagename: str,
+) -> Resource:
+    """ Make a resource for the currently-rendering page """
+
+    document_metadata: Dict[str, Any] = env.metadata[pagename]
+
+    # Get the title from either the YAML, or the RST, if it exists.
+    # pagenames such as 'genindex' won't be in titles.
+    this_rtype = document_metadata.get('type', 'document')
+    this_title = document_metadata.get('title', False)
+    if not this_title:
+        t: Node = env.titles.get(pagename, False)
+        if t:
+            this_title = t.astext()
+        else:
+            this_title = pagename
+    resource = root if this_rtype == 'homepage' else Document(name=pagename, parent=root, title=this_title)
+    return resource
+
+
 def make_render_container(
         document_metadata: Dict[str, Any],
-        themester_app: ThemesterApp,
+        registry: ServiceRegistry,
         pagename: str,
+        resource: Resource,
 ):
     """ Make a bound container for processing current page """
 
-    # To make the context, we need:
-    # - What resource type this page says it wants to be
-    # - A mapping from that string literal, to a dataclass
-    rt = document_metadata.get('type', 'document')
-    container = themester_app.registry.create_container()
-    site = container.get(Root)
-    context = Site() if rt == 'homepage' else Document(name=pagename, parent=site, title='XXX999')
-
-    render_container = themester_app.registry.create_container(
-        context=context
+    render_container = registry.create_container(
+        context=resource,
     )
+    render_container.register_singleton(resource, Resource)
 
-    # Instead of using "context" as the resource that is being rendered,
-    # let's just register Resource. This lets us render widgets for a
-    # context other than the resource (e.g. a parent) but still be
-    # able to reach the currently-processed resource.
-    render_container.register_singleton(context, Resource)
     return render_container
 
 

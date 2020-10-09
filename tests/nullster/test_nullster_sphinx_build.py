@@ -12,7 +12,7 @@ pytestmark = pytest.mark.sphinx('html', testroot='setup')
 class TestNullsterIndex:
 
     def test_index(self, page):
-        assert 'Resource: XXX999' == page.select_one('h1').text
+        assert 'Resource: Hello World' == page.select_one('h1').text
         assert 'Hello Nullster' == page.select_one('span').text
 
 

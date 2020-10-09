@@ -11,19 +11,21 @@ from sphinx.config import Config
 
 from themester.app import ThemesterApp
 from themester.config import ThemesterConfig
-from themester.protocols import Root
-from themester.testing.resources import Site
+from themester.sphinx.config import SphinxConfig, HTMLConfig
 
 
 def setup_app(sphinx_config: Config) -> ThemesterApp:
     themester_config: ThemesterConfig = getattr(sphinx_config, 'themester_config')
 
-    # TODO Find a way to get the root
-    root = Site(title='Sphinx Site')
     themester_app = ThemesterApp(
         themester_config=themester_config,
     )
     themester_app.setup_plugins()
-    themester_app.registry.register_singleton(root, Root)
+
+    # Put the Sphinx-specific config stuff into the registry
+    sc: ThemesterConfig = getattr(sphinx_config, 'sphinx_config')
+    hc: ThemesterConfig = getattr(sphinx_config, 'html_config')
+    themester_app.registry.register_singleton(sc, SphinxConfig)
+    themester_app.registry.register_singleton(hc, HTMLConfig)
 
     return themester_app
