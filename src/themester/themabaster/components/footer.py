@@ -9,9 +9,9 @@ from viewdom import VDOM, html
 from viewdom_wired import component
 from wired_injector.operators import Get, Attr
 
+from themester.protocols import ThemeConfig
 from themester.sphinx.config import SphinxConfig, HTMLConfig
 from themester.sphinx.models import PageContext
-from themester.themabaster.config import ThemabasterConfig
 
 try:
     from typing import Annotated
@@ -41,7 +41,7 @@ class Footer:
     ]
     show_powered_by: Annotated[
         bool,
-        Get(ThemabasterConfig),
+        Get(ThemeConfig),
         Attr('show_powered_by'),
     ]
     show_copyright: Annotated[

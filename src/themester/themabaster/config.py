@@ -10,8 +10,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional, Tuple, Callable, Sequence
 
-from themester.protocols import ThemeSphinxConfig
-from themester.sphinx import HTMLConfig, SphinxConfig
+from themester.protocols import ThemeConfig
 from themester.sphinx.models import Links
 
 
@@ -53,22 +52,10 @@ def get_sidebars():
 
 
 @dataclass(frozen=True)
-class ThemabasterSphinxConfig(ThemeSphinxConfig):
-
-    @staticmethod
-    def get_static_resources() -> Tuple[Path, ...]:
-        """ Return all the files that should get copied to the static output """
-
-        static_dir = Path(__file__).parent.absolute() / 'static'
-        static_resources = static_dir.glob('**/*')
-        return tuple(static_resources)
-
-
-@dataclass(frozen=True)
-class ThemabasterConfig:
-    sphinx: ThemabasterSphinxConfig = field(default_factory=ThemabasterSphinxConfig)
-    sphinx_config: SphinxConfig = field(default_factory=SphinxConfig)
-    html_config: HTMLConfig = field(default_factory=HTMLConfig)
+class ThemabasterConfig(ThemeConfig):
+    # sphinx: ThemabasterSphinxConfig = field(default_factory=ThemabasterSphinxConfig)
+    # sphinx_config: SphinxConfig = field(default_factory=SphinxConfig)
+    # html_config: HTMLConfig = field(default_factory=HTMLConfig)
 
     # HTML Builder
     sidebars: Tuple[Callable, ...] = field(default_factory=get_sidebars)
@@ -105,3 +92,11 @@ class ThemabasterConfig:
         '_static/pygments.css',
     )
     js_files: Tuple[str, ...] = tuple()
+
+    @staticmethod
+    def get_static_resources() -> Tuple[Path, ...]:
+        """ Return all the files that should get copied to the static output """
+
+        static_dir = Path(__file__).parent.absolute() / 'static'
+        static_resources = static_dir.glob('**/*')
+        return tuple(static_resources)

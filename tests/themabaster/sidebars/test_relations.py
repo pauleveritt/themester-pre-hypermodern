@@ -2,6 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import SphinxConfig
 from themester.themabaster.sidebars.relations import Relations
 
 
@@ -39,7 +40,8 @@ def test_vdom(this_vdom, this_props):
     assert ['Documentation overview'] == first_li.children[0].children
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, sphinx_config):
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{Relations} />')
     rendered = render(this_vdom, container=this_container)
     assert '<div class="relations">' in rendered

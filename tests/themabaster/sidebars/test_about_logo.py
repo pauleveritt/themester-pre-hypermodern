@@ -2,6 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import HTMLConfig, SphinxConfig
 from themester.themabaster.sidebars.about_logo import AboutLogo
 
 
@@ -45,7 +46,9 @@ def test_render(this_html):
     assert '../mock/_static/site_logo.png' == this_html.select_one('p.logo img').get('src')
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{AboutLogo} />')
     rendered = render(this_vdom, container=this_container)
     assert '../mock/index' in rendered

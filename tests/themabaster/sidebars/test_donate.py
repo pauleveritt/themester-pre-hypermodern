@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.protocols import ThemeConfig
+from themester.sphinx import SphinxConfig
 from themester.themabaster.config import ThemabasterConfig
 from themester.themabaster.sidebars.donate import Donate
 
@@ -41,20 +43,22 @@ def test_vdom(this_vdom):
     assert True
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, sphinx_config):
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{Donate}/>')
     rendered = render(this_vdom, container=this_container)
     assert '' == rendered
 
 
-def test_wired_render_show_donate(this_container, theme_config):
+def test_wired_render_show_donate(this_container, theme_config, sphinx_config):
     tc = dataclasses.replace(
         theme_config,
         donate_url='donate.com',
         opencollective='opencollective.com',
         tidelift_url='tidelift.com'
     )
-    this_container.register_singleton(tc, ThemabasterConfig)
+    this_container.register_singleton(tc, ThemeConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{Donate}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

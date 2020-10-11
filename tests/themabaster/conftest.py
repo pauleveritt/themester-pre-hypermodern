@@ -26,11 +26,8 @@ def html_config() -> HTMLConfig:
 
 
 @pytest.fixture
-def theme_config(html_config, sphinx_config) -> ThemabasterConfig:
-    tc = ThemabasterConfig(
-        html_config=html_config,
-        sphinx_config=sphinx_config,
-    )
+def theme_config() -> ThemabasterConfig:
+    tc = ThemabasterConfig()
     return tc
 
 

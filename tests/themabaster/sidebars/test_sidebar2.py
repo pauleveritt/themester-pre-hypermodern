@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.protocols import ThemeConfig
+from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.themabaster.sidebars.localtoc import LocalToc
 from themester.themabaster.sidebars.relations import Relations
 from themester.themabaster.sidebars.searchbox import SearchBox
@@ -46,7 +48,10 @@ def test_vdom_nosidebar():
     assert [] == this_vdom
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config, sphinx_config, theme_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
+    this_container.register_singleton(theme_config, ThemeConfig)
     this_vdom = html('<{Sidebar2} />')
     rendered = render(this_vdom, container=this_container)
     local_html = BeautifulSoup(rendered, 'html.parser')

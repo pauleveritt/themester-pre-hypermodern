@@ -2,6 +2,7 @@ import pytest
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import SphinxConfig
 from themester.themabaster.sidebars.localtoc import LocalToc
 
 
@@ -41,7 +42,8 @@ def test_vdom_no_display_toc(this_props):
     assert [] == this_vdom
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, sphinx_config):
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{LocalToc} />')
     rendered = render(this_vdom, container=this_container)
     expected = '<h3><a href="../mock/index">Table of Contents</a></h3><li>toc</li>'

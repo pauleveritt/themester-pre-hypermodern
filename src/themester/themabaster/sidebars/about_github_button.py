@@ -9,6 +9,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired_injector.operators import Get
 
+from themester.protocols import ThemeConfig
 from themester.themabaster.config import ThemabasterConfig
 
 try:
@@ -22,11 +23,11 @@ except ImportError:
 class AboutGitHubButton:
     """ The github button block in the About sidebar """
 
-    github_button: Annotated[bool, Get(ThemabasterConfig, attr='github_button')]
-    github_count: Annotated[str, Get(ThemabasterConfig, attr='github_count')]
-    github_repo: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_repo')]
-    github_type: Annotated[str, Get(ThemabasterConfig, attr='github_type')]
-    github_user: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_user')]
+    github_button: Annotated[bool, Get(ThemeConfig, attr='github_button')]
+    github_count: Annotated[str, Get(ThemeConfig, attr='github_count')]
+    github_repo: Annotated[Optional[str], Get(ThemeConfig, attr='github_repo')]
+    github_type: Annotated[str, Get(ThemeConfig, attr='github_type')]
+    github_user: Annotated[Optional[str], Get(ThemeConfig, attr='github_user')]
     show_button: bool = field(init=False)
 
     def __post_init__(self):

@@ -13,8 +13,9 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired_injector.operators import Get, Attr
 
+from themester.protocols import ThemeConfig
 from themester.sphinx.models import PageContext
-from themester.themabaster.config import ThemabasterConfig, Favicons
+from themester.themabaster.config import Favicons
 
 try:
     from typing import Annotated
@@ -27,7 +28,7 @@ except ImportError:
 class FaviconSet:
     favicons: Annotated[
         Favicons,
-        Get(ThemabasterConfig),
+        Get(ThemeConfig),
         Attr('favicons')
     ]
     pathto: Annotated[

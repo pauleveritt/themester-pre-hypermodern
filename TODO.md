@@ -4,7 +4,11 @@
 
 ## Next
 
-- Allow arbitrary attributes on link and script
+- Split up PageContext 
+
+## Soon
+
+- `ThemesterApp.render` should have fewer knobs and variations
 
 ## Could Be Better
 
@@ -14,6 +18,8 @@
     
     - Moved out of "protocols"
     
+- Allow arbitrary attributes on link and script
+
 - Clear out tests/examples and ./examples
 
 - Have a themester_conf.py alongside conf.py:
@@ -118,3 +124,5 @@
 - Get rid of PrevLink and NextLink and stop injecting into this_container fixture, get from page context
 
 - Switch storytime to use a themester app
+
+- Flatten configs

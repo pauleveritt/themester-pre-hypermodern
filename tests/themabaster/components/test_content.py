@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import HTMLConfig, SphinxConfig
 from themester.themabaster.components.content import Content
 from themester.themabaster.components.document import Document
 from themester.themabaster.sidebars.sidebar1 import Sidebar1
@@ -21,7 +22,9 @@ def test_vdom(this_vdom, this_props):
     assert Sidebar2 == this_vdom[1].children[1].tag
 
 
-def test_wired_render(this_container, this_props):
+def test_wired_render(this_container, this_props, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{Content} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

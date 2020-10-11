@@ -11,8 +11,8 @@ from viewdom import VDOM, html
 from viewdom_wired import component
 from wired_injector.operators import Get
 
+from themester.protocols import ThemeConfig
 from themester.sphinx.models import Links
-from themester.themabaster.config import ThemabasterConfig
 
 try:
     from typing import Annotated
@@ -23,7 +23,7 @@ except ImportError:
 @component()
 @dataclass
 class NavigationExtraLinks:
-    extra_nav_links: Annotated[Links, Get(ThemabasterConfig, attr='extra_nav_links')]
+    extra_nav_links: Annotated[Links, Get(ThemeConfig, attr='extra_nav_links')]
     resolved_links: Optional[VDOM] = field(init=False)
 
     def __post_init__(self):

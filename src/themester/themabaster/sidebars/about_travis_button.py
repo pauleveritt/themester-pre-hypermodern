@@ -10,6 +10,7 @@ from viewdom_wired import component
 from wired.dataclasses import injected
 from wired_injector.operators import Get
 
+from themester.protocols import ThemeConfig
 from themester.themabaster.config import ThemabasterConfig
 
 try:
@@ -23,11 +24,11 @@ except ImportError:
 class AboutTravisButton:
     """ The travis button block in the About sidebar """
 
-    github_repo: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_repo')]
-    github_user: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_user')]
-    travis_button: Annotated[bool, Get(ThemabasterConfig, attr='travis_button')]
-    travis_path: Annotated[Optional[str], Get(ThemabasterConfig, attr='travis_path')]
-    badge_branch: Annotated[str, Get(ThemabasterConfig, attr='badge_branch')]
+    github_repo: Annotated[Optional[str], Get(ThemeConfig, attr='github_repo')]
+    github_user: Annotated[Optional[str], Get(ThemeConfig, attr='github_user')]
+    travis_button: Annotated[bool, Get(ThemeConfig, attr='travis_button')]
+    travis_path: Annotated[Optional[str], Get(ThemeConfig, attr='travis_path')]
+    badge_branch: Annotated[str, Get(ThemeConfig, attr='badge_branch')]
     resolved_path: str = field(init=False)
 
     def __post_init__(self):

@@ -17,6 +17,7 @@ from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext
 from .navigation_extra_links import NavigationExtraLinks
 from ..config import ThemabasterConfig
+from ...protocols import ThemeConfig
 
 try:
     from typing import Annotated
@@ -29,8 +30,8 @@ except ImportError:
 class Navigation:
     master_doc: Annotated[str, Get(SphinxConfig, attr='master_doc')]
     pathto: Annotated[Callable[[str], str], Get(PageContext, attr='pathto')]
-    sidebar_collapse: Annotated[bool, Get(ThemabasterConfig, attr='sidebar_collapse')]
-    sidebar_includehidden: Annotated[bool, Get(ThemabasterConfig, attr='sidebar_includehidden')]
+    sidebar_collapse: Annotated[bool, Get(ThemeConfig, attr='sidebar_collapse')]
+    sidebar_includehidden: Annotated[bool, Get(ThemeConfig, attr='sidebar_includehidden')]
     toctree: Annotated[Optional[Callable], Get(PageContext, attr='toctree')]
     resolved_pathto: str = field(init=False)
     resolved_toctree: Markup = field(init=False)

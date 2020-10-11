@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.protocols import ThemeConfig
 from themester.sphinx.models import Link
 from themester.themabaster.components.relbar1 import Relbar1
 from themester.themabaster.components.rellink_markup import RellinkMarkup
-from themester.themabaster.config import ThemabasterConfig
 
 
 @pytest.fixture
@@ -60,7 +60,7 @@ def test_wired_render_show_relbars(this_container, theme_config):
         show_relbar_top=True,
         show_relbars=True
     )
-    this_container.register_singleton(tc, ThemabasterConfig)
+    this_container.register_singleton(tc, ThemeConfig)
     this_vdom = html('<{Relbar1} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

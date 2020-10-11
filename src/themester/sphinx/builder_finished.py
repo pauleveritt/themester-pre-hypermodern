@@ -28,8 +28,7 @@ def copy_static_resources(
     theme_config = themester_config.theme_config
     if theme_config is not None:
         static_outdir = Path(outdir) / '_static'
-        sphinx_config = theme_config.sphinx
-        for static_resource in sphinx_config.get_static_resources():
+        for static_resource in theme_config.get_static_resources():
             copy_asset(str(static_resource), static_outdir)
 
 

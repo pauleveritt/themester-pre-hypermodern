@@ -12,17 +12,16 @@ from dataclasses import dataclass, field
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
-
-from themester.themabaster.config import ThemabasterConfig
-from ..components.rellink_markup import RellinkMarkup
-
 from wired_injector.operators import Get, Attr
+
+from ..components.rellink_markup import RellinkMarkup
+from ...protocols import ThemeConfig
 
 try:
     from typing import Annotated
 except ImportError:
     from typing_extensions import Annotated
+
 
 @component()
 @dataclass
@@ -31,12 +30,12 @@ class Relbar1:
 
     show_relbar_top: Annotated[
         bool,
-        Get(ThemabasterConfig),
+        Get(ThemeConfig),
         Attr('show_relbar_top'),
     ]
     show_relbars: Annotated[
         bool,
-        Get(ThemabasterConfig),
+        Get(ThemeConfig),
         Attr('show_relbar_top'),
     ]
     resolved_show_relbars: bool = field(init=False)

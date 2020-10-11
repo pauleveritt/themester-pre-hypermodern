@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.protocols import ThemeConfig
+from themester.sphinx import HTMLConfig, SphinxConfig
 from themester.themabaster.components.body import Body
 
 
@@ -16,7 +18,9 @@ def test_vdom(this_vdom, this_props):
     assert {} == this_vdom.props
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{Body} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

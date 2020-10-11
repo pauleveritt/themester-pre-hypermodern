@@ -63,6 +63,6 @@ def test_app_render(nullster_app, themester_site_deep):
 
 
 def test_app_get_static_resources(nullster_app):
-    nullster_app = nullster_app.themester_config.theme_config.sphinx
+    nullster_app = nullster_app.themester_config.theme_config
     result: Tuple[Path] = nullster_app.get_static_resources()
     assert 'nullster.css' == result[0].name

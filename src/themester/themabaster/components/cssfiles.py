@@ -3,12 +3,12 @@ from typing import Tuple
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired_injector.operators import Get, Attr
+from wired_injector.operators import Get
 
 from themester.operators import StaticPathTo, Paths
+from themester.protocols import ThemeConfig
 from themester.sphinx.config import HTMLConfig
 from themester.sphinx.models import PageContext
-from themester.themabaster.config import ThemabasterConfig
 
 try:
     from typing import Annotated
@@ -26,20 +26,17 @@ def CSSFile(href: str) -> VDOM:
 class CSSFiles:
     site_files: Annotated[
         Paths,
-        Get(HTMLConfig),
-        Attr('css_files'),
+        Get(HTMLConfig, attr='css_files'),
         StaticPathTo(),
     ]
     theme_files: Annotated[
         Paths,
-        Get(ThemabasterConfig),
-        Attr('css_files'),
+        Get(ThemeConfig, attr='css_files'),
         StaticPathTo(),
     ]
     page_files: Annotated[
         Paths,
-        Get(PageContext),
-        Attr('css_files'),
+        Get(PageContext, attr='css_files'),
         StaticPathTo(),
     ]
     hrefs: Tuple[str, ...] = field(init=False)

@@ -7,9 +7,9 @@ from typing import Tuple, Callable
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired_injector.operators import Get, Attr
+from wired_injector.operators import Get
 
-from themester.themabaster.config import ThemabasterConfig
+from themester.protocols import ThemeConfig
 from themester.themabaster.sidebars.about_logo import AboutLogo
 
 try:
@@ -25,8 +25,7 @@ class Sidebar2:
 
     sidebars: Annotated[
         Tuple[Callable],
-        Get(ThemabasterConfig),
-        Attr('sidebars'),
+        Get(ThemeConfig, attr='sidebars'),
     ]
     resolved_sidebars: VDOM = field(init=False)
 

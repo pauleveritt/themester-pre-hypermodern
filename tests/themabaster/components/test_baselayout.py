@@ -5,7 +5,7 @@ from markupsafe import Markup
 from viewdom import html
 from viewdom_wired import render
 
-from themester.sphinx import SphinxConfig
+from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.themabaster.components.base_layout import BaseLayout
 
 
@@ -22,7 +22,9 @@ def test_construction(sphinx_config):
     assert dict(lang='EN') == ci.html_props
 
 
-def test_defaults(this_container):
+def test_defaults(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     vdom = html('<{BaseLayout} />')
     rendered = render(vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
@@ -32,11 +34,12 @@ def test_defaults(this_container):
     assert 'html' == doctype(this_html)
 
 
-def test_config(this_container, sphinx_config):
+def test_config(this_container, html_config, sphinx_config):
     sc = dataclasses.replace(
         sphinx_config,
         language='FR'
     )
+    this_container.register_singleton(html_config, HTMLConfig)
     this_container.register_singleton(sc, SphinxConfig)
     this_vdom = html('<{BaseLayout} />')
     rendered = render(this_vdom, container=this_container)
@@ -44,7 +47,9 @@ def test_config(this_container, sphinx_config):
     assert 'FR' == this_html.select_one('html').get('lang')
 
 
-def test_extrahead(this_container):
+def test_extrahead(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     extrahead = html('<link rel="stylesheet" />')
     this_vdom = html('<{BaseLayout} extrahead={extrahead} />')
     rendered = render(this_vdom, container=this_container)
@@ -52,7 +57,9 @@ def test_extrahead(this_container):
     assert 18 == len(this_html.select('html head link'))
 
 
-def test_doctype(this_container):
+def test_doctype(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_doctype = Markup('<!DOCTYPE html5>\n')
     this_vdom = html('<{BaseLayout} doctype={this_doctype} />')
     rendered = render(this_vdom, container=this_container)

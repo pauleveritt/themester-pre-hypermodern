@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import HTMLConfig
 from themester.themabaster.components.favicon import Favicon
 
 
@@ -38,7 +39,8 @@ def test_render(this_html):
     assert 'someicon.png' == link.attrs['href']
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config):
+    this_container.register_singleton(html_config, HTMLConfig)
     this_vdom = html('<{Favicon} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

@@ -6,6 +6,7 @@ from viewdom_wired import component
 from wired_injector.operators import Get
 
 from ..config import ThemabasterConfig
+from ...protocols import ThemeConfig
 from ...sphinx import SphinxConfig
 
 try:
@@ -70,11 +71,11 @@ Professionally-supported {self.project} is available with the
 @component()
 @dataclass
 class Donate:
-    donate_url: Annotated[Optional[str], Get(ThemabasterConfig, attr='donate_url')]
-    opencollective: Annotated[Optional[str], Get(ThemabasterConfig, attr='opencollective')]
-    opencollective_button_color: Annotated[str, Get(ThemabasterConfig, attr='opencollective_button_color')]
+    donate_url: Annotated[Optional[str], Get(ThemeConfig, attr='donate_url')]
+    opencollective: Annotated[Optional[str], Get(ThemeConfig, attr='opencollective')]
+    opencollective_button_color: Annotated[str, Get(ThemeConfig, attr='opencollective_button_color')]
     project: Annotated[str, Get(SphinxConfig, attr='project')]
-    tidelift_url: Annotated[Optional[str], Get(ThemabasterConfig, attr='tidelift_url')]
+    tidelift_url: Annotated[Optional[str], Get(ThemeConfig, attr='tidelift_url')]
     show_donate: bool = field(init=False)
 
     def __post_init__(self):

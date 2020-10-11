@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.protocols import ThemeConfig
+from themester.sphinx import HTMLConfig
 from themester.themabaster.components.cssfiles import CSSFiles
 
 
@@ -39,7 +41,9 @@ def test_render(this_html):
     assert 'site_first.css' == links[0].attrs['href']
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config, theme_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(theme_config, ThemeConfig)
     this_vdom = html('<{CSSFiles} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

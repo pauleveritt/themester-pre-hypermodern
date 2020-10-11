@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.themabaster.components.footer import Footer
 
 
@@ -36,7 +37,9 @@ def test_vdom(this_vdom, this_props):
     assert '../mock/_sources/thispage.md' == this_vdom.children[2][1].props['href']
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{Footer} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import HTMLConfig, SphinxConfig
 from themester.themabaster.sidebars.about import About
 from themester.themabaster.sidebars.about_description import AboutDescription
 from themester.themabaster.sidebars.about_github_button import AboutGitHubButton
@@ -27,7 +28,9 @@ def test_vdom(this_vdom):
     assert AboutTravisButton == this_vdom[3].tag
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{About}/>')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

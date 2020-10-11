@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.themabaster.components.cssfiles import CSSFiles
 from themester.themabaster.components.head import Head
 from themester.themabaster.components.jsfiles import JSFiles
@@ -55,7 +56,9 @@ def test_vdom_extrahead(this_props):
     assert 'second' == head.extrahead[1].props['rel']
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     vdom = html('<{Head} />')
     rendered = render(vdom, container=this_container)
     local_html = BeautifulSoup(rendered, 'html.parser')
@@ -69,7 +72,9 @@ def test_wired_render(this_container):
     assert '../mock/_static/custom.css' == links[6].attrs['href']
 
 
-def test_wired_render_extrahead(this_container):
+def test_wired_render_extrahead(this_container, html_config, sphinx_config):
+    this_container.register_singleton(html_config, HTMLConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     extrahead = html('''\n
     <link rel="extra" href="first" />
     <link rel="extra" href="second" />

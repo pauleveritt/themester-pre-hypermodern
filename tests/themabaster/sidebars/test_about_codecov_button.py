@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.protocols import ThemeConfig
 from themester.themabaster.config import ThemabasterConfig
 from themester.themabaster.sidebars.about_codecov_button import AboutCodeCovButton
 
@@ -64,7 +65,7 @@ def test_wired_render_with_badge(this_container, theme_config):
         github_repo='thisrepo',
         github_user='thisuser',
     )
-    this_container.register_singleton(tc, ThemabasterConfig)
+    this_container.register_singleton(tc, ThemeConfig)
     this_vdom = html('<{AboutCodeCovButton} />')
     rendered = render(this_vdom, container=this_container)
     local_html = BeautifulSoup(rendered, 'html.parser')

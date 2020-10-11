@@ -9,9 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional, Tuple
 
-from sphinx.application import Sphinx
 from viewdom import VDOM
-from wired import ServiceRegistry
 
 try:
     from typing import Protocol
@@ -19,20 +17,12 @@ except ImportError:
     from typing_extensions import Protocol
 
 
-class ThemeSphinxConfig(Protocol):
-    """ Let the theme tell Sphinx what it has/needs """
+class ThemeConfig(Protocol):
+    """ The setup for the active theme in Themester """
 
     @staticmethod
     def get_static_resources() -> Tuple[Path, ...]:
         ...
-
-    def setup_sphinx(self, registry: ServiceRegistry, sphinx_app: Sphinx):
-        ...
-
-
-class ThemeConfig(Protocol):
-    """ The setup for the active theme in Themester """
-    sphinx: ThemeSphinxConfig
 
 
 class Resource(Protocol):

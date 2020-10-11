@@ -39,8 +39,9 @@ def test_vdom_default(this_vdom, this_props):
     assert Relbar2 == this_vdom.children[0].children[0][2].tag
 
 
-def test_wired_render_default(this_container, this_props):
+def test_wired_render_default(this_container, this_props, html_config):
     # With sidebars
+    this_container.register_singleton(html_config, HTMLConfig)
     this_vdom = html('<{Document} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')

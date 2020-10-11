@@ -9,7 +9,7 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired_injector.operators import Get
 
-from themester.themabaster.config import ThemabasterConfig
+from themester.protocols import ThemeConfig
 
 try:
     from typing import Annotated
@@ -22,11 +22,11 @@ except ImportError:
 class AboutCodeCovButton:
     """ The travis button block in the About sidebar """
 
-    github_repo: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_repo')]
-    github_user: Annotated[Optional[str], Get(ThemabasterConfig, attr='github_user')]
-    codecov_button: Annotated[bool, Get(ThemabasterConfig, attr='codecov_button')]
-    codecov_path: Annotated[str, Get(ThemabasterConfig, attr='codecov_path')]
-    badge_branch: Annotated[str, Get(ThemabasterConfig, attr='badge_branch')]
+    github_repo: Annotated[Optional[str], Get(ThemeConfig, attr='github_repo')]
+    github_user: Annotated[Optional[str], Get(ThemeConfig, attr='github_user')]
+    codecov_button: Annotated[bool, Get(ThemeConfig, attr='codecov_button')]
+    codecov_path: Annotated[str, Get(ThemeConfig, attr='codecov_path')]
+    badge_branch: Annotated[str, Get(ThemeConfig, attr='badge_branch')]
     resolved_path: str = field(init=False)
 
     def __post_init__(self):

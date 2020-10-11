@@ -5,8 +5,9 @@ from bs4 import BeautifulSoup
 from viewdom import html
 from viewdom_wired import render
 
+from themester.protocols import ThemeConfig
+from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.sphinx.models import Link
-from themester.themabaster.config import ThemabasterConfig
 from themester.themabaster.sidebars.navigation import Navigation
 
 
@@ -41,14 +42,15 @@ def test_vdom(this_vdom, this_props):
     assert ['Table of Contents'] == this_vdom.children[0].children[0].children
 
 
-def test_wired_render(this_container):
+def test_wired_render(this_container, sphinx_config):
+    this_container.register_singleton(sphinx_config, SphinxConfig)
     this_vdom = html('<{Navigation} />')
     rendered = render(this_vdom, container=this_container)
     assert '../mock/index' in rendered
     assert '<li>First' in rendered
 
 
-def test_wired_render_with_navlinks(this_container, theme_config):
+def test_wired_render_with_navlinks(this_container, html_config, theme_config, sphinx_config):
     extra_nav_links = (
         Link(title='First Link', link='link1.com'),
         Link(title='Second Link', link='link2.com'),
@@ -57,7 +59,8 @@ def test_wired_render_with_navlinks(this_container, theme_config):
         theme_config,
         extra_nav_links=extra_nav_links,
     )
-    this_container.register_singleton(tc, ThemabasterConfig)
+    this_container.register_singleton(sphinx_config, SphinxConfig)
+    this_container.register_singleton(tc, ThemeConfig)
     this_vdom = html('<{Navigation} />')
     rendered = render(this_vdom, container=this_container)
     local_html = BeautifulSoup(rendered, 'html.parser')

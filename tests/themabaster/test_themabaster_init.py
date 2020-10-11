@@ -7,7 +7,7 @@ from wired import ServiceRegistry
 
 from themester.app import ThemesterApp
 from themester.config import ThemesterConfig
-from themester.protocols import Root, View
+from themester.protocols import View
 from themester.themabaster import wired_setup
 from themester.themabaster.config import ThemabasterConfig
 from themester.themabaster.views import PageView
@@ -63,6 +63,6 @@ def test_app_render(themabaster_app, html_config, sphinx_config, this_pagecontex
 
 
 def test_app_get_static_resources(themabaster_app):
-    themabaster_app = themabaster_app.themester_config.theme_config.sphinx
-    result: Tuple[Path] = themabaster_app.get_static_resources()
+    theme_config = themabaster_app.themester_config.theme_config
+    result: Tuple[Path] = theme_config.get_static_resources()
     assert 'themabaster.css' == result[0].name

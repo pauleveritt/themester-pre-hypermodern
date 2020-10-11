@@ -50,14 +50,6 @@ def test_render(this_html):
     assert 6 == len(links)
 
 
-def test_wired_render(this_container, this_props):
-    this_vdom = html('<{FaviconSet} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    links = this_html.select('link')
-    assert 6 == len(links)
-
-
 def test_vdom_no_shortcut(this_props):
     this_props['favicons'].shortcut = None
     ci = FaviconSet(**this_props)
@@ -70,3 +62,11 @@ def test_vdom_no_sizes(this_props):
     ci = FaviconSet(**this_props)
     vdom = ci()
     assert None is vdom[3]
+
+
+def test_wired_render(this_container, this_props):
+    this_vdom = html('<{FaviconSet} />')
+    rendered = render(this_vdom, container=this_container)
+    this_html = BeautifulSoup(rendered, 'html.parser')
+    links = this_html.select('link')
+    assert 6 == len(links)
