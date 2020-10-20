@@ -7,7 +7,7 @@ from wired import ServiceRegistry
 
 from themester.app import ThemesterApp
 from themester.config import ThemesterConfig
-from themester.protocols import View
+from themester.protocols import View, Resource
 from themester.themabaster import wired_setup
 from themester.themabaster.config import ThemabasterConfig
 from themester.themabaster.views import PageView
@@ -53,13 +53,13 @@ def test_app_get_view(themabaster_app):
     assert PageView == view.__class__
 
 
-def test_app_render(themabaster_app, html_config, sphinx_config, this_pagecontext):
+def test_app_render(themabaster_app, html_config, sphinx_config, this_pagecontext, this_resource):
     r = themabaster_app.registry
     r.register_singleton(sphinx_config, sphinx_config.__class__)
     r.register_singleton(html_config, html_config.__class__)
     r.register_singleton(this_pagecontext, this_pagecontext.__class__)
-    html = themabaster_app.render()
-    assert '<title>Some Page - Themester' in html
+    html = themabaster_app.render(resource=this_resource)
+    assert '<title>D2 - Themester SiteConfig' in html
 
 
 def test_app_get_static_resources(themabaster_app):

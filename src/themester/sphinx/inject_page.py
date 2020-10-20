@@ -12,10 +12,9 @@ from markupsafe import Markup
 from sphinx.environment import BuildEnvironment
 from wired import ServiceContainer, ServiceRegistry
 
-from themester.app import ThemesterApp
 from themester.protocols import Root, Resource
 from themester.sphinx.models import PageContext, Link, Rellink
-from themester.testing.resources import Site, Document
+from themester.testing.resources import Document
 
 
 def make_resource(

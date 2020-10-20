@@ -53,11 +53,11 @@ def test_render(this_html):
 
 
 def test_wired_render(this_container, this_props):
-    this_vdom = html('<{Title} page_title="Some Page" project="Themester SiteConfig" />')
+    this_vdom = html('<{Title} project="Themester SiteConfig" />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     title = this_html.select_one('title').text
-    assert 'Some Page - Themester SiteConfig' == title
+    assert 'D2 - Themester SiteConfig' == title
 
 
 def test_wired_render_no_site_name(this_container, this_props):

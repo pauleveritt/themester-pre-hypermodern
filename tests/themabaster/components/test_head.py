@@ -62,7 +62,7 @@ def test_wired_render(this_container, html_config, sphinx_config):
     vdom = html('<{Head} />')
     rendered = render(vdom, container=this_container)
     local_html = BeautifulSoup(rendered, 'html.parser')
-    assert 'Some Page - Themester SiteConfig' == local_html.select_one('title').text
+    assert 'D2 - Themester SiteConfig' == local_html.select_one('title').text
     links = local_html.select('link')
     assert 17 == len(links)
     assert '../mock/site_first.css' == links[0].attrs['href']

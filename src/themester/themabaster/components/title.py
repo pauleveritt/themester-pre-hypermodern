@@ -6,8 +6,8 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired_injector.operators import Get, Attr
 
+from themester.protocols import Resource
 from themester.sphinx import SphinxConfig
-from themester.sphinx.models import PageContext
 
 try:
     from typing import Annotated
@@ -20,7 +20,7 @@ except ImportError:
 class Title:
     page_title: Annotated[
         str,
-        Get(PageContext),
+        Get(Resource),
         Attr('title'),
     ]
     project: Annotated[

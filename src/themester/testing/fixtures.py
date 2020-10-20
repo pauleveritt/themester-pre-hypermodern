@@ -197,6 +197,7 @@ def this_container(
     # For this per-page container, register the PageContext
     this_container.register_singleton(this_pagecontext, PageContext)
 
+    this_container.register_singleton(this_resource, Resource)
     return this_container
 
 
