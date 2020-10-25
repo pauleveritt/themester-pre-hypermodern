@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Union
 
-from wired.dataclasses import factory, Context, injected
+from wired.dataclasses import factory
 
 from themester.protocols import Resource, Root
 
@@ -109,22 +109,22 @@ def resource_path(resource: Resource) -> str:
     return path
 
 
-@factory(context=Resource)
+@factory()
 @dataclass
 class URL:
-    """ Convenience factory for paths relative to the context resource.
+    """ Convenience factory for paths relative to container's resource.
 
      This factory presumes:
-     - The container has a context.
-     - The container has a Root singleton (or factory.)
+     - The container also has a Resource.
+     - The registry has a Root singleton (or factory.)
      """
 
-    context: Resource = injected(Context)
-    root: Root = injected(Root)
+    root: Root
+    resource: Resource
 
     def static_url(self, asset_path: str) -> str:
-        path = relative_static_path(self.context, asset_path)
+        path = relative_static_path(self.resource, asset_path)
         return path
 
     def relative_path(self, target: Resource) -> str:
-        return relative_path(self.root, self.context, target)
+        return relative_path(self.root, self.resource, target)

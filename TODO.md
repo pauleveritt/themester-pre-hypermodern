@@ -126,3 +126,6 @@
 - Switch storytime to use a themester app
 
 - Flatten configs
+
+- URL factory which gets Resource instead of Context and Themester automatically registers
+

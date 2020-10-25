@@ -34,6 +34,8 @@ class ThemesterApp:
         self.registry.register_singleton(self.scanner, Scanner)
         if self.themester_config:
             self.registry.register_singleton(self.themester_config, ThemesterConfig)
+
+        # Register the URL factory
         self.scanner.scan(url)
 
     def setup_plugins(self):

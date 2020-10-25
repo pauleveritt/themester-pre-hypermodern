@@ -209,8 +209,8 @@ def test_static_relative_path(
 
 def test_factory_static_url(themester_site_deep):
     from themester.url import URL
-    context = themester_site_deep['f1']
-    url = URL(root=themester_site_deep, context=context)
+    resource = themester_site_deep['f1']
+    url = URL(root=themester_site_deep, resource=resource)
     assert '../foo.css' == url.static_url('/foo.css')
     assert 'foo.css' == url.static_url('/f1/foo.css')
     assert 'f3/foo.css' == url.static_url('/f1/f3/foo.css')
@@ -219,8 +219,8 @@ def test_factory_static_url(themester_site_deep):
 
 def test_factory_relative_path(themester_site_deep):
     from themester.url import URL
-    context = themester_site_deep['f1']
-    url = URL(root=themester_site_deep, context=context)
+    resource = themester_site_deep['f1']
+    url = URL(root=themester_site_deep, resource=resource)
     assert '../' == url.relative_path(themester_site_deep)
     assert '' == url.relative_path(themester_site_deep['f1'])
     assert '../d1/' == url.relative_path(themester_site_deep['d1'])
