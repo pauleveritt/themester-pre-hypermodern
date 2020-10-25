@@ -35,7 +35,7 @@ class Story:
     extra_props: InitVar[Optional[Dict]] = None
     combined_props: Dict[str, Any] = field(init=False, default_factory=dict)
     singletons: InitVar[Tuple[S, ...]] = tuple()
-    services: InitVar[Tuple[Tuple[S, S1], ...]] = tuple()
+    services: InitVar[Tuple[Tuple[Any, Any], ...]] = tuple()
     title: Optional[str] = None
 
     def __post_init__(self, root, props, extra_props, singletons, services):
