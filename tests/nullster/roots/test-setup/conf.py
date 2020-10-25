@@ -1,10 +1,3 @@
-from themester.config import ThemesterConfig
-from themester.nullster.config import NullsterConfig
+from themester.nullster.storytime_example import themester_config  # noqa
 
 extensions = ['themester.sphinx', 'myst_parser']
-
-
-themester_config = ThemesterConfig(
-    theme_config=NullsterConfig(),
-    plugins=('themester.nullster',)
-)

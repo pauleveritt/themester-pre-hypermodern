@@ -58,7 +58,7 @@ def inject_page(app, pagename, templatename, context, doctree):
 
 
 def setup(app: Sphinx):
-    app.add_config_value('themester_config', ThemesterConfig(), 'env')
+    app.add_config_value('themester_config', ThemesterConfig(root=Site()), 'env')
     app.add_config_value('sphinx_config', SphinxConfig(), 'env')
     app.add_config_value('html_config', HTMLConfig(), 'env')
     app.connect('builder-inited', builder_init)

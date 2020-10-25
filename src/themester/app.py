@@ -16,7 +16,7 @@ from wired import ServiceRegistry, ServiceContainer
 
 from themester import url
 from themester.config import ThemesterConfig
-from themester.protocols import View, Resource
+from themester.protocols import View, Resource, Root
 
 
 @dataclass
@@ -35,8 +35,10 @@ class ThemesterApp:
         if self.themester_config:
             self.registry.register_singleton(self.themester_config, ThemesterConfig)
 
-        # Register the URL factory
+        # Register some factories and singletons
         self.scanner.scan(url)
+        root = self.themester_config.root
+        self.registry.register_singleton(root, Root)
 
     def setup_plugins(self):
         # Stop doing this as part of __post_init__ to let the

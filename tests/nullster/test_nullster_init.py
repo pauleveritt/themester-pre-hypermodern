@@ -14,8 +14,9 @@ from themester.views import View
 
 
 @pytest.fixture
-def themester_config():
+def themester_config(themester_site):
     tc = ThemesterConfig(
+        root=themester_site,
         theme_config=NullsterConfig(),
         plugins=('themester.nullster',)
     )
@@ -26,7 +27,6 @@ def themester_config():
 def nullster_app(themester_site, themester_config):
     na = ThemesterApp(themester_config=themester_config)
     na.setup_plugins()
-    na.registry.register_singleton(themester_site, Root)
     return na
 
 

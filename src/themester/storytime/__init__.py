@@ -27,9 +27,8 @@ S1 = TypeVar('S1')  # Singletons
 class Story:
     component: C
     package: Any
-    root: InitVar[Root]
+    themester_app: ThemesterApp
     other_packages: Optional[Tuple] = tuple()
-    themester_app: ThemesterApp = field(init=False)
     usage: Optional[VDOM] = None
     props: InitVar[Optional] = None
     extra_props: InitVar[Optional[Dict]] = None
@@ -38,18 +37,13 @@ class Story:
     services: InitVar[Tuple[Tuple[Any, Any], ...]] = tuple()
     title: Optional[str] = None
 
-    def __post_init__(self, root, props, extra_props, singletons, services):
-        self.themester_app = ThemesterApp(
-            themester_config=ThemesterConfig()
-        )
+    def __post_init__(self, props, extra_props, singletons, services):
         self.themester_app.setup_plugins()
 
         # Scan this component package but also any dependent components
         self.themester_app.scanner = Scanner(registry=self.themester_app.registry)
         self.themester_app.scanner.scan(self.package)
         [self.themester_app.scanner.scan(pkg) for pkg in self.other_packages]
-
-        self.themester_app.registry.register_singleton(root, Root)
 
         # Register any story singletons
         for singleton in singletons:
