@@ -14,3 +14,6 @@ def test_stories(these_stories: Tuple[Story, ...]):
     assert 'span' == story0.vdom[1].tag
     assert 'Resource: Story Site' == story0.html.select_one('h1').text
     assert 'Hello Nullster' == story0.html.select_one('span').text
+
+    story1 = these_stories[1]
+    assert 'Resource: About' == story1.html.select_one('h1').text
