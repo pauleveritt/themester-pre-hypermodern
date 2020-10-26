@@ -10,16 +10,17 @@ from typing import Optional, Dict, Any, Callable, Tuple
 
 import pytest
 from bs4 import BeautifulSoup
-from markupsafe import Markup
 from venusian import Scanner
 from viewdom import render, VDOM, html
 from wired import ServiceContainer
 
-from .resources import Site, Document, Collection
+from .resources import Site, Document
 from ..config import ThemesterConfig
-from ..protocols import Resource, Root
-from ..sphinx.models import PageContext, Link
+from ..protocols import Resource
+from ..sphinx import SphinxConfig
+from ..sphinx.models import PageContext
 from ..storytime import Story
+from ..themabaster.storytime_example import root, fake_pagecontext, fake_pathto, fake_hasdoc, fake_toctree
 
 
 @dataclass
@@ -39,38 +40,24 @@ def themester_site() -> Site:
 @pytest.fixture
 def themester_site_deep() -> Site:
     """ A nested site root with documents and collections """
-    site = Site()
-    f1 = Collection(name='f1', parent=site, title='F1')
-    site['f1'] = f1
-    d1 = Document(name='d1', parent=site, title='D1')
-    site['d1'] = d1
-    d2 = Document(name='d2', parent=f1, title='D2')
-    f1['d2'] = d2
-    f3 = Collection(name='f3', parent=f1, title='F3')
-    f1['f3'] = f3
-    d3 = Document(name='d3', parent=f3, title='D3')
-    f3['d3'] = d3
-    return site
+    return root
 
 
 @pytest.fixture
 def themester_config(themester_site_deep) -> ThemesterConfig:
-    tc = ThemesterConfig()
-    return tc
+    from themester.themabaster import storytime_example
+    return storytime_example.themester_config
 
 
 @pytest.fixture
 def themester_app(themester_site, themester_config):
     """ An app that depends on a root and a config """
 
-    from ..app import ThemesterApp
-    ta = ThemesterApp(
-        themester_config=themester_config,
-    )
-    ta.setup_plugins()
-    ta.registry.register_singleton(themester_site, Root)
+    from themester.themabaster.storytime_example import themester_app
+    themester_app.setup_plugins()
+    themester_app.registry.register_singleton(SphinxConfig(), SphinxConfig)
 
-    return ta
+    return themester_app
 
 
 @pytest.fixture
@@ -110,19 +97,9 @@ def this_html(this_vdom) -> BeautifulSoup:
     return this_html
 
 
-def fake_pathto(docname, mode=0) -> str:
-    """ Sphinx page context function to get a path to a target """
-    return f'../mock/{docname}'
-
-
 @pytest.fixture
 def this_pathto() -> Callable[[str, Optional[int]], str]:
     return fake_pathto
-
-
-def fake_hasdoc(docname) -> bool:
-    """ Sphinx page context function to confirm a path exists """
-    return True if docname != 'author' else False
 
 
 @pytest.fixture
@@ -130,38 +107,9 @@ def this_hasdoc() -> Callable[[str], bool]:
     return fake_hasdoc
 
 
-def fake_toctree(sidebar_collapse: bool = True, sidebar_includehidden: bool = True) -> str:
-    """ Sphinx page context function to return string of toctree """
-    return '<ul><li>First</li></ul>'
-
-
 @pytest.fixture
 def this_toctree() -> Callable[[bool, bool], str]:
     return fake_toctree
-
-
-fake_pagecontext = PageContext(
-    body=Markup('<h1>Some Body</h1>'),
-    css_files=('page_first.css', 'page_second.css'),
-    display_toc=True,
-    hasdoc=fake_hasdoc,
-    js_files=('page_first.js', 'page_second.js'),
-    pagename='somedoc',
-    page_source_suffix='.html',
-    pathto=fake_pathto,
-    prev=Link(
-        title='Previous',
-        link='/previous/',
-    ),
-    next=Link(
-        title='Next',
-        link='/next/',
-    ),
-    sourcename='somedoc.rst',
-    title='Some Page',
-    toc=Markup('<li>toc</li>'),
-    toctree=fake_toctree,
-)
 
 
 @pytest.fixture
@@ -170,9 +118,14 @@ def this_pagecontext(this_hasdoc, this_pathto, this_toctree):
 
 
 @pytest.fixture
-def this_resource(themester_site_deep) -> Optional[Resource]:
+def this_resource(themester_site_deep) -> Document:
     this_resource = themester_site_deep['f1']['d2']
     return this_resource
+
+
+@pytest.fixture
+def this_root(themester_site_deep) -> Site:
+    return themester_site_deep
 
 
 @pytest.fixture

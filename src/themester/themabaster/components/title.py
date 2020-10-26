@@ -18,12 +18,12 @@ except ImportError:
 @component()
 @dataclass
 class Title:
-    page_title: Annotated[
+    resource_title: Annotated[
         str,
         Get(Resource),
         Attr('title'),
     ]
-    project: Annotated[
+    site_title: Annotated[
         Optional[str],
         Get(SphinxConfig),
         Attr('project'),
@@ -31,10 +31,10 @@ class Title:
     resolved_title: str = field(init=False)
 
     def __post_init__(self):
-        if self.project:
-            raw_title = f'{self.page_title} - {self.project}'
+        if self.site_title:
+            raw_title = f'{self.resource_title} - {self.site_title}'
         else:
-            raw_title = f'{self.page_title}'
+            raw_title = f'{self.resource_title}'
         self.resolved_title = Markup(raw_title).striptags()
 
     def __call__(self) -> VDOM:

@@ -1,3 +1,5 @@
+from themester.themabaster.storytime_example import themester_config  # noqa
+
 import inspect
 import os
 import sys
@@ -14,8 +16,3 @@ from themester.themabaster import ThemabasterConfig
 sys.path.insert(0, os.path.join(__location__))
 
 extensions = ['themester.sphinx', 'sphinx.ext.autodoc', 'myst_parser']
-
-themester_config = ThemesterConfig(
-    theme_config=ThemabasterConfig(),
-    plugins=('themester.themabaster',)
-)

@@ -14,8 +14,9 @@ from themester.themabaster.views import PageView
 
 
 @pytest.fixture
-def themester_config():
+def themester_config(this_root):
     tc = ThemesterConfig(
+        root=this_root,
         theme_config=ThemabasterConfig(),
         plugins=('themester.themabaster',)
     )

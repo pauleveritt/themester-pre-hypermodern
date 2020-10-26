@@ -7,10 +7,10 @@ from themester.themabaster.components.title import Title
 
 
 @pytest.fixture
-def this_props(sphinx_config, this_pagecontext):
+def this_props(this_resource, this_root):
     props = dict(
-        page_title=this_pagecontext.title,
-        project=sphinx_config.project,
+        resource_title=this_resource.title,
+        site_title=this_root.title,
     )
     return props
 
@@ -22,46 +22,46 @@ def this_component(this_props):
 
 
 def test_construction(this_component: Title):
-    assert 'Some Page - Themester SiteConfig' == this_component.resolved_title
+    assert 'D2 - Themabaster Site' == this_component.resolved_title
 
 
 def test_vdom(this_vdom):
-    assert this_vdom.children == ['Some Page - Themester SiteConfig']
+    assert this_vdom.children == ['D2 - Themabaster Site']
 
 
 def test_vdom_no_site_name():
     """ Maybe the site_name is None """
-    page_title = 'Some Page'
+    resource_title = 'Some Page'
     project = None
-    this_component = Title(page_title=page_title, project=project)
+    this_component = Title(resource_title=resource_title, site_title=project)
     this_vdom = this_component()
     assert this_vdom.children == ['Some Page']
 
 
 def test_vdom_raw_html():
     """ What if the page title has HTML markup? """
-    page_title = '<h1>Some Page</h1>'
+    resource_title = '<h1>Some Page</h1>'
     project = None
-    this_component = Title(page_title=page_title, project=project)
+    this_component = Title(resource_title=resource_title, site_title=project)
     this_vdom = this_component()
     assert this_vdom.children == ['Some Page']
 
 
 def test_render(this_html):
     title = this_html.select_one('title').text
-    assert 'Some Page - Themester SiteConfig' == title
+    assert 'D2 - Themabaster Site' == title
 
 
 def test_wired_render(this_container, this_props):
-    this_vdom = html('<{Title} project="Themester SiteConfig" />')
+    this_vdom = html('<{Title} site_title="Custom Site Title" />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     title = this_html.select_one('title').text
-    assert 'D2 - Themester SiteConfig' == title
+    assert 'D2 - Custom Site Title' == title
 
 
 def test_wired_render_no_site_name(this_container, this_props):
-    this_vdom = html('<{Title} page_title="Some Page" project={None} />')
+    this_vdom = html('<{Title} resource_title="Some Page" site_title={None} />')
     rendered = render(this_vdom, container=this_container)
     this_html = BeautifulSoup(rendered, 'html.parser')
     title = this_html.select_one('title').text

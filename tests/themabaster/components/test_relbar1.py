@@ -37,7 +37,7 @@ def this_component(this_props):
 
 
 def test_construction(this_component: Relbar1):
-    assert True == this_component.resolved_show_relbars
+    assert this_component.resolved_show_relbars
 
 
 def test_vdom(this_vdom, this_props):

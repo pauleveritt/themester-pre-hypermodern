@@ -72,7 +72,8 @@ class ThemesterApp:
             this_container = self.registry.create_container(context=context)
             # If we were passed a resource, register it as a singleton in
             # the container.
-            this_container.register_singleton(resource, Resource)
+            if resource:
+                this_container.register_singleton(resource, Resource)
 
         # Sometimes we want to use named views
         if view_name:

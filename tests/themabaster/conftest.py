@@ -32,8 +32,9 @@ def theme_config() -> ThemabasterConfig:
 
 
 @pytest.fixture
-def themester_config(theme_config):
+def themester_config(theme_config, this_root):
     tc = ThemesterConfig(
+        root=this_root,
         theme_config=theme_config,
         plugins=('themester.themabaster',)
     )

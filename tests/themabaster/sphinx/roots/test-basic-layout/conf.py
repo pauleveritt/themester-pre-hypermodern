@@ -1,10 +1,3 @@
-from themester.config import ThemesterConfig
-from themester.themabaster import ThemabasterConfig
+from themester.themabaster.storytime_example import themester_config  # noqa
 
 extensions = ['themester.sphinx', 'myst_parser']
-
-
-themester_config = ThemesterConfig(
-    theme_config=ThemabasterConfig(),
-    plugins=('themester.themabaster',)
-)

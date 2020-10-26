@@ -6,7 +6,8 @@ from wired import ServiceRegistry
 from wired_injector.operators import Context, Attr
 
 from themester.app import ThemesterApp
-from themester.protocols import Root
+from themester.protocols import Resource
+from themester.sphinx.models import PageContext
 from themester.views import register_view
 
 try:
@@ -59,10 +60,6 @@ def test_themester_app_render_context(themester_app):
             return expected
 
     register_view(themester_app.registry, ContextView, context=Customer)
-    # Fail with no context
-    with pytest.raises(LookupError):
-        themester_app.render()
-
     # Succeed with context
     actual = themester_app.render(context=Customer(name='Some Customer'))
     assert actual == expected
@@ -106,9 +103,6 @@ def test_themester_app_render_named(themester_app):
 
     register_view(themester_app.registry, NamedView, context=Customer, name='somename')
     customer = Customer(name='Some Customer')
-    # Fail with no name
-    with pytest.raises(LookupError):
-        themester_app.render(context=customer)
 
     # Succeeds when looking up by name
     actual = themester_app.render(context=customer, view_name='somename')
