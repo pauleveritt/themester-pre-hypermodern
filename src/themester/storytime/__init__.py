@@ -47,7 +47,7 @@ class Story:
 
         # Register any story-specific singletons and/or factories
         for service, iface in singletons:
-            self.themester_app.registry.register_singleton(service, iface.__class__)
+            self.themester_app.registry.register_singleton(service, iface)
 
         # Props: dataclass or dict?
         if hasattr(props, '__annotations__'):
