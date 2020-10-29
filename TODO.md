@@ -129,3 +129,4 @@
 
 - URL factory which gets Resource instead of Context and Themester automatically registers
 
+- Let Storytime "acquire" certain story defaults from a component's parent dirs
