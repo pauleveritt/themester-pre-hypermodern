@@ -14,7 +14,7 @@ def test_examples_views_hello(themester_app, views_hello):
 def test_examples_views_context(themester_app, views_context):
     from examples.views.context.views import EXPECTED, Customer
     customer = Customer()
-    actual = themester_app.render(context=customer)
+    actual = themester_app.render(resource=customer)
     assert actual == EXPECTED
 
 

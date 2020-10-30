@@ -22,7 +22,7 @@ C = TypeVar('C')  # Component
 S = TypeVar('S')  # Singletons
 S1 = TypeVar('S1')  # Singletons
 
-Singletons = Tuple[Tuple[Any, Type]]
+Singletons = Tuple[Tuple[Any, Any], ...]
 
 
 def get_story_defaults(component: Component) -> Dict:

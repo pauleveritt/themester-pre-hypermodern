@@ -4,9 +4,13 @@
 
 ## Next
 
-- Split up PageContext 
+- Split up PageContext into individual pieces for Rellink etc.
 
 ## Soon
+
+- Strip down inject_page.make_page_context
+
+- Stop having themester.sphinx make a container when calling .render
 
 - `ThemesterApp.render` should have fewer knobs and variations
 

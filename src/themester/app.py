@@ -58,7 +58,6 @@ class ThemesterApp:
 
     def render(self,
                container: Optional[ServiceContainer] = None,
-               context: Optional[Union[Resource, Any]] = None,
                resource: Optional[Union[Resource, Any]] = None,
                view_name: Optional[str] = None,
                ) -> str:
@@ -69,10 +68,10 @@ class ThemesterApp:
         if container:
             this_container = container
         else:
-            this_container = self.registry.create_container(context=context)
+            this_container = self.registry.create_container(context=resource)
             # If we were passed a resource, register it as a singleton in
             # the container.
-            if resource:
+            if resource is not None:
                 this_container.register_singleton(resource, Resource)
 
         # Sometimes we want to use named views

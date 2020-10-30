@@ -61,7 +61,7 @@ def test_themester_app_render_context(themester_app):
 
     register_view(themester_app.registry, ContextView, context=Customer)
     # Succeed with context
-    actual = themester_app.render(context=Customer(name='Some Customer'))
+    actual = themester_app.render(resource=Customer(name='Some Customer'))
     assert actual == expected
 
 
@@ -84,10 +84,10 @@ def test_themester_app_multiple_renders(themester_app):
 
     # First render
     customer1 = Customer(name='Some Customer')
-    assert 'Some Customer' == themester_app.render(context=customer1)
+    assert 'Some Customer' == themester_app.render(resource=customer1)
 
     customer2 = Customer(name='Another Customer')
-    assert 'Another Customer' == themester_app.render(context=customer2)
+    assert 'Another Customer' == themester_app.render(resource=customer2)
 
 
 def test_themester_app_render_named(themester_app):
@@ -105,5 +105,5 @@ def test_themester_app_render_named(themester_app):
     customer = Customer(name='Some Customer')
 
     # Succeeds when looking up by name
-    actual = themester_app.render(context=customer, view_name='somename')
+    actual = themester_app.render(resource=customer, view_name='somename')
     assert actual == expected
