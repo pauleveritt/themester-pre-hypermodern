@@ -1,3 +1,4 @@
+from collections import Mapping
 from dataclasses import dataclass
 from os.path import relpath
 from pathlib import Path
@@ -10,12 +11,11 @@ from themester.protocols import Resource, Root
 SEP = "/"
 
 
-def find_resource(root: Root, path: str) -> Resource:
+def find_resource(root: Root, path: Path) -> Resource:
     """ Given a path-like string, walk the tree and return object """
     if path == '/' or path == '/.':
         return root
-    path = normalize_path(path)
-    items = iter(path[1:-1].split('/'))
+    items = iter(path.parts[1:])
     resource = root
     while True:
         try:
@@ -23,13 +23,6 @@ def find_resource(root: Root, path: str) -> Resource:
             resource = resource[current]
         except StopIteration:
             return resource
-
-
-# def normalize_path(path: str) -> str:
-#     """ All paths should end with a slash """
-#     if not path.endswith('/'):
-#         path += '/'
-#     return path
 
 
 def parents(resource: Resource) -> List[Resource]:
@@ -43,26 +36,28 @@ def parents(resource: Resource) -> List[Resource]:
 
 
 def relative_path(
-        root: Root, current: Resource, target: Union[Resource, str],
-) -> str:
+        root: Root, current: Resource, target: Union[Resource, Path],
+) -> Path:
     """ Given current resource, generate relative path to target """
 
     # First, if the target is a string path, get the resource
-    if isinstance(target, str):
-        target = find_resource(root, normalize_path(target))
+    if isinstance(target, Path):
+        target = find_resource(root, target)
 
     result = relative_uri(
-        base=resource_path(current),
-        to=resource_path(target)
+        current=resource_path(current),
+        target=resource_path(target),
+        is_mapping=isinstance(target, Mapping),
+        suffix='.html'
     )
     return result
 
 
-def relative_static_path(current: Resource, target: str):
+def relative_static_path(current: Resource, target: Path) -> Path:
     # Bail out quickly if we are the root or in the root
     current_path = resource_path(current)
     target_path = target
-    result = relative_uri(current_path, target_path)
+    result = Path(relpath(target_path, current_path))
     return result
 
 
@@ -87,65 +82,22 @@ def relative_uri(
     return result
 
 
-#
-# def relative_uri999(base: str, to: str,
-#                     is_mapping: Optional[bool] = False,
-#                     suffix: Optional[str] = None):
-#     """Return a relative URL from ``base`` to ``to``.
-#
-#     is_mapping is used for resource-aware callers to say that
-#     the ``to`` is a mapping (folder) and should get ``index.html``
-#     appended.
-#     """
-#
-#     # if to.startswith(SEP):
-#     #     return to
-#     b2 = base.split(SEP)
-#     t2 = to.split(SEP)
-#     # remove common segments (except the last segment)
-#     for x, y in zip(b2[:-1], t2[:-1]):
-#         if x != y:
-#             break
-#         b2.pop(0)
-#         t2.pop(0)
-#     # if b2 == t2:
-#     #     # Special case: relative_uri('f/index.html','f/index.html')
-#     #     # returns '', not 'index.html'
-#     #     return 'xx'
-#     # if len(b2) == 1 and t2 == ['']:
-#     #     # Special case: relative_uri('f/index.html','f/') should
-#     #     # return './', not ''
-#     #     return '.' + SEP
-#     if base == to:
-#         return to + '.' + suffix if suffix else to
-#     prefix = ('..' + SEP) * (len(b2) - 1)
-#     if is_mapping:
-#         t2[-1] = 'index'
-#         main_path = SEP.join(t2)
-#         result = prefix + main_path
-#     else:
-#         t2 = t2[:-1]
-#         main_path = SEP.join(t2)
-#         result = prefix + main_path
-#
-#     return result + '.' + suffix if suffix else result
-#
-
-def resource_path(resource: Resource) -> str:
+def resource_path(resource: Resource) -> Path:
     """ Give a slash-separated representation of resource w/ trailing / """
 
     # Bail out quickly if we are the root or in the root
+    root_path = Path('/')
     if resource.parent is None:
-        return '/'
+        return root_path
     elif resource.parent.parent is None:
-        return '/' + resource.name + '/'
+        return root_path / resource.name
 
     # The root is '' so skip it
     resource_parents = parents(resource)
 
     # Get the names for each parent, then join with slashes
     resource_parent_names = [p.name for p in resource_parents if p]
-    path = '/'.join(resource_parent_names) + '/' + resource.name + '/'
+    path = root_path / '/'.join(resource_parent_names) / resource.name
     return path
 
 
@@ -162,9 +114,9 @@ class URL:
     root: Root
     resource: Resource
 
-    def static_url(self, asset_path: str) -> str:
+    def static_url(self, asset_path: Path) -> Path:
         path = relative_static_path(self.resource, asset_path)
         return path
 
-    def relative_path(self, target: Resource) -> str:
+    def relative_path(self, target: Resource) -> Path:
         return relative_path(self.root, self.resource, target)
