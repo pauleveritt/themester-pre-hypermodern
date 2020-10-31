@@ -1,6 +1,9 @@
+from pathlib import Path
 from typing import Tuple
 
 import pytest
+
+from themester.url import relative_uri, find_resource, parents, resource_path
 
 pytest_plugins = [
     'themester.testing.fixtures',
@@ -8,54 +11,47 @@ pytest_plugins = [
 
 
 @pytest.mark.parametrize(
-    'base, to, expected',
+    'base, to, expected, is_mapping, suffix',
     [
-        ('/', '/_static/base.css', '_static/base.css'),
-        ('/about/', '/_static/base.css', '../_static/base.css'),
-        ('/a/about/', '/_static/base.css', '../../_static/base.css'),
-        ('/a/b/index/', '/_static/base.css', '../../../_static/base.css'),
-        ('/a/b/about/', '/_static/base.css', '../../../_static/base.css'),
-        ('/', '/', ''),
-        ('/d1/', '/', '../'),
-        ('/d1/', '/d1/', ''),
-        ('/f1/f3/d3/', '/d1/', '../../../d1/'),
-        ('/f1/f3/d3/', '/', '../../../'),
-        ('/f1/f3/d3/', '/f1/', '../../'),
-        ('/f1/f3/d3/', '/f1/f3/', '../'),
-        ('/d1/', '/f1/f3/d3/', '../f1/f3/d3/'),
-        ('/f1/f3/', '/', '../../'),
-        ('/f1/f3/', '/f1/', '../'),
-        ('/f1/f3/', '/f1/f3/d3/', 'd3/'),
-        ('/', '/d1/', 'd1/'),
-        ('/d1/', '/', '../'),
+        (Path('/'), Path('/index.html'), Path(''), True, '.html'),
+        (Path('/d1/'), Path('/'), Path('../index.html'), True, '.html'),
+        (Path('/d1/'), Path('/d1/'), Path(''), False, '.html'),
+        (Path('/f1/f3/d3/'), Path('/d1/'), Path('../../../d1.html'), False, '.html'),
+        (Path('/f1/f3/d3/'), Path('/'), Path('../../../index.html'), True, '.html'),
+        (Path('/f1/f3/d3/'), Path('/f1/'), Path('../../index.html'), True, '.html'),
+        (Path('/f1/f3/d3/'), Path('/f1/f3/'), Path('../index.html'), True, '.html'),
+        (Path('/d1/'), Path('/f1/f3/d3/'), Path('../f1/f3/d3.html'), False, '.html'),
+        (Path('/f1/f3/'), Path('/'), Path('../../index.html'), True, '.html'),
+        (Path('/f1/f3/'), Path('/f1/'), Path('../index.html'), True, '.html'),
+        (Path('/f1/f3/'), Path('/f1/f3/d3/'), Path('d3.html'), False, '.html'),
+        (Path('/'), Path('/d1/'), Path('d1.html'), False, '.html'),
+        (Path('/d1/'), Path('/'), Path('../index.html'), True, '.html'),
     ]
 )
-def test_relative_uri(base, to, expected):
-    from themester.url import relative_uri
-    result = relative_uri(base, to)
+def test_relative_uri(base, to, expected, is_mapping, suffix):
+    result = relative_uri(base, to, is_mapping=is_mapping, suffix=suffix)
 
-    assert result == expected
+    assert expected == result
 
 
-@pytest.mark.parametrize(
-    'path, expected',
-    [
-        ('/', '/'),
-        ('/f1', '/f1/'),
-        ('/f1/', '/f1/'),
-        ('/d1', '/d1/'),
-        ('/d1/', '/d1/'),
-        ('/f1/d2', '/f1/d2/'),
-        ('/f1/d2/', '/f1/d2/'),
-        ('/f1/f3', '/f1/f3/'),
-        ('/f1/f3/', '/f1/f3/'),
-        ('/f1/f3/d3', '/f1/f3/d3/'),
-        ('/f1/f3/d3/', '/f1/f3/d3/'),
-    ]
-)
-def test_normalize_path(path: str, expected: str):
-    from themester.url import normalize_path
-    assert expected == normalize_path(path)
+# @pytest.mark.parametrize(
+#     'path, expected',
+#     [
+#         ('/', '/'),
+#         ('/f1', '/f1/'),
+#         ('/f1/', '/f1/'),
+#         ('/d1', '/d1/'),
+#         ('/d1/', '/d1/'),
+#         ('/f1/d2', '/f1/d2/'),
+#         ('/f1/d2/', '/f1/d2/'),
+#         ('/f1/f3', '/f1/f3/'),
+#         ('/f1/f3/', '/f1/f3/'),
+#         ('/f1/f3/d3', '/f1/f3/d3/'),
+#         ('/f1/f3/d3/', '/f1/f3/d3/'),
+#     ]
+# )
+# def test_normalize_path(path: str, expected: str):
+#     assert expected == normalize_path(path)
 
 
 @pytest.mark.parametrize(
@@ -76,7 +72,6 @@ def test_normalize_path(path: str, expected: str):
 
 )
 def test_find_resource(themester_site_deep, path: str, expected: str):
-    from themester.url import find_resource
     resource = find_resource(themester_site_deep, path)
     assert expected == resource.name
 
@@ -109,11 +104,6 @@ def test_find_resource(themester_site_deep, path: str, expected: str):
 def test_parents(
         themester_site_deep, this_path: str, expected: Tuple[str],
 ):
-    from themester.url import (
-        find_resource,
-        parents,
-        resource_path,
-    )
     resource = find_resource(themester_site_deep, this_path)
     results = parents(resource)
     result = tuple(

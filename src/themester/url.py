@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import List, Union
+from os.path import relpath
+from pathlib import Path
+from typing import List, Union, Optional
 
 from wired.dataclasses import factory
 
@@ -23,11 +25,11 @@ def find_resource(root: Root, path: str) -> Resource:
             return resource
 
 
-def normalize_path(path: str) -> str:
-    """ All paths should end with a slash """
-    if not path.endswith('/'):
-        path += '/'
-    return path
+# def normalize_path(path: str) -> str:
+#     """ All paths should end with a slash """
+#     if not path.endswith('/'):
+#         path += '/'
+#     return path
 
 
 def parents(resource: Resource) -> List[Resource]:
@@ -64,32 +66,70 @@ def relative_static_path(current: Resource, target: str):
     return result
 
 
-def relative_uri(base: str, to: str):
-    """Return a relative URL from ``base`` to ``to``."""
+def relative_uri(
+        current: Path,
+        target: Path,
+        is_mapping: Optional[bool] = False,
+        suffix: str = '',
+) -> Path:
+    result = Path(relpath(target, current))
 
-    # if to.startswith(SEP):
-    #     return to
-    b2 = base.split(SEP)
-    t2 = to.split(SEP)
-    # remove common segments (except the last segment)
-    for x, y in zip(b2[:-1], t2[:-1]):
-        if x != y:
-            break
-        b2.pop(0)
-        t2.pop(0)
-    if b2 == t2:
-        # Special case: relative_uri('f/index.html','f/index.html')
-        # returns '', not 'index.html'
-        return ''
-    if len(b2) == 1 and t2 == ['']:
-        # Special case: relative_uri('f/index.html','f/') should
-        # return './', not ''
-        return '.' + SEP
-    prefix = ('..' + SEP) * (len(b2) - 1)
-    main_path = SEP.join(t2)
-    result = prefix + main_path
+    if target.name == 'index.html':
+        target = target.parent
+
+    if current == target:
+        return Path('')
+
+    if is_mapping:
+        result = result / 'index'
+
+    result = result.with_suffix(suffix)
     return result
 
+
+#
+# def relative_uri999(base: str, to: str,
+#                     is_mapping: Optional[bool] = False,
+#                     suffix: Optional[str] = None):
+#     """Return a relative URL from ``base`` to ``to``.
+#
+#     is_mapping is used for resource-aware callers to say that
+#     the ``to`` is a mapping (folder) and should get ``index.html``
+#     appended.
+#     """
+#
+#     # if to.startswith(SEP):
+#     #     return to
+#     b2 = base.split(SEP)
+#     t2 = to.split(SEP)
+#     # remove common segments (except the last segment)
+#     for x, y in zip(b2[:-1], t2[:-1]):
+#         if x != y:
+#             break
+#         b2.pop(0)
+#         t2.pop(0)
+#     # if b2 == t2:
+#     #     # Special case: relative_uri('f/index.html','f/index.html')
+#     #     # returns '', not 'index.html'
+#     #     return 'xx'
+#     # if len(b2) == 1 and t2 == ['']:
+#     #     # Special case: relative_uri('f/index.html','f/') should
+#     #     # return './', not ''
+#     #     return '.' + SEP
+#     if base == to:
+#         return to + '.' + suffix if suffix else to
+#     prefix = ('..' + SEP) * (len(b2) - 1)
+#     if is_mapping:
+#         t2[-1] = 'index'
+#         main_path = SEP.join(t2)
+#         result = prefix + main_path
+#     else:
+#         t2 = t2[:-1]
+#         main_path = SEP.join(t2)
+#         result = prefix + main_path
+#
+#     return result + '.' + suffix if suffix else result
+#
 
 def resource_path(resource: Resource) -> str:
     """ Give a slash-separated representation of resource w/ trailing / """
