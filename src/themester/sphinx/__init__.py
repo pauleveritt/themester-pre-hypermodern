@@ -26,8 +26,8 @@ def doctree_resolved(app: Sphinx, doctree, docname: str):
     themester_app: ThemesterApp = getattr(app, 'themester_app')
     container: ServiceContainer = themester_app.registry.create_container()
     sphinx_config: SphinxConfig = container.get(SphinxConfig)
-    site = Site(title=sphinx_config.project)
-    themester_app.registry.register_singleton(site, Root)
+    # site = Site(title=sphinx_config.project)
+    # themester_app.registry.register_singleton(site, Root)
 
 
 def inject_page(app, pagename, templatename, context, doctree):

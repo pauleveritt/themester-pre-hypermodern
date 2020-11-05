@@ -16,7 +16,7 @@ from wired import ServiceRegistry, ServiceContainer
 
 from themester import url
 from themester.config import ThemesterConfig
-from themester.protocols import View, Resource, Root
+from themester.protocols import View, Resource, Root, ThemeConfig
 
 
 @dataclass
@@ -34,6 +34,9 @@ class ThemesterApp:
         self.registry.register_singleton(self.scanner, Scanner)
         if self.themester_config:
             self.registry.register_singleton(self.themester_config, ThemesterConfig)
+            self.registry.register_singleton(
+                self.themester_config.theme_config, ThemeConfig
+            )
 
         # Register some factories and singletons
         self.scanner.scan(url)
