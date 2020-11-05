@@ -5,7 +5,7 @@ Themester has fixtures for testing, those fixtures need tests.
 """
 
 from themester.app import ThemesterApp
-from themester.testing.resources import Site
+from themester.resources import Site
 
 pytest_plugins = [
     'themester.testing.fixtures',

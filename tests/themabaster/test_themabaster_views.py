@@ -1,10 +1,9 @@
-import pytest
 from bs4 import BeautifulSoup
 
 from themester.protocols import Resource
+from themester.resources import Site
 from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.sphinx.models import PageContext
-from themester.testing.resources import Site
 
 
 def test_wired_render_root_view(themester_app, this_pagecontext, html_config, sphinx_config, this_resource):

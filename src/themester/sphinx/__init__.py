@@ -3,11 +3,11 @@ from sphinx.application import Sphinx
 from . import builder_init, builder_finished, doctree_resolved, inject_page
 from .config import SphinxConfig, HTMLConfig
 from ..config import ThemesterConfig
-from ..testing.resources import Site
+from ..resources import Site
 
 
 def setup(app: Sphinx):
-    app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'  # noqa
+    app.config.template_bridge = 'themester.sphinx.template_bridge.ThemesterBridge'
 
     # Register Sphinx conf.py config values
     app.add_config_value('themester_config', ThemesterConfig(root=Site()), 'env')

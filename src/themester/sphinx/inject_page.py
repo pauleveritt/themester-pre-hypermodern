@@ -15,7 +15,7 @@ from wired import ServiceContainer, ServiceRegistry
 from themester.app import ThemesterApp
 from themester.protocols import Root, Resource
 from themester.sphinx.models import PageContext, Link, Rellink
-from themester.testing.resources import Document
+from ..resources import Document
 
 
 def make_resource(

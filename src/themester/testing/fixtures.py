@@ -14,7 +14,7 @@ from venusian import Scanner
 from viewdom import render, VDOM, html
 from wired import ServiceContainer
 
-from .resources import Site, Document
+from ..resources import Site, Document
 from ..config import ThemesterConfig
 from ..protocols import Resource
 from ..sphinx import SphinxConfig

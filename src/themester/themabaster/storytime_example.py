@@ -5,7 +5,7 @@ from themester.config import ThemesterConfig
 from themester.protocols import Resource
 from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.sphinx.models import PageContext, Link
-from themester.testing.resources import Site, Document, Collection
+from ..resources import Site, Document, Collection
 from themester.themabaster import ThemabasterConfig
 
 root = Site(title='Themabaster Site')
