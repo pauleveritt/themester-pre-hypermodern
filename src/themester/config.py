@@ -6,6 +6,6 @@ from themester.protocols import ThemeConfig, Root
 
 @dataclass
 class ThemesterConfig:
-    root: Root
+    root: Optional[Root] = None,
     theme_config: Optional[ThemeConfig] = None
     plugins: Sequence[str] = tuple()

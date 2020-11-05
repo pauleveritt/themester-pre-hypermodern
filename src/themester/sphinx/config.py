@@ -15,7 +15,7 @@ TODO Enable config-less conf.py by making an instance which then
 from dataclasses import dataclass, field
 from typing import Optional, Dict, List
 
-from themester.utils import PropsFiles
+from themester.protocols import PropsFiles
 
 
 @dataclass

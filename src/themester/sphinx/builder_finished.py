@@ -11,10 +11,6 @@ from themester.app import ThemesterApp
 from themester.config import ThemesterConfig
 
 
-class SerCon(object):
-    pass
-
-
 def copy_static_resources(
         themester_app: ThemesterApp,
         outdir: str,

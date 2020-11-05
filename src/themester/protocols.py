@@ -7,7 +7,7 @@ registry.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Mapping, Union
 
 from viewdom import VDOM
 
@@ -28,6 +28,11 @@ class ThemeConfig(Protocol):
 class Resource(Protocol):
     name: str
     parent: Optional[Resource]
+
+
+# TODO Add support for extra attrs
+PropsFile = Union[str, Tuple[str, Mapping]]
+PropsFiles = Tuple[PropsFile, ...]
 
 
 class Root(Resource, Protocol):
