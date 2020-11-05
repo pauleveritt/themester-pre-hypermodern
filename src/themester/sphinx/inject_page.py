@@ -12,6 +12,7 @@ from markupsafe import Markup
 from sphinx.environment import BuildEnvironment
 from wired import ServiceContainer, ServiceRegistry
 
+from themester.app import ThemesterApp
 from themester.protocols import Root, Resource
 from themester.sphinx.models import PageContext, Link, Rellink
 from themester.testing.resources import Document
@@ -104,3 +105,30 @@ def make_page_context(
         toctree=context.get('toctree'),
     )
     render_container.register_singleton(page_context, PageContext)
+
+
+def setup(app, pagename, templatename, context, doctree):
+    """ Store a resource-bound container in Sphinx context """
+
+    env: BuildEnvironment = app.env
+    themester_app: ThemesterApp = getattr(app, 'themester_app')
+    registry: ServiceRegistry = themester_app.registry
+    container = registry.create_container()
+    root = container.get(Root)
+
+    resource = make_resource(root, env, pagename)
+
+    render_container = make_render_container(
+        document_metadata=env.metadata[pagename],
+        registry=registry,
+        pagename=pagename,
+        resource=resource,
+    )
+    context['render_container'] = render_container
+    make_page_context(
+        render_container=render_container,
+        context=context,
+        pagename=pagename,
+        toc_num_entries=env.toc_num_entries,
+        document_metadata=env.metadata[pagename],
+    )

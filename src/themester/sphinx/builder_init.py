@@ -7,6 +7,7 @@ then from there, is on its own.
 
 This module provides some glue to "adapt" Sphinx to ThemesterApp.
 """
+from sphinx.application import Sphinx
 from sphinx.config import Config
 
 from themester.app import ThemesterApp
@@ -29,3 +30,10 @@ def setup_app(sphinx_config: Config) -> ThemesterApp:
     themester_app.registry.register_singleton(hc, HTMLConfig)
 
     return themester_app
+
+
+def setup(app: Sphinx):
+    """ Handle the Sphinx ``builder_init`` event """
+
+    themester_app = setup_app(app.config)
+    setattr(app, 'themester_app', themester_app)

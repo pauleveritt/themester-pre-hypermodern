@@ -32,7 +32,7 @@ def copy_static_resources(
             copy_asset(str(static_resource), static_outdir)
 
 
-def builder_finished_setup(
+def setup(
         app: Sphinx,
         exc: Exception,
 ) -> None:
