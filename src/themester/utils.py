@@ -2,16 +2,16 @@
 Helpers to make a registry, render a view, etc.
 """
 from collections import Sequence
-from dataclasses import field
 from importlib import import_module
-from typing import Optional, Iterable, Union, Any, Callable, Dict
+from typing import Optional, Iterable, Union, Any, Callable
 
 from venusian import Scanner
 from viewdom import html, VDOM
 from viewdom_wired import Component, render, register_component
 from wired import ServiceRegistry
 
-from themester.protocols import ThemeConfig, Root, Resource
+from themester.protocols import ThemeConfig, Root, Resource, View
+from themester.views import register_view
 
 Scannable = Any  # Wanted to use Union[str, ModuleType] but PyCharm
 Plugin = Any  # Wanted to use Union[str, ModuleType] but PyCharm
@@ -90,10 +90,53 @@ def render_component(
 ) -> str:
     """ Render a component to string with optional context/resource """
 
-    register_component(registry, component, component)
+    register_component(registry, component)
     container = registry.create_container(context=context)
     if resource is not None:
         container.register_singleton(resource, Resource)
     vdom = html('<{component} />')
     result = render(vdom, container=container)
+    return result
+
+
+def render_view(
+        registry: ServiceRegistry,
+        view: View,
+        context: Optional[Any] = None,
+        resource: Optional[Resource] = None,
+) -> str:
+    """ Find/render view with optional context/resource
+
+    Any needed components must be registered before passing in registry.
+    """
+
+    if context is not None:
+        register_view(registry, view, context=context.__class__)
+    else:
+        register_view(registry, view)
+    container = registry.create_container(context=context)
+    if resource is not None:
+        container.register_singleton(resource, Resource)
+
+    vdom = container.get(View)
+    result = render(vdom, container=container)
+    return result
+
+
+def render_template(
+        registry: ServiceRegistry,
+        template: VDOM,
+        context: Optional[Any] = None,
+        resource: Optional[Resource] = None,
+) -> str:
+    """ Find/render template string with optional context/resource
+
+    Any needed components must be registered before passing in registry.
+    """
+
+    container = registry.create_container(context=context)
+    if resource is not None:
+        container.register_singleton(resource, Resource)
+
+    result = render(template, container=container)
     return result

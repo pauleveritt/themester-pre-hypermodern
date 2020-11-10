@@ -4,14 +4,15 @@ from typing import cast, List
 import pytest
 from venusian import Scanner
 from viewdom import html, VDOM
+from viewdom_wired import register_component
 from wired import ServiceRegistry
 from wired_injector.operators import Context, Get, Attr
 
 from themester import make_registry
 from themester.nullster.config import NullsterConfig
-from themester.protocols import ThemeConfig, Root, Resource
+from themester.protocols import ThemeConfig, Root, Resource, View
 from themester.resources import Site
-from themester.utils import Scannable, _scan_target, _setup_target, render_component
+from themester.utils import Scannable, _scan_target, _setup_target, render_component, render_view, render_template
 
 try:
     from typing import Annotated
@@ -147,7 +148,31 @@ def test_render_component():
     registry = make_registry()
     context = resource = DummyContext()
     result = render_component(
-        registry, DummyComponent1,
+        registry, DummyComponent,
+        context=context,
+        resource=resource,
+    )
+    assert result == '<div>Hello DC from DC</div>'
+
+
+def test_render_view():
+    registry = make_registry()
+    context = resource = DummyContext()
+    result = render_view(
+        registry, DummyView,
+        context=context,
+        resource=resource,
+    )
+    assert result == '<div>Hello DC from DC</div>'
+
+
+def test_render_template():
+    registry = make_registry()
+    context = resource = DummyContext()
+    register_component(registry, DummyComponent)
+    template = html('<{DummyComponent} />')
+    result = render_template(
+        registry, template,
         context=context,
         resource=resource,
     )
@@ -168,7 +193,16 @@ class DummyContext(Resource):
 
 
 @dataclass
-class DummyComponent1:
+class DummyComponent:
+    context_name: Annotated[DummyContext, Context(), Attr('name')]
+    resource_name: Annotated[DummyContext, Get(Resource, attr='name')]
+
+    def __call__(self) -> VDOM:
+        return html('<div>Hello {self.context_name} from {self.resource_name}</div>')
+
+
+@dataclass
+class DummyView(View):
     context_name: Annotated[DummyContext, Context(), Attr('name')]
     resource_name: Annotated[DummyContext, Get(Resource, attr='name')]
 
