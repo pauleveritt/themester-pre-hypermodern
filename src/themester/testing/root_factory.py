@@ -1,7 +1,9 @@
 """
 Sample implementation of a root factory.
 """
+
 from dataclasses import dataclass
+from importlib import import_module
 
 from venusian import Scanner
 from wired import ServiceContainer, ServiceRegistry
@@ -25,4 +27,4 @@ def wired_setup(
         scanner: Scanner,
 ):
     # Register manually instead
-    scanner.scan(__file__)
+    scanner.scan(import_module(SampleRoot.__module__))

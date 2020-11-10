@@ -5,11 +5,12 @@ import pytest
 from venusian import Scanner
 from wired import ServiceRegistry
 
+from themester import make_registry, nullster
 from themester.app import ThemesterApp
 from themester.config import ThemesterConfig
 from themester.nullster import wired_setup
 from themester.nullster.config import NullsterConfig
-from themester.protocols import Root
+from themester.protocols import Root, ThemeConfig
 from themester.views import View
 
 
@@ -30,29 +31,29 @@ def nullster_app(themester_site, themester_config):
     return na
 
 
-def test_wired_setup():
-    registry = ServiceRegistry()
-    scanner = Scanner(registry=registry)
-    wired_setup(registry, scanner)
+@pytest.fixture
+def nullster_registry():
+    theme_config = NullsterConfig()
+    plugins = nullster
+    registry = make_registry(
+        plugins=plugins,
+        theme_config=theme_config,
+    )
+    return registry
 
 
-def test_app_default(nullster_app, themester_site):
-    assert isinstance(nullster_app.registry, ServiceRegistry)
-    assert isinstance(nullster_app.scanner, Scanner)
-
-    container = nullster_app.registry.create_container()
-    app: ThemesterApp = container.get(ThemesterApp)
-    assert app.registry == nullster_app.registry
-    container_root: Root = container.get(Root)
-    assert themester_site is container_root
-    scanner: Scanner = container.get(Scanner)
-    assert isinstance(scanner, Scanner)
-
-
-def test_app_get_view(nullster_app):
-    container = nullster_app.registry.create_container()
+def test_make_registry(nullster_registry):
+    from themester.nullster.components.hello_world import HelloWorld
+    from themester.nullster.views import AllView
+    container = nullster_registry.create_container()
+    theme_config = container.get(ThemeConfig)
+    assert isinstance(theme_config, NullsterConfig)
+    component = container.get(HelloWorld)
+    assert component is HelloWorld
     view = container.get(View)
+    assert isinstance(view, AllView)
     assert 'Nullster View' == view.name
+
 
 
 def test_app_render(nullster_app, themester_site_deep):

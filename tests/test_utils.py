@@ -3,13 +3,20 @@ from typing import cast, List
 
 import pytest
 from venusian import Scanner
+from viewdom import html, VDOM
 from wired import ServiceRegistry
+from wired_injector.operators import Context, Get, Attr
 
 from themester import make_registry
 from themester.nullster.config import NullsterConfig
-from themester.protocols import ThemeConfig, Root
+from themester.protocols import ThemeConfig, Root, Resource
 from themester.resources import Site
-from themester.utils import Scannable, _scan_target, _setup_target
+from themester.utils import Scannable, _scan_target, _setup_target, render_component
+
+try:
+    from typing import Annotated
+except ImportError:
+    from typing_extensions import Annotated
 
 
 def test_make_registry():
@@ -55,15 +62,15 @@ def test_make_registry_root():
 
 
 def test_scan_target_module():
-    from .data import utils_plugin1
     dummy_scanner = DummyScanner()
     scanner = cast(Scanner, dummy_scanner)
+    from themester.testing import utils_plugin1
     result = _scan_target(scanner, utils_plugin1)
     assert utils_plugin1 == dummy_scanner.targets[0]
 
 
 def test_make_registry_scannable():
-    from .data import utils_plugin1
+    from themester.testing import utils_plugin1
     registry = make_registry(scannables=utils_plugin1)
     container = registry.create_container()
     result = container.get(utils_plugin1.Heading1)
@@ -71,7 +78,7 @@ def test_make_registry_scannable():
 
 
 def test_make_registry_scannables():
-    from .data import utils_plugin1, utils_plugin2
+    from themester.testing import utils_plugin1, utils_plugin2
     scannables = (utils_plugin1, utils_plugin2)
     registry = make_registry(scannables=scannables)
     container = registry.create_container()
@@ -82,10 +89,10 @@ def test_make_registry_scannables():
 
 
 def test_setup_target_module():
-    from .data import utils_plugin1
     registry = ServiceRegistry()
     dummy_scanner = DummyScanner()
     scanner = cast(Scanner, dummy_scanner)
+    from themester.testing import utils_plugin1
     result = _setup_target(registry, scanner, utils_plugin1)
     container = registry.create_container()
     result1 = container.get(utils_plugin1.Heading1)
@@ -93,7 +100,7 @@ def test_setup_target_module():
 
 
 def test_make_registry_plugin():
-    from .data import utils_plugin1
+    from themester.testing import utils_plugin1
     registry = make_registry(plugins=utils_plugin1)
     container = registry.create_container()
     result = container.get(utils_plugin1.Heading1)
@@ -101,7 +108,7 @@ def test_make_registry_plugin():
 
 
 def test_make_registry_plugins():
-    from .data import utils_plugin1, utils_plugin2
+    from themester.testing import utils_plugin1, utils_plugin2
     plugins = (utils_plugin1, utils_plugin2)
     registry = make_registry(plugins=plugins)
     container = registry.create_container()
@@ -112,7 +119,7 @@ def test_make_registry_plugins():
 
 
 def test_make_registry_passed_in_root_factory():
-    from .data.root_factory import root_factory, SampleRoot
+    from themester.testing.root_factory import root_factory, SampleRoot
     registry = make_registry(root_factory=root_factory)
     container = registry.create_container()
     root: SampleRoot = container.get(Root)
@@ -120,22 +127,31 @@ def test_make_registry_passed_in_root_factory():
 
 
 def test_make_registry_scannable_root_factory():
-    from .data import root_factory
-    from .data.root_factory import SampleRoot
+    from themester.testing import root_factory
     registry = make_registry(scannables=root_factory)
     container = registry.create_container()
-    root: SampleRoot = container.get(Root)
+    root: root_factory.SampleRoot = container.get(Root)
     assert 'Sample Root' == root.title
 
 
 def test_make_registry_plugin_root_factory():
     """ Register a root factory via wired_setup """
-    from .data import root_factory
-    from .data.root_factory import SampleRoot
+    from themester.testing import root_factory
     registry = make_registry(plugins=root_factory)
     container = registry.create_container()
-    root: SampleRoot = container.get(Root)
+    root: root_factory.SampleRoot = container.get(Root)
     assert 'Sample Root' == root.title
+
+
+def test_render_component():
+    registry = make_registry()
+    context = resource = DummyContext()
+    result = render_component(
+        registry, DummyComponent1,
+        context=context,
+        resource=resource,
+    )
+    assert result == '<div>Hello DC from DC</div>'
 
 
 @dataclass
@@ -144,3 +160,17 @@ class DummyScanner:
 
     def scan(self, tgt: Scannable):
         self.targets.append(tgt)
+
+
+@dataclass
+class DummyContext(Resource):
+    name: str = 'DC'
+
+
+@dataclass
+class DummyComponent1:
+    context_name: Annotated[DummyContext, Context(), Attr('name')]
+    resource_name: Annotated[DummyContext, Get(Resource, attr='name')]
+
+    def __call__(self) -> VDOM:
+        return html('<div>Hello {self.context_name} from {self.resource_name}</div>')

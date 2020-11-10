@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from importlib import import_module
 
 from venusian import Scanner
 from viewdom import html
@@ -18,4 +19,4 @@ def wired_setup(
         scanner: Scanner,
 ):
     # Scan manually instead
-    scanner.scan(__file__)
+    scanner.scan(import_module(Heading2.__module__))
