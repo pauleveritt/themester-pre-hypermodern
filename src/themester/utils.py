@@ -3,7 +3,7 @@ Helpers to make a registry, render a view, etc.
 """
 from collections import Sequence
 from importlib import import_module
-from typing import Optional, Iterable, Union, Any
+from typing import Optional, Iterable, Union, Any, Callable
 
 from venusian import Scanner
 from wired import ServiceRegistry
@@ -37,6 +37,7 @@ def _setup_target(
 
 def make_registry(
         root: Optional[Root] = None,
+        root_factory: Optional[Callable] = None,
         scannables: Union[Iterable[Scannable], Scannable] = tuple(),
         plugins: Union[Iterable[Plugin], Plugin] = tuple(),
         theme_config: Optional[ThemeConfig] = None,
@@ -52,6 +53,10 @@ def make_registry(
     # Handle the root
     if root is not None:
         registry.register_singleton(root, Root)
+
+    # Handle a root factory
+    if root_factory is not None:
+        registry.register_factory(root_factory, Root)
 
     # Handle the theme config
     if theme_config is not None:

@@ -111,6 +111,33 @@ def test_make_registry_plugins():
     assert utils_plugin2.Heading2 is result2
 
 
+def test_make_registry_passed_in_root_factory():
+    from .data.root_factory import root_factory, SampleRoot
+    registry = make_registry(root_factory=root_factory)
+    container = registry.create_container()
+    root: SampleRoot = container.get(Root)
+    assert 'Sample Root' == root.title
+
+
+def test_make_registry_scannable_root_factory():
+    from .data import root_factory
+    from .data.root_factory import SampleRoot
+    registry = make_registry(scannables=root_factory)
+    container = registry.create_container()
+    root: SampleRoot = container.get(Root)
+    assert 'Sample Root' == root.title
+
+
+def test_make_registry_plugin_root_factory():
+    """ Register a root factory via wired_setup """
+    from .data import root_factory
+    from .data.root_factory import SampleRoot
+    registry = make_registry(plugins=root_factory)
+    container = registry.create_container()
+    root: SampleRoot = container.get(Root)
+    assert 'Sample Root' == root.title
+
+
 @dataclass
 class DummyScanner:
     targets: List[Scannable] = field(default_factory=list)
