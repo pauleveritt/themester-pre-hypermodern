@@ -22,9 +22,11 @@ def setup_registry(sphinx_config: Config) -> ServiceRegistry:
 
     theme_config: ThemeConfig = getattr(sphinx_config, 'theme_config')
     themester_root: Site = getattr(sphinx_config, 'themester_root')
+    themester_plugins = getattr(sphinx_config, 'themester_plugins')
+
     registry = make_registry(
         root=themester_root,
-        scannables=themester_sphinx,
+        plugins=(themester_sphinx, ) + themester_plugins,
         theme_config=theme_config,
     )
     sc = getattr(sphinx_config, 'sphinx_config')

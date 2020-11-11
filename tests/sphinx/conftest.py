@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import cast
+from typing import cast, Tuple
 
 import pytest
 from sphinx.application import Sphinx
@@ -17,6 +17,7 @@ class DummySphinxConfig:
     sphinx_config: SphinxConfig = field(default_factory=SphinxConfig)
     theme_config: NullsterConfig = field(default_factory=NullsterConfig)
     themester_root: Root = field(default_factory=Site)
+    themester_plugins: Tuple = tuple()
 
 
 @dataclass
