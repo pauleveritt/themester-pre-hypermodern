@@ -3,7 +3,7 @@ Helpers to make a registry, render a view, etc.
 """
 from collections import Sequence
 from importlib import import_module
-from typing import Optional, Iterable, Union, Any, Callable, Dict
+from typing import Optional, Iterable, Union, Any, Callable, Dict, Tuple
 
 from venusian import Scanner
 from viewdom import html, VDOM
@@ -17,6 +17,7 @@ from themester.views import register_view
 
 Scannable = Any  # Wanted to use Union[str, ModuleType] but PyCharm
 Plugin = Any  # Wanted to use Union[str, ModuleType] but PyCharm
+Singletons = Tuple[Tuple[Any, Any], ...]
 
 
 def _scan_target(scanner: Scanner, target: Scannable):
@@ -89,11 +90,15 @@ def render_component(
         component: Component,
         context: Optional[Any] = None,
         resource: Optional[Resource] = None,
+        singletons: Singletons = tuple(),
 ) -> str:
     """ Render a component to string with optional context/resource """
 
     register_component(registry, component)
     container = registry.create_container(context=context)
+    for service, iface in singletons:
+        container.register_singleton(service, iface)
+
     if resource is not None:
         container.register_singleton(resource, Resource)
     vdom = html('<{component} />')
@@ -106,6 +111,7 @@ def render_view(
         view: Optional[View] = None,  # Might be in the registry already
         context: Optional[Any] = None,
         resource: Optional[Resource] = None,
+        singletons: Singletons = tuple(),
 ) -> str:
     """ Find/render view with optional context/resource
 
@@ -118,6 +124,10 @@ def render_view(
         else:
             register_view(registry, view)
     container = registry.create_container(context=context)
+
+    for service, iface in singletons:
+        container.register_singleton(service, iface)
+
     if resource is not None:
         container.register_singleton(resource, Resource)
 
@@ -131,6 +141,7 @@ def render_template(
         template: VDOM,
         context: Optional[Any] = None,
         resource: Optional[Resource] = None,
+        singletons: Singletons = tuple(),
 ) -> str:
     """ Find/render template string with optional context/resource
 
@@ -138,6 +149,10 @@ def render_template(
     """
 
     container = registry.create_container(context=context)
+
+    for service, iface in singletons:
+        container.register_singleton(service, iface)
+
     if resource is not None:
         container.register_singleton(resource, Resource)
 

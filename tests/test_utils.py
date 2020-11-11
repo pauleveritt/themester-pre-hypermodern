@@ -165,6 +165,16 @@ def test_render_component():
     assert result == '<div>Hello DC from DC</div>'
 
 
+def test_render_component_with_singletons():
+    registry = make_registry()
+    singletons = ((DummySingleton(), DummySingleton),)
+    result = render_component(
+        registry, DummyComponent2,
+        singletons=singletons,
+    )
+    assert result == '<div>Hello Dummy Singleton</div>'
+
+
 def test_render_view():
     registry = make_registry()
     context = resource = DummyContext()
@@ -174,6 +184,16 @@ def test_render_view():
         resource=resource,
     )
     assert result == '<div>Hello DC from DC</div>'
+
+
+def test_render_view_with_singletons():
+    registry = make_registry()
+    singletons = ((DummySingleton(), DummySingleton),)
+    result = render_view(
+        registry, DummyView2,
+        singletons=singletons,
+    )
+    assert result == '<div>Hello Dummy Singleton</div>'
 
 
 def test_render_registered_view():
@@ -241,3 +261,26 @@ class DummyView(View):
 
     def __call__(self) -> VDOM:
         return html('<div>Hello {self.context_title} from {self.resource_title}</div>')
+
+
+@dataclass
+class DummySingleton:
+    title: str = 'Dummy Singleton'
+
+
+@dataclass
+class DummyComponent2:
+    """ Test passing in singletons"""
+
+    singleton_title: Annotated[str, Get(DummySingleton, attr='title')]
+
+    def __call__(self) -> VDOM:
+        return html('<div>Hello {self.singleton_title}</div>')
+
+
+@dataclass
+class DummyView2(View):
+    singleton_title: Annotated[str, Get(DummySingleton, attr='title')]
+
+    def __call__(self) -> VDOM:
+        return html('<div>Hello {self.singleton_title}</div>')
