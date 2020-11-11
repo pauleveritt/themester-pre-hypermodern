@@ -6,7 +6,6 @@ from . import Favicon
 from themester.storytime import Story
 
 
-
 def all_stories() -> Tuple[Story, ...]:
     story0 = Story(
         component=Favicon,

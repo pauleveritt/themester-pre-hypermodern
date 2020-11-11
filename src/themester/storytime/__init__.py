@@ -35,7 +35,7 @@ def get_story_defaults(component: Component) -> Dict:
     # Here's we'll collect some well-known values to use as
     # story defaults
     defaults = dict()
-    default_targets = ('root', 'resource', 'scannables', 'plugins', 'themester_app', 'component', 'singletons')
+    default_targets = ('root', 'resource', 'scannables', 'plugins', 'themester_app', 'singletons')
 
     # Work backwards looking for (a) subpackages with stories.py
     # and (b) stories.py with well-known globals such as resource
