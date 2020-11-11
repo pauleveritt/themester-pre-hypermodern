@@ -11,13 +11,23 @@ from wired_injector.operators import Context, Get, Attr
 from themester import make_registry
 from themester.nullster.config import NullsterConfig
 from themester.protocols import ThemeConfig, Root, Resource, View
-from themester.resources import Site
-from themester.utils import Scannable, _scan_target, _setup_target, render_component, render_view, render_template
+from themester.resources import Site, Collection, Document
+from themester.utils import Scannable, _scan_target, _setup_target, render_component, render_view, render_template, \
+    render_tree
+from themester.views import register_view
 
 try:
     from typing import Annotated
 except ImportError:
     from typing_extensions import Annotated
+
+
+@pytest.fixture
+def resource_tree() -> Site:
+    site = Site(title='Utils Site')
+    site['f1'] = Collection(name='f1', parent=site, title='F1')
+    site['f1']['d1'] = Document(name='d1', parent=site['f1'], title='D1')
+    return site
 
 
 def test_make_registry():
@@ -179,6 +189,15 @@ def test_render_template():
     assert result == '<div>Hello DC from DC</div>'
 
 
+def test_render_tree(resource_tree):
+    registry = make_registry(root=resource_tree)
+    register_view(registry, DummyView, context=Resource)
+    results = render_tree(registry, root=resource_tree)
+    assert results[''] == '<div>Hello Utils Site from Utils Site</div>'
+    assert results['/f1'] == '<div>Hello F1 from F1</div>'
+    assert results['/f1/d1'] == '<div>Hello D1 from D1</div>'
+
+
 @dataclass
 class DummyScanner:
     targets: List[Scannable] = field(default_factory=list)
@@ -189,22 +208,22 @@ class DummyScanner:
 
 @dataclass
 class DummyContext(Resource):
-    name: str = 'DC'
+    title: str = 'DC'
 
 
 @dataclass
 class DummyComponent:
-    context_name: Annotated[DummyContext, Context(), Attr('name')]
-    resource_name: Annotated[DummyContext, Get(Resource, attr='name')]
+    context_title: Annotated[DummyContext, Context(), Attr('title')]
+    resource_title: Annotated[DummyContext, Get(Resource, attr='title')]
 
     def __call__(self) -> VDOM:
-        return html('<div>Hello {self.context_name} from {self.resource_name}</div>')
+        return html('<div>Hello {self.context_title} from {self.resource_title}</div>')
 
 
 @dataclass
 class DummyView(View):
-    context_name: Annotated[DummyContext, Context(), Attr('name')]
-    resource_name: Annotated[DummyContext, Get(Resource, attr='name')]
+    context_title: Annotated[DummyContext, Context(), Attr('title')]
+    resource_title: Annotated[DummyContext, Get(Resource, attr='title')]
 
     def __call__(self) -> VDOM:
-        return html('<div>Hello {self.context_name} from {self.resource_name}</div>')
+        return html('<div>Hello {self.context_title} from {self.resource_title}</div>')
