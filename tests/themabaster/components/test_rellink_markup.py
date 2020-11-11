@@ -1,39 +1,17 @@
+from typing import Tuple
+
 import pytest
-from bs4 import BeautifulSoup
-from viewdom import html
-from viewdom_wired import render
 
-from themester.sphinx.models import Link
-from themester.themabaster.components.rellink_markup import RellinkMarkup
+from themester.storytime import Story
+from themester.themabaster.components import rellink_markup
 
 
-@pytest.fixture
-def this_props():
-    tp = dict(
-        previous=Link(
-            title='Previous',
-            link='/previous/',
-        ),
-        next=Link(
-            title='Next',
-            link='/next/',
-        )
-    )
-    return tp
-
-
-@pytest.fixture
-def this_component(this_props):
-    ci = RellinkMarkup(**this_props)
-    return ci
-
-
-def test_construction(this_component: RellinkMarkup):
-    assert 'li' == this_component.resolved_previous.tag
-    assert 'li' == this_component.resolved_next.tag
-
-
-def test_vdom(this_vdom, this_props):
+@pytest.mark.parametrize('component_package', (rellink_markup,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert 'li' == story0.instance.resolved_previous.tag
+    assert 'li' == story0.instance.resolved_previous.tag
+    this_vdom = story0.vdom
     assert 'nav' == this_vdom.tag
     assert dict(id='rellinks') == this_vdom.props
     assert 'ul' == this_vdom.children[0].tag
@@ -52,11 +30,8 @@ def test_vdom(this_vdom, this_props):
     assert 'Next Document' == n.props['title']
     assert 'Next' == n.children[0]
 
-
-def test_wired_render(this_container, this_props):
-    this_vdom = html('<{RellinkMarkup} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
+    story1 = these_stories[1]
+    this_html = story1.html
     links = this_html.select('nav#rellinks ul li a')
     assert 2 == len(links)
     assert '/previous/' == links[0].get('href')
