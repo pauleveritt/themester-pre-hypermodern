@@ -8,7 +8,7 @@ from themester.sphinx.models import PageContext, Link
 from ..resources import Site, Document, Collection
 from themester.themabaster import ThemabasterConfig
 
-root = Site(title='Themabaster Site')
+root = Site(title='Themester Site')
 f1 = Collection(name='f1', parent=root, title='F1')
 root['f1'] = f1
 d1 = Document(name='d1', parent=root, title='D1')

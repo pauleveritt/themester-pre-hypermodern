@@ -6,25 +6,17 @@ import pytest
 from themester import make_registry, nullster
 from themester.nullster.config import NullsterConfig
 from themester.protocols import Root, ThemeConfig
-from themester.resources import Site, Collection, Document
+from themester.resources import Site
 from themester.utils import render_view
 from themester.views import View
 
 
 @pytest.fixture
-def resource_tree() -> Site:
-    site = Site(title='Nullster Site')
-    site['f1'] = Collection(name='f1', parent=site, title='F1')
-    site['f1']['d1'] = Document(name='d1', parent=site['f1'], title='D1')
-    return site
-
-
-@pytest.fixture
-def nullster_registry(resource_tree):
+def nullster_registry(themester_site_deep):
     theme_config = NullsterConfig()
     plugins = nullster
     registry = make_registry(
-        root=resource_tree,
+        root=themester_site_deep,
         plugins=plugins,
         theme_config=theme_config,
     )
@@ -42,7 +34,7 @@ def test_make_registry(nullster_registry):
 
     # Root
     root: Site = container.get(Root)
-    assert 'Nullster Site' == root.title
+    assert 'Themester Site' == root.title
 
     # Components
     component = container.get(HelloWorld)
@@ -61,7 +53,7 @@ def test_render_view(nullster_registry, themester_site_deep):
     assert expected == html
 
 
-def test_app_get_static_resources(nullster_registry):
+def test_get_static_resources(nullster_registry):
     container = nullster_registry.create_container()
     nullster_config: NullsterConfig = container.get(ThemeConfig)
     result: Tuple[Path] = nullster_config.get_static_resources()

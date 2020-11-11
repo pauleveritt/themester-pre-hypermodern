@@ -1,6 +1,6 @@
 import pytest
 
-from themester.config import ThemesterConfig
+from themester import themabaster, make_registry, sphinx
 from themester.sphinx import SphinxConfig, HTMLConfig
 from themester.themabaster import ThemabasterConfig
 
@@ -32,10 +32,13 @@ def theme_config() -> ThemabasterConfig:
 
 
 @pytest.fixture
-def themester_config(theme_config, this_root):
-    tc = ThemesterConfig(
-        root=this_root,
+def themabaster_registry(themester_site_deep, theme_config, html_config, sphinx_config):
+    plugins = (sphinx, themabaster,)
+    registry = make_registry(
+        root=themester_site_deep,
+        plugins=plugins,
         theme_config=theme_config,
-        plugins=('themester.themabaster',)
     )
-    return tc
+    registry.register_singleton(html_config, HTMLConfig)
+    registry.register_singleton(sphinx_config, SphinxConfig)
+    return registry

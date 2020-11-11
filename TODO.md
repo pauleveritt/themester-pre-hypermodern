@@ -2,17 +2,20 @@
 
 ## Now
 
+- Refactor Sphinx
+
 ## Next
 
-- Split up PageContext into individual pieces for Rellink etc.
+- Get rid of storytime_example
+
+- Move resource tree up to themester/stories.py
 
 ## Soon
 
-- Strip down inject_page.make_page_context
+- Split up PageContext into individual pieces for Rellink etc.
 
-- Stop having themester.sphinx make a container when calling .render
-
-- `ThemesterApp.render` should have fewer knobs and variations
+- Get rid of get_static_resources
+  * Change to a factory that grabs ThemeConfig
 
 ## Could Be Better
 
