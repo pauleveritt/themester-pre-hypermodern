@@ -176,6 +176,20 @@ def test_render_view():
     assert result == '<div>Hello DC from DC</div>'
 
 
+def test_render_registered_view():
+    """ Instead of passing in the view, it is in the registry already"""
+
+    registry = make_registry()
+    context = resource = DummyContext()
+    register_view(registry, DummyView, context=DummyContext)
+    result = render_view(
+        registry,
+        context=context,
+        resource=resource,
+    )
+    assert result == '<div>Hello DC from DC</div>'
+
+
 def test_render_template():
     registry = make_registry()
     context = resource = DummyContext()

@@ -2,40 +2,29 @@ from pathlib import Path
 from typing import Tuple
 
 import pytest
-from venusian import Scanner
-from wired import ServiceRegistry
 
 from themester import make_registry, nullster
-from themester.app import ThemesterApp
-from themester.config import ThemesterConfig
-from themester.nullster import wired_setup
 from themester.nullster.config import NullsterConfig
 from themester.protocols import Root, ThemeConfig
+from themester.resources import Site, Collection, Document
+from themester.utils import render_view
 from themester.views import View
 
 
 @pytest.fixture
-def themester_config(themester_site):
-    tc = ThemesterConfig(
-        root=themester_site,
-        theme_config=NullsterConfig(),
-        plugins=('themester.nullster',)
-    )
-    return tc
+def resource_tree() -> Site:
+    site = Site(title='Nullster Site')
+    site['f1'] = Collection(name='f1', parent=site, title='F1')
+    site['f1']['d1'] = Document(name='d1', parent=site['f1'], title='D1')
+    return site
 
 
 @pytest.fixture
-def nullster_app(themester_site, themester_config):
-    na = ThemesterApp(themester_config=themester_config)
-    na.setup_plugins()
-    return na
-
-
-@pytest.fixture
-def nullster_registry():
+def nullster_registry(resource_tree):
     theme_config = NullsterConfig()
     plugins = nullster
     registry = make_registry(
+        root=resource_tree,
         plugins=plugins,
         theme_config=theme_config,
     )
@@ -46,24 +35,34 @@ def test_make_registry(nullster_registry):
     from themester.nullster.components.hello_world import HelloWorld
     from themester.nullster.views import AllView
     container = nullster_registry.create_container()
+
+    # Config
     theme_config = container.get(ThemeConfig)
     assert isinstance(theme_config, NullsterConfig)
+
+    # Root
+    root: Site = container.get(Root)
+    assert 'Nullster Site' == root.title
+
+    # Components
     component = container.get(HelloWorld)
     assert component is HelloWorld
+
+    # Views
     view = container.get(View)
     assert isinstance(view, AllView)
     assert 'Nullster View' == view.name
 
 
-
-def test_app_render(nullster_app, themester_site_deep):
+def test_render_view(nullster_registry, themester_site_deep):
     resource = themester_site_deep['d1']
-    html = nullster_app.render(resource=resource)
+    html = render_view(nullster_registry, resource=resource)
     expected = '<div><h1>Resource: D1</h1><span>Hello Nullster</span></div>'
     assert expected == html
 
 
-def test_app_get_static_resources(nullster_app):
-    nullster_app = nullster_app.themester_config.theme_config
-    result: Tuple[Path] = nullster_app.get_static_resources()
+def test_app_get_static_resources(nullster_registry):
+    container = nullster_registry.create_container()
+    nullster_config: NullsterConfig = container.get(ThemeConfig)
+    result: Tuple[Path] = nullster_config.get_static_resources()
     assert 'nullster.css' == result[0].name
