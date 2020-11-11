@@ -13,7 +13,7 @@ from themester.nullster.config import NullsterConfig
 from themester.protocols import ThemeConfig, Root, Resource, View
 from themester.resources import Site, Collection, Document
 from themester.utils import Scannable, _scan_target, _setup_target, render_component, render_view, render_template, \
-    render_tree
+    render_tree, render_vdom
 from themester.views import register_view
 
 try:
@@ -170,6 +170,34 @@ def test_render_component_with_singletons():
     singletons = ((DummySingleton(), DummySingleton),)
     result = render_component(
         registry, DummyComponent2,
+        singletons=singletons,
+    )
+    assert result == '<div>Hello Dummy Singleton</div>'
+
+
+def test_render_vdom():
+    registry = make_registry()
+    context = resource = DummyContext()
+    singletons = ((DummyComponent, DummyComponent),)
+    vdom = html('<{DummyComponent} />')
+    result = render_vdom(
+        registry, vdom,
+        context=context,
+        resource=resource,
+        singletons=singletons,
+    )
+    assert result == '<div>Hello DC from DC</div>'
+
+
+def test_render_vdom_with_singletons():
+    registry = make_registry()
+    singletons = (
+        (DummyComponent2, DummyComponent2),
+        (DummySingleton(), DummySingleton),
+    )
+    vdom = html('<{DummyComponent2} />')
+    result = render_vdom(
+        registry, vdom,
         singletons=singletons,
     )
     assert result == '<div>Hello Dummy Singleton</div>'

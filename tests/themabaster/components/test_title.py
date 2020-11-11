@@ -1,68 +1,24 @@
+from typing import Tuple
+
 import pytest
-from bs4 import BeautifulSoup
-from viewdom import html
-from viewdom_wired import render
 
-from themester.themabaster.components.title import Title
+from themester.storytime import Story
+from themester.themabaster.components import title
 
 
-@pytest.fixture
-def this_props(this_resource, this_root):
-    props = dict(
-        resource_title=this_resource.title,
-        site_title=this_root.title,
-    )
-    return props
+@pytest.mark.parametrize('component_package', (title,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert 'Themabaster' == story0.instance.resource_title
+    assert 'Story Site' == story0.instance.site_title
+    assert 'title' == story0.vdom.tag
+    assert 'Themabaster - Story Site' == story0.html.select_one('title').text
 
+    story1 = these_stories[1]
+    assert 'Some Page' == story1.instance.resolved_title
 
-@pytest.fixture
-def this_component(this_props):
-    ci = Title(**this_props)
-    return ci
+    story2 = these_stories[2]
+    assert 'Themabaster - Story Site' == story2.instance.resolved_title
 
-
-def test_construction(this_component: Title):
-    assert 'D2 - Themester Site' == this_component.resolved_title
-
-
-def test_vdom(this_vdom):
-    assert this_vdom.children == ['D2 - Themester Site']
-
-
-def test_vdom_no_site_name():
-    """ Maybe the site_name is None """
-    resource_title = 'Some Page'
-    project = None
-    this_component = Title(resource_title=resource_title, site_title=project)
-    this_vdom = this_component()
-    assert this_vdom.children == ['Some Page']
-
-
-def test_vdom_raw_html():
-    """ What if the page title has HTML markup? """
-    resource_title = '<h1>Some Page</h1>'
-    project = None
-    this_component = Title(resource_title=resource_title, site_title=project)
-    this_vdom = this_component()
-    assert this_vdom.children == ['Some Page']
-
-
-def test_render(this_html):
-    title = this_html.select_one('title').text
-    assert 'D2 - Themester Site' == title
-
-
-def test_wired_render(this_container, this_props):
-    this_vdom = html('<{Title} site_title="Custom Site Title" />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    title = this_html.select_one('title').text
-    assert 'D2 - Custom Site Title' == title
-
-
-def test_wired_render_no_site_name(this_container, this_props):
-    this_vdom = html('<{Title} resource_title="Some Page" site_title={None} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    title = this_html.select_one('title').text
-    assert 'Some Page' == title
+    story3 = these_stories[3]
+    assert 'About - XYZ' == story3.html.select_one('title').text

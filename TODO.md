@@ -2,13 +2,13 @@
 
 ## Now
 
-- Refactor Sphinx
-
+- Refactory storytime
+  * Use new functions
+  * Get rid of storytime_example
+  * Move resource tree up to themester/stories.py
+  
 ## Next
 
-- Get rid of storytime_example
-
-- Move resource tree up to themester/stories.py
 
 ## Soon
 
@@ -137,3 +137,5 @@
 - URL factory which gets Resource instead of Context and Themester automatically registers
 
 - Let Storytime "acquire" certain story defaults from a component's parent dirs
+
+- Refactor Sphinx

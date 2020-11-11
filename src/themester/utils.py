@@ -23,9 +23,10 @@ Singletons = Tuple[Tuple[Any, Any], ...]
 def _scan_target(scanner: Scanner, target: Scannable):
     """ Helper to import a target if it is a string, then scan """
 
-    if isinstance(target, str):
-        target = import_module(target)
-    scanner.scan(target)
+    if target is not None:
+        if isinstance(target, str):
+            target = import_module(target)
+        scanner.scan(target)
 
 
 def _setup_target(
@@ -35,10 +36,11 @@ def _setup_target(
 ):
     """ Helper to import a target if it is a string, then wired_setup """
 
-    if isinstance(target, str):
-        target = import_module(target)
-    s = getattr(target, 'wired_setup')
-    s(registry, scanner)
+    if target is not None:
+        if isinstance(target, str):
+            target = import_module(target)
+        s = getattr(target, 'wired_setup')
+        s(registry, scanner)
 
 
 def make_registry(
@@ -102,6 +104,25 @@ def render_component(
     if resource is not None:
         container.register_singleton(resource, Resource)
     vdom = html('<{component} />')
+    result = render(vdom, container=container)
+    return result
+
+
+def render_vdom(
+        registry: ServiceRegistry,
+        vdom: VDOM,
+        context: Optional[Any] = None,
+        resource: Optional[Resource] = None,
+        singletons: Singletons = tuple(),
+) -> str:
+    """ Render a VDOM to string with optional context/resource """
+
+    container = registry.create_container(context=context)
+    for service, iface in singletons:
+        container.register_singleton(service, iface)
+
+    if resource is not None:
+        container.register_singleton(resource, Resource)
     result = render(vdom, container=container)
     return result
 

@@ -27,12 +27,12 @@ themester_config = ThemesterConfig(
     plugins=('themester.themabaster',)
 )
 
-themester_app = ThemesterApp(
-    themester_config=themester_config,
-)
-themester_app.registry.register_singleton(SphinxConfig(), SphinxConfig)
-themester_app.registry.register_singleton(HTMLConfig(), HTMLConfig)
-themester_app.registry.register_singleton(resource, Resource)
+# themester_app = ThemesterApp(
+#     themester_config=themester_config,
+# )
+# themester_app.registry.register_singleton(SphinxConfig(), SphinxConfig)
+# themester_app.registry.register_singleton(HTMLConfig(), HTMLConfig)
+# themester_app.registry.register_singleton(resource, Resource)
 
 
 def fake_hasdoc(docname) -> bool:
@@ -73,4 +73,4 @@ fake_pagecontext = PageContext(
     toctree=fake_toctree,
 )
 
-themester_app.registry.register_singleton(fake_pagecontext, PageContext)
+# themester_app.registry.register_singleton(fake_pagecontext, PageContext)

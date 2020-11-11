@@ -8,15 +8,16 @@ documentation, and visual review in a browser.
 from dataclasses import InitVar, field, dataclass, asdict
 from importlib import import_module
 from inspect import getmodule
-from typing import TypeVar, Optional, Dict, Any, Tuple, Type
+from typing import TypeVar, Optional, Dict, Any, Tuple, Union, Iterable
 
 from bs4 import BeautifulSoup
-from venusian import Scanner
 from viewdom import VDOM
-from viewdom_wired import render, Component
+from viewdom_wired import Component
+from wired import ServiceRegistry
 
-from themester.app import ThemesterApp
-from themester.protocols import Resource
+from themester import make_registry
+from themester.protocols import Resource, Root
+from themester.utils import Scannable, Plugin, render_template, render_vdom
 
 C = TypeVar('C')  # Component
 S = TypeVar('S')  # Singletons
@@ -34,7 +35,7 @@ def get_story_defaults(component: Component) -> Dict:
     # Here's we'll collect some well-known values to use as
     # story defaults
     defaults = dict()
-    default_targets = ('resource', 'themester_app', 'component')
+    default_targets = ('root', 'resource', 'scannables', 'plugins', 'themester_app', 'component', 'singletons')
 
     # Work backwards looking for (a) subpackages with stories.py
     # and (b) stories.py with well-known globals such as resource
@@ -71,34 +72,52 @@ def get_story_defaults(component: Component) -> Dict:
 @dataclass
 class Story:
     component: C
+    root: Optional[Root] = None
     resource: Optional[Resource] = None
-    themester_app: Optional[ThemesterApp] = None
     other_packages: Optional[Tuple] = tuple()
+    themester_registry: ServiceRegistry = field(init=False)
     usage: Optional[VDOM] = None
     props: InitVar[Optional] = None
     extra_props: InitVar[Optional[Dict]] = None
     combined_props: Dict[str, Any] = field(init=False, default_factory=dict)
-    singletons: InitVar[Singletons] = tuple()
+    singletons: Optional[Singletons] = None
+    scannables: Optional[Union[Iterable[Scannable], Scannable]] = None
+    plugins: Optional[Union[Iterable[Plugin], Plugin]] = None
 
-    def __post_init__(self, props, extra_props, singletons):
+    def __post_init__(self, props, extra_props):
+
         # Set some defaults if they weren't provided
         story_defaults = get_story_defaults(self.component)
+        if self.root is None:
+            self.root = story_defaults.get('root')
         if self.resource is None:
-            self.resource = story_defaults['resource']
-        if self.themester_app is None:
-            self.themester_app = story_defaults['themester_app']
-
-        self.themester_app.setup_plugins()
+            self.resource = story_defaults.get('resource')
+        if self.scannables is None:
+            self.scannables = story_defaults.get('scannables', tuple())
+        if self.plugins is None:
+            self.plugins = story_defaults.get('plugins', tuple())
+        if self.singletons is None:
+            self.singletons = story_defaults.get('singletons', tuple())
 
         # Scan this component package but also any dependent components
-        self.themester_app.scanner = Scanner(registry=self.themester_app.registry)
-        package = getmodule(self.component)
-        self.themester_app.scanner.scan(package)
-        [self.themester_app.scanner.scan(pkg) for pkg in self.other_packages]
+        component_package = getmodule(self.component)
+
+        # Make the registry given this story information
+        self.themester_registry = make_registry(
+            root=self.root,
+            plugins=self.plugins,
+            scannables=self.scannables + (component_package,) + self.other_packages,
+        )
+
+        # Scan this component package but also any dependent components
+        # self.themester_app.scanner = Scanner(registry=self.themester_app.registry)
+        # package = getmodule(self.component)
+        # self.themester_app.scanner.scan(package)
+        # [self.themester_app.scanner.scan(pkg) for pkg in self.other_packages]
 
         # Register any story-specific singletons and/or factories
-        for service, iface in singletons:
-            self.themester_app.registry.register_singleton(service, iface)
+        # for service, iface in singletons:
+        #     self.themester_app.registry.register_singleton(service, iface)
 
         # Props: dataclass or dict?
         if hasattr(props, '__annotations__'):
@@ -119,12 +138,21 @@ class Story:
 
     @property
     def html(self) -> BeautifulSoup:
-        container = self.themester_app.registry.create_container()
-        container.register_singleton(self.resource, Resource)
 
         if self.usage is not None:
-            rendered = render(self.usage, container=container)
+            rendered = render_template(
+                self.themester_registry, self.usage,
+                context=self.resource,
+                resource=self.resource,
+                singletons=self.singletons,
+            )
         else:
-            rendered = render(self.vdom, container=container)
+            rendered = render_vdom(
+                self.themester_registry,
+                self.vdom,
+                context=self.resource,
+                resource=self.resource,
+                singletons=self.singletons,
+            )
         this_html = BeautifulSoup(rendered, 'html.parser')
         return this_html

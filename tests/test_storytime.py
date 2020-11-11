@@ -1,5 +1,5 @@
 from themester.nullster.components.hello_world import HelloWorld
-from themester.nullster.storytime_example import resource
+from themester.stories import resource
 from themester.storytime import get_story_defaults
 
 
