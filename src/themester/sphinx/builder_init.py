@@ -9,31 +9,33 @@ This module provides some glue to "adapt" Sphinx to ThemesterApp.
 """
 from sphinx.application import Sphinx
 from sphinx.config import Config
+from wired import ServiceRegistry
 
-from themester.app import ThemesterApp
-from themester.config import ThemesterConfig
+from themester import sphinx as themester_sphinx, make_registry
+from themester.protocols import ThemeConfig
+from themester.resources import Site
 from themester.sphinx.config import SphinxConfig, HTMLConfig
 
 
-def setup_app(sphinx_config: Config) -> ThemesterApp:
-    themester_config: ThemesterConfig = getattr(sphinx_config, 'themester_config')
+def setup_registry(sphinx_config: Config) -> ServiceRegistry:
+    """ Make a registry that is Themester-aware """
 
-    themester_app = ThemesterApp(
-        themester_config=themester_config,
+    theme_config: ThemeConfig = getattr(sphinx_config, 'theme_config')
+    themester_root: Site = getattr(sphinx_config, 'themester_root')
+    registry = make_registry(
+        root=themester_root,
+        scannables=themester_sphinx,
+        theme_config=theme_config,
     )
-    themester_app.setup_plugins()
-
-    # Put the Sphinx-specific config stuff into the registry
-    sc: ThemesterConfig = getattr(sphinx_config, 'sphinx_config')
-    hc: ThemesterConfig = getattr(sphinx_config, 'html_config')
-    themester_app.registry.register_singleton(sc, SphinxConfig)
-    themester_app.registry.register_singleton(hc, HTMLConfig)
-
-    return themester_app
+    sc = getattr(sphinx_config, 'sphinx_config')
+    hc = getattr(sphinx_config, 'html_config')
+    registry.register_singleton(sc, SphinxConfig)
+    registry.register_singleton(hc, HTMLConfig)
+    return registry
 
 
 def setup(app: Sphinx):
     """ Handle the Sphinx ``builder_init`` event """
 
-    themester_app = setup_app(app.config)
-    setattr(app, 'themester_app', themester_app)
+    registry = setup_registry(app.config)
+    setattr(app, 'themester_registry', registry)
