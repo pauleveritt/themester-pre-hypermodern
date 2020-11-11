@@ -1,6 +1,13 @@
-import pytest
+from dataclasses import dataclass
 
-from themester.app import ThemesterApp
+import pytest
+from viewdom import VDOM, html
+
+from themester import make_registry, sphinx, nullster
+from themester.protocols import Resource, View
+from themester.resources import Site
+from themester.sphinx.inject_page import make_page_context
+from themester.sphinx.models import PageContext
 from themester.sphinx.template_bridge import ThemesterBridge
 
 pytest_plugins = [
@@ -9,28 +16,39 @@ pytest_plugins = [
 
 
 @pytest.fixture
-def render_themester_bridge() -> ThemesterBridge:
+def page_context() -> PageContext:
+    context = dict(
+        parents=tuple(),
+        rellinks=tuple(),
+        title='Some Page',
+    )
+    pagename = 'somepage'
+    toc_num_entries = dict()
+    document_metadata = dict()
+
+    pc = make_page_context(context, pagename, toc_num_entries, document_metadata)
+    return pc
+
+
+def test_themester_bridge_render(page_context):
     tb = ThemesterBridge()
-    return tb
+    registry = make_registry(
+        root=Site(),
+        plugins=(sphinx, nullster),
+        scannables=sphinx,
+    )
+    context = dict(
+        themester_registry=registry,
+        page_context=page_context,
+    )
+
+    result = tb.render('', context)
+    assert '<div><h1>Resource: Some Page</h1><span>Hello Nullster</span></div>' == result
 
 
-@pytest.fixture
-def render_context(themester_app: ThemesterApp):
-    from themester.testing import views
-    themester_app.setup_plugin(views)
-    container = themester_app.registry.create_container()
-    c = dict(render_container=container)
-    return c
+@dataclass
+class DummyView(View):
+    resource: Resource
 
-
-def test_themester_bridge_construction(render_themester_bridge):
-    assert render_themester_bridge
-    # Bring these back when we stop using BuiltinTemplateLoader
-    # assert render_themester_bridge.newest_template_mtime() == 0
-    # with pytest.raises(NotImplementedError):
-    #     render_themester_bridge.render_string('', {})
-
-
-def test_themester_bridge_render(render_themester_bridge, render_context):
-    actual = render_themester_bridge.render('', render_context)
-    assert '<div>View: Fixture View</div>' == actual
+    def __call__(self) -> VDOM:
+        return html('<div>Hello {self.context_title} from {self.resource_title}</div>')

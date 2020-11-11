@@ -5,6 +5,7 @@ from wired import ServiceRegistry
 from . import builder_init, builder_finished, doctree_resolved, inject_page
 from .config import SphinxConfig, HTMLConfig
 from .factories.resource_factory import resource_factory
+from ..nullster.config import NullsterConfig
 from ..protocols import Resource
 from ..resources import Site
 
@@ -14,6 +15,7 @@ def setup(app: Sphinx):
 
     # Register Sphinx conf.py config values
     app.add_config_value('themester_root', Site(), 'env')
+    app.add_config_value('theme_config', NullsterConfig(), 'env')
     app.add_config_value('sphinx_config', SphinxConfig(), 'env')
     app.add_config_value('html_config', HTMLConfig(), 'env')
 

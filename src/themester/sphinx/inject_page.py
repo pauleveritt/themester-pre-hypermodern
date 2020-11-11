@@ -72,3 +72,4 @@ def setup(app, pagename, templatename, context, doctree):
         toc_num_entries=env.toc_num_entries,
         document_metadata=env.metadata[pagename],
     )
+    context['themester_registry'] = app.themester_registry
