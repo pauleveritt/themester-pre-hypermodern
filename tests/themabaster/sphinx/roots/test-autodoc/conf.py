@@ -1,8 +1,9 @@
-from themester.themabaster.storytime_example import themester_config  # noqa
 
 import inspect
 import os
 import sys
+
+from themester import themabaster
 
 __location__ = os.path.join(os.getcwd(), os.path.dirname(
     inspect.getfile(inspect.currentframe())))
@@ -16,3 +17,5 @@ from themester.themabaster import ThemabasterConfig
 sys.path.insert(0, os.path.join(__location__))
 
 extensions = ['themester.sphinx', 'sphinx.ext.autodoc', 'myst_parser']
+themester_plugins = (themabaster,)
+theme_config = ThemabasterConfig()

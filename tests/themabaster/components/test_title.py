@@ -22,11 +22,11 @@ def this_component(this_props):
 
 
 def test_construction(this_component: Title):
-    assert 'D2 - Themabaster Site' == this_component.resolved_title
+    assert 'D2 - Themester Site' == this_component.resolved_title
 
 
 def test_vdom(this_vdom):
-    assert this_vdom.children == ['D2 - Themabaster Site']
+    assert this_vdom.children == ['D2 - Themester Site']
 
 
 def test_vdom_no_site_name():
@@ -49,7 +49,7 @@ def test_vdom_raw_html():
 
 def test_render(this_html):
     title = this_html.select_one('title').text
-    assert 'D2 - Themabaster Site' == title
+    assert 'D2 - Themester Site' == title
 
 
 def test_wired_render(this_container, this_props):
