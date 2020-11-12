@@ -1,13 +1,3 @@
-import pytest
-from bs4 import BeautifulSoup
-from viewdom import html
-from viewdom_wired import render
-
-from themester.protocols import ThemeConfig
-from themester.sphinx import HTMLConfig
-from themester.themabaster.components.cssfiles import CSSFiles
-
-
 from typing import Tuple
 
 import pytest
