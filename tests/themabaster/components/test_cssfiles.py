@@ -8,45 +8,27 @@ from themester.sphinx import HTMLConfig
 from themester.themabaster.components.cssfiles import CSSFiles
 
 
-@pytest.fixture
-def this_props(html_config, theme_config, this_pagecontext):
-    props = dict(
-        site_files=html_config.css_files,
-        theme_files=theme_config.css_files,
-        page_files=this_pagecontext.css_files,
-    )
-    return props
+from typing import Tuple
+
+import pytest
+
+from themester.storytime import Story
+from themester.themabaster.components import cssfiles
 
 
-@pytest.fixture
-def this_component(this_props):
-    ci = CSSFiles(**this_props)
-    return ci
+@pytest.mark.parametrize('component_package', (cssfiles,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert '_static/themabaster.css' == story0.instance.hrefs[0]
+    assert '_static/pygments.css' == story0.instance.hrefs[1]
+    assert 'page_first.css' == story0.instance.hrefs[2]
+    assert 'page_second.css' == story0.instance.hrefs[3]
+    assert '_static/themabaster.css' == story0.vdom[0].props['href']
+    links = story0.html.select('link')
+    assert 4 == len(links)
+    assert '_static/themabaster.css' == links[0].attrs['href']
 
-
-def test_construction(this_component: CSSFiles):
-    assert 'site_first.css' == this_component.hrefs[0]
-    assert '_static/themabaster.css' == this_component.hrefs[2]
-    assert 'page_first.css' == this_component.hrefs[4]
-
-
-def test_vdom(this_vdom):
-    assert 6 == len(this_vdom)
-    assert 'site_first.css' == this_vdom[0].props['href']
-
-
-def test_render(this_html):
-    links = this_html.select('link')
-    assert 6 == len(links)
-    assert 'site_first.css' == links[0].attrs['href']
-
-
-def test_wired_render(this_container, html_config, theme_config):
-    this_container.register_singleton(html_config, HTMLConfig)
-    this_container.register_singleton(theme_config, ThemeConfig)
-    this_vdom = html('<{CSSFiles} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    links = this_html.select('link')
-    assert 6 == len(links)
-    assert '../mock/site_first.css' == links[0].attrs['href']
+    story1 = these_stories[1]
+    links = story1.html.select('link')
+    assert 4 == len(links)
+    assert '../mock/_static/themabaster.css' == links[0].attrs['href']
