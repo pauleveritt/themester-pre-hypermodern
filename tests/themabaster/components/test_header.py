@@ -4,18 +4,16 @@ from viewdom_wired import render
 
 from themester.themabaster.components.header import Header
 
+from typing import Tuple
 
-@pytest.fixture
-def this_component(this_props):
-    ci = Header()
-    return ci
+import pytest
 
-
-def test_vdom(this_vdom, this_props):
-    assert [] == this_vdom
+from themester.storytime import Story
+from themester.themabaster.components import header
 
 
-def test_wired_render(this_container):
-    this_vdom = html('<{Header} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '' == rendered
+@pytest.mark.parametrize('component_package', (header,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert [] == story0.vdom
+    assert '' == str(story0.html)
