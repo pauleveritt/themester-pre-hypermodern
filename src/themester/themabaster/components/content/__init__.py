@@ -7,9 +7,9 @@ from dataclasses import dataclass
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-from .document import Document
-from ..sidebars.sidebar1 import Sidebar1
-from ..sidebars.sidebar2 import Sidebar2
+from ..document import Document
+from ...sidebars.sidebar1 import Sidebar1
+from ...sidebars.sidebar2 import Sidebar2
 
 
 @component()
