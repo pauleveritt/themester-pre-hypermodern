@@ -7,12 +7,11 @@ from typing import Dict, Optional
 from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired.dataclasses import injected
 from wired_injector.operators import Get, Attr
 
-from ..components.body import Body
-from ..components.head import Head
-from ...sphinx import SphinxConfig
+from ...components.body import Body
+from ...components.head import Head
+from ....sphinx import SphinxConfig
 
 try:
     from typing import Annotated

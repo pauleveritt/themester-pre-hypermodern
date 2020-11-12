@@ -7,9 +7,9 @@ from dataclasses import dataclass
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-from .content import Content
-from .footer import Footer
-from .header import Header
+from ..content import Content
+from ..footer import Footer
+from ..header import Header
 
 
 @component()
