@@ -9,6 +9,7 @@
   
 ## Next
 
+- Remove `other_packages` as a knob in storytime
 
 ## Soon
 

@@ -9,13 +9,13 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired_injector.operators import Get, Attr
 
-from .canonical_link import CanonicalLink
-from .cssfiles import CSSFiles
-from .faviconset import FaviconSet
-from .jsfiles import JSFiles
-from .linktags import Linktags
-from .title import Title
-from ...sphinx.models import PageContext
+from ..canonical_link import CanonicalLink
+from ..cssfiles import CSSFiles
+from ..faviconset import FaviconSet
+from ..jsfiles import JSFiles
+from ..linktags import Linktags
+from ..title import Title
+from ....sphinx.models import PageContext
 
 try:
     from typing import Annotated
