@@ -3,8 +3,25 @@ from typing import Tuple
 from viewdom import html
 
 from themester.storytime import Story
-from . import Linktags
-from ...stories import html_config, theme_config, page_context, fake_hasdoc, fake_pathto
+from . import Linktags, SemanticLink
+from ...stories import fake_hasdoc, fake_pathto
+
+link1: SemanticLink = dict(
+    rel='index',
+    docname='genindex',
+    title='Index'
+)
+link2: SemanticLink = dict(
+    rel='author',
+    docname='author',
+    title='Author'
+)
+link3: SemanticLink = dict(
+    rel='copyright',
+    docname='copyright',
+    title='Copyright'
+)
+links = (link1, link2, link3)
 
 
 def all_stories() -> Tuple[Story, ...]:
@@ -13,6 +30,7 @@ def all_stories() -> Tuple[Story, ...]:
         props=dict(
             hasdoc=fake_hasdoc,
             pathto=fake_pathto,
+            links=links,
         ),
     )
     story1 = Story(

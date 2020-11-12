@@ -3,15 +3,19 @@ from typing import Tuple
 import pytest
 
 from themester.storytime import Story
-from themester.themabaster.components import linktags
+from themester.themabaster.components import jsfiles
 
 
-@pytest.mark.parametrize('component_package', (linktags,))
+@pytest.mark.parametrize('component_package', (jsfiles,))
 def test_stories(these_stories: Tuple[Story, ...]):
     story0 = these_stories[0]
-    assert '../mock/about' == story0.instance.resolved_links[0]['href']
-    assert '../mock/about' == story0.vdom[0].props['href']
-    assert '../mock/about' == story0.html.select('link')[0].attrs['href']
+    assert 2 == len(story0.instance.srcs)
+    assert 'page_first.js' == story0.instance.srcs[0]
+    srcs = story0.html.select('script')
+    assert 2 == len(srcs)
+    assert 'page_first.js' == srcs[0].attrs['src']
 
     story1 = these_stories[1]
-    assert '../mock/about' == story1.html.select('link')[0].attrs['href']
+    scripts = story1.html.select('script')
+    assert 2 == len(scripts)
+    assert '../mock/page_first.js' == scripts[0].attrs['src']
