@@ -14,8 +14,8 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired_injector.operators import Get
 
-from ..components.rellink_markup import RellinkMarkup
-from ...protocols import ThemeConfig
+from ...components.rellink_markup import RellinkMarkup
+from ....protocols import ThemeConfig
 
 try:
     from typing import Annotated

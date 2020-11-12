@@ -8,62 +8,26 @@ from viewdom_wired import render
 from themester.protocols import ThemeConfig
 from themester.sphinx.models import Link
 from themester.themabaster.components.relbar2 import Relbar2
+
+from typing import Tuple
+
+import pytest
+
+from themester.storytime import Story
+from themester.themabaster.components import relbar2
 from themester.themabaster.components.rellink_markup import RellinkMarkup
 
 
-@pytest.fixture
-def this_props():
-    tp = dict(
-        show_relbar_bottom=True,
-        show_relbars=True,
-        previous=Link(
-            title='Previous',
-            link='/previous/',
-        ),
-        next=Link(
-            title='Next',
-            link='/next/',
-        )
-    )
-    return tp
-
-
-@pytest.fixture
-def this_component(this_props):
-    del this_props['previous']
-    del this_props['next']
-    ci = Relbar2(**this_props)
-    return ci
-
-
-def test_construction(this_component: Relbar2):
+@pytest.mark.parametrize('component_package', (relbar2,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    this_component = story0.instance
     assert this_component.show_relbar_top
-
-
-def test_vdom(this_vdom, this_props):
+    this_vdom = story0.vdom
     assert 'div' == this_vdom.tag
     assert 'related top' == this_vdom.props['class']
     assert RellinkMarkup == this_vdom.children[0].tag
-
-
-def test_wired_render(this_container):
-    # By default, no relbars should be shown as config is False
-    this_vdom = html('<{Relbar2} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '' == rendered
-
-
-def test_wired_render_show_relbars(this_container, theme_config):
-    # Change the config to show relbars
-    tc = dataclasses.replace(
-        theme_config,
-        show_relbar_top=True,
-        show_relbars=True
-    )
-    this_container.register_singleton(tc, ThemeConfig)
-    this_vdom = html('<{Relbar2} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
+    this_html = story0.html
     assert ['related', 'top'] == this_html.select_one('div').get('class')
     links = this_html.select('a')
     assert 2 == len(links)
@@ -73,3 +37,6 @@ def test_wired_render_show_relbars(this_container, theme_config):
     assert '/next/' == links[1].get('href')
     assert 'Next Document' == links[1].get('title')
     assert 'Next' == links[1].text
+
+    story1 = these_stories[1]
+    assert '' == str(story1.html)
