@@ -11,8 +11,8 @@ from wired_injector.operators import Get, Attr
 
 from themester.sphinx.config import HTMLConfig
 from themester.sphinx.models import PageContext
-from ..components.relbar1 import Relbar1
-from ..components.relbar2 import Relbar2
+from ...components.relbar1 import Relbar1
+from ...components.relbar2 import Relbar2
 
 try:
     from typing import Annotated

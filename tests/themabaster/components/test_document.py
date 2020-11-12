@@ -1,65 +1,30 @@
-import dataclasses
+from typing import Tuple
 
 import pytest
-from bs4 import BeautifulSoup
-from markupsafe import Markup
-from viewdom import html
-from viewdom_wired import render
 
-from themester.sphinx import HTMLConfig
-from themester.themabaster.components.document import Document
+from themester.storytime import Story
+from themester.themabaster.components import document
 from themester.themabaster.components.relbar1 import Relbar1
 from themester.themabaster.components.relbar2 import Relbar2
 
 
-@pytest.fixture
-def this_props():
-    tp = dict(
-        body=Markup('<p>Some content</p>'),
-        nosidebar=False,
-    )
-    return tp
+@pytest.mark.parametrize('component_package', (document,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert 'div' == story0.vdom.tag
+    assert 'documentwrapper' == story0.vdom.props['class']
+    assert 'div' == story0.vdom.children[0].tag
+    assert 'bodywrapper' == story0.vdom.children[0].props['class']
+    assert 1 == len(story0.vdom.children[0].children)
+    assert Relbar1 == story0.vdom.children[0].children[0][0].tag
+    assert 'div' == story0.vdom.children[0].children[0][1].tag
+    assert Relbar2 == story0.vdom.children[0].children[0][2].tag
 
-
-@pytest.fixture
-def this_component(this_props):
-    ci = Document(**this_props)
-    return ci
-
-
-def test_vdom_default(this_vdom, this_props):
-    # With sidebars
-    assert 'div' == this_vdom.tag
-    assert 'documentwrapper' == this_vdom.props['class']
-    assert 'div' == this_vdom.children[0].tag
-    assert 'bodywrapper' == this_vdom.children[0].props['class']
-    assert 1 == len(this_vdom.children[0].children)
-    assert Relbar1 == this_vdom.children[0].children[0][0].tag
-    assert 'div' == this_vdom.children[0].children[0][1].tag
-    assert Relbar2 == this_vdom.children[0].children[0][2].tag
-
-
-def test_wired_render_default(this_container, this_props, html_config):
-    # With sidebars
-    this_container.register_singleton(html_config, HTMLConfig)
-    this_vdom = html('<{Document} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    div = this_html.select_one('div.documentwrapper')
+    story1 = these_stories[1]
+    div = story1.html.select_one('div.documentwrapper')
     assert ['documentwrapper'] == div.get('class')
     assert div.select_one('div.bodywrapper')
     assert div.select_one('div.body')
     # relbars are off by default
     assert not div.select('div.top')
     assert not div.select('div.bottom')
-
-
-def test_wired_render_without_sidebars(html_config, this_container, this_props):
-    # Change the themabaster settings in the container
-    tc = dataclasses.replace(html_config, nosidebar=True)
-    this_container.register_singleton(tc, HTMLConfig)
-
-    this_vdom = html('<{Document} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    assert None is this_html.select_one('div.bodywrapper')
