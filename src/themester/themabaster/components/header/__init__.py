@@ -14,4 +14,4 @@ class Header:
     """ A block in the body above the content block, empty by default. """
 
     def __call__(self) -> VDOM:
-        return html('')
+        return html('<span></span>')

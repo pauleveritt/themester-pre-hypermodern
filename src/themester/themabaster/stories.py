@@ -1,13 +1,14 @@
 from markupsafe import Markup
 
 from themester.protocols import ThemeConfig
-from themester.sphinx import HTMLConfig
+from themester.sphinx import HTMLConfig, SphinxConfig
 from themester.sphinx.models import PageContext, Link
 from themester.themabaster import ThemabasterConfig
 from themester.themabaster.storytime_example import fake_pagecontext
 
 theme_config = ThemabasterConfig()
 html_config = HTMLConfig(favicon='someicon.png')
+sphinx_config = SphinxConfig()
 
 
 def fake_hasdoc(docname) -> bool:
@@ -50,5 +51,6 @@ page_context = PageContext(
 singletons = (
     (theme_config, ThemeConfig),
     (html_config, HTMLConfig),
+    (sphinx_config, SphinxConfig),
     (fake_pagecontext, PageContext),
 )

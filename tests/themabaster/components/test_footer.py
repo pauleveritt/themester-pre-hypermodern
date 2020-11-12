@@ -1,46 +1,18 @@
+from typing import Tuple
+
 import pytest
-from bs4 import BeautifulSoup
-from viewdom import html
-from viewdom_wired import render
 
-from themester.sphinx import SphinxConfig, HTMLConfig
-from themester.themabaster.components.footer import Footer
+from themester.storytime import Story
+from themester.themabaster.components import footer
 
 
-@pytest.fixture
-def this_props(sphinx_config, html_config, theme_config, this_pagecontext):
-    tp = dict(
-        copyright=sphinx_config.copyright,
-        show_copyright=html_config.show_copyright,
-        show_powered_by=theme_config.show_powered_by,
-        show_sourcelink=True,
-        has_source=True,
-        pathto=this_pagecontext.pathto,
-        sourcename='thispage.md',
-    )
-    return tp
+@pytest.mark.parametrize('component_package', (footer,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert '&copy; Bazinga.' == story0.vdom.children[0]
+    assert '|' == story0.vdom.children[1][0]
+    assert 'Powered by' == story0.vdom.children[1][1].strip()
+    assert 'a' == story0.vdom.children[1][2].tag
 
-
-@pytest.fixture
-def this_component(this_props):
-    ci = Footer(**this_props)
-    return ci
-
-
-def test_vdom(this_vdom, this_props):
-    assert '&copy; Bazinga.' == this_vdom.children[0]
-    assert '|' == this_vdom.children[1][0]
-    assert 'Powered by' == this_vdom.children[1][1].strip()
-    assert 'a' == this_vdom.children[1][2].tag
-    assert '|' == this_vdom.children[2][0]
-    assert 'a' == this_vdom.children[2][1].tag
-    assert '../mock/_sources/thispage.md' == this_vdom.children[2][1].props['href']
-
-
-def test_wired_render(this_container, html_config, sphinx_config):
-    this_container.register_singleton(html_config, HTMLConfig)
-    this_container.register_singleton(sphinx_config, SphinxConfig)
-    this_vdom = html('<{Footer} />')
-    rendered = render(this_vdom, container=this_container)
-    this_html = BeautifulSoup(rendered, 'html.parser')
-    assert '../mock/_sources/somedoc.rst' == this_html.select_one('a[rel="nofollow"]').attrs['href']
+    story1 = these_stories[1]
+    assert '../mock/_sources/somedoc.rst' == story1.html.select_one('a[rel="nofollow"]').attrs['href']
