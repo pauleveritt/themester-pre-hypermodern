@@ -1,8 +1,12 @@
+import pytest
+
 pytest_plugins = [
     'examples.views.hello',
     'examples.views.context',
     'examples.views.named',
 ]
+
+pytest.skip('Revisit when examples are refactored', allow_module_level=True)
 
 
 def test_examples_views_hello(themester_app, views_hello):

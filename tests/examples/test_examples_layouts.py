@@ -1,8 +1,12 @@
+import pytest
+
 pytest_plugins = [
     'examples.layouts.hello',
     'examples.layouts.site_title',
     'examples.layouts.children',
 ]
+
+pytest.skip('Revisit when examples are refactored', allow_module_level=True)
 
 
 def test_examples_layouts_hello(themester_app, layouts_hello):

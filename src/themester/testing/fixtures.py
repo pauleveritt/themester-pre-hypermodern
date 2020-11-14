@@ -14,6 +14,7 @@ from venusian import Scanner
 from viewdom import render, VDOM, html
 from wired import ServiceContainer
 
+from .. import make_registry
 from ..resources import Site, Document
 from ..config import ThemesterConfig
 from ..protocols import Resource
@@ -41,30 +42,6 @@ def themester_site() -> Site:
 def themester_site_deep() -> Site:
     """ A nested site root with documents and collections """
     return root
-
-
-@pytest.fixture
-def themester_config(themester_site_deep) -> ThemesterConfig:
-    from themester.themabaster import storytime_example
-    return storytime_example.themester_config
-
-
-@pytest.fixture
-def themester_app(themester_site, themester_config):
-    """ An app that depends on a root and a config """
-
-    from themester.themabaster.storytime_example import themester_app
-    themester_app.setup_plugins()
-    themester_app.registry.register_singleton(SphinxConfig(), SphinxConfig)
-
-    return themester_app
-
-
-@pytest.fixture
-def themester_scanner(themester_app) -> Scanner:
-    container = themester_app.registry.create_container()
-    scanner: Scanner = container.get(Scanner)
-    return scanner
 
 
 @pytest.fixture
@@ -137,21 +114,21 @@ def this_static_url() -> Callable[[str], str]:
 
 
 @pytest.fixture
-def this_container(
-        themester_app,
-        themester_scanner,
-        this_pagecontext,  # Should have local override
-        this_props,  # Should have local override
-        this_resource,  # Should have local override
-) -> ServiceContainer:
-    """ Scan for modules and return a context-bound container """
-    this_container = themester_app.registry.create_container(context=this_resource)
-
-    # For this per-page container, register the PageContext
-    this_container.register_singleton(this_pagecontext, PageContext)
-
-    this_container.register_singleton(this_resource, Resource)
-    return this_container
+def this_container() -> ServiceContainer:
+    from themester.themabaster.stories import (
+        singletons,
+    )
+    from themester.stories import (
+        root,
+        resource,
+    )
+    registry = make_registry(
+        root=root,
+    )
+    container = registry.create_container(context=resource)
+    for service, iface in singletons:
+        container.register_singleton(service, iface)
+    return container
 
 
 @pytest.fixture

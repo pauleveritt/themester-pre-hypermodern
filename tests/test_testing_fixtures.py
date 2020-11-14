@@ -4,7 +4,6 @@ Themester has fixtures for testing, those fixtures need tests.
 
 """
 
-from themester.app import ThemesterApp
 from themester.resources import Site
 
 pytest_plugins = [
@@ -18,15 +17,6 @@ def test_themester_site(themester_site: Site):
 
 def test_themester_root_deep(themester_site_deep: Site):
     assert isinstance(themester_site_deep, Site)
-
-
-def test_themester_app(themester_app: ThemesterApp):
-    assert isinstance(themester_app, ThemesterApp)
-
-
-def test_themester_scanner(themester_app: ThemesterApp):
-    from venusian import Scanner
-    assert isinstance(themester_app.scanner, Scanner)
 
 
 def test_this_vdom(this_vdom):

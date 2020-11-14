@@ -5,6 +5,7 @@ pytest_plugins = [
 ]
 
 
+@pytest.skip
 @pytest.fixture
 def views_hello(themester_app):
     from . import views
