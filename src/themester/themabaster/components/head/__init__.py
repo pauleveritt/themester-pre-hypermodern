@@ -43,7 +43,6 @@ class Head:
         self.resolved_static_root = self.pathto('', 1)
 
     def __call__(self) -> VDOM:
-        assert (CanonicalLink, CSSFiles, FaviconSet, JSFiles, Linktags, Title)
         return html('''\n
 <head>
   <meta charset="{self.charset}" />

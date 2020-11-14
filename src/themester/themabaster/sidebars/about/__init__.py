@@ -3,10 +3,10 @@ from dataclasses import dataclass
 from viewdom import html, VDOM
 from viewdom_wired import component
 
-from .about_description import AboutDescription
-from .about_github_button import AboutGitHubButton
-from .about_logo import AboutLogo
-from .about_travis_button import AboutTravisButton
+from .description import AboutDescription
+from .github_button import AboutGitHubButton
+from .logo import AboutLogo
+from .travis_button import AboutTravisButton
 
 
 @component()

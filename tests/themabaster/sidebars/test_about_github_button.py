@@ -1,69 +1,23 @@
-import dataclasses
+from typing import Tuple
 
 import pytest
-from bs4 import BeautifulSoup
-from viewdom import html
-from viewdom_wired import render
 
-from themester.protocols import ThemeConfig
-from themester.themabaster.config import ThemabasterConfig
-from themester.themabaster.sidebars.about_github_button import AboutGitHubButton
+from themester.storytime import Story
+from themester.themabaster.sidebars.about import github_button
 
 
-@pytest.fixture
-def this_props(theme_config):
-    tp = dict(
-        github_button=theme_config.github_button,
-        github_repo=theme_config.github_repo,
-        github_user=theme_config.github_user,
-        github_type=theme_config.github_type,
-        github_count=theme_config.github_count,
-    )
-    return tp
+@pytest.mark.parametrize('component_package', (github_button,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert False is story0.instance.show_button
 
+    story1 = these_stories[1]
+    assert True is story1.instance.show_button
 
-@pytest.fixture
-def this_component(this_props):
-    ci = AboutGitHubButton(**this_props)
-    return ci
+    story2 = these_stories[2]
+    assert '' == str(story2.html)
 
-
-def test_construction(this_component: AboutGitHubButton):
-    assert False is this_component.show_button
-
-
-def test_construction_true(this_component: AboutGitHubButton):
-    ci = AboutGitHubButton(
-        github_button=True,
-        github_repo='repo',
-        github_user='user',
-        github_count='true',
-        github_type='watch',
-    )
-    assert True is ci.show_button
-
-
-def test_vdom(this_vdom):
-    assert None is this_vdom
-
-
-def test_wired_render(this_container):
-    this_vdom = html('<{AboutGitHubButton} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '' == rendered
-
-
-def test_wired_render_with_badge(this_container, theme_config):
-    tc = dataclasses.replace(
-        theme_config,
-        github_button=True,
-        github_repo='thisrepo',
-        github_user='thisuser',
-    )
-    this_container.register_singleton(tc, ThemeConfig)
-    this_vdom = html('<{AboutGitHubButton} />')
-    rendered = render(this_vdom, container=this_container)
-    local_html = BeautifulSoup(rendered, 'html.parser')
-    src = local_html.select_one('iframe').get('src')
+    story3 = these_stories[3]
+    src = story3.html.select_one('iframe').get('src')
     assert 'thisrepo' in src
     assert 'thisuser' in src

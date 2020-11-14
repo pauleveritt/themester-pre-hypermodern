@@ -1,55 +1,24 @@
+from typing import Tuple
+
 import pytest
-from viewdom import html
-from viewdom_wired import render
 
-from themester.sphinx import HTMLConfig, SphinxConfig
-from themester.themabaster.sidebars.about_logo import AboutLogo
+from themester.storytime import Story
+from themester.themabaster.sidebars.about import logo
 
 
-@pytest.fixture
-def this_props(sphinx_config, html_config, this_pagecontext):
-    tp = dict(
-        logo=html_config.logo,
-        master_doc=sphinx_config.master_doc,
-        pathto=this_pagecontext.pathto,
-    )
-    return tp
+@pytest.mark.parametrize('component_package', (logo,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert '../mock/_static/site_logo.png' == story0.instance.resolved_logo
+    assert '../mock/index' == story0.instance.resolved_master
+    assert 'p' == story0.vdom.tag
+    assert '../mock/index' == story0.vdom.children[0].props['href']
+    this_logo = '../mock/_static/site_logo.png'
+    assert this_logo == story0.vdom.children[0].children[0].props['src']
 
+    story1 = these_stories[1]
+    assert None is story1.vdom
 
-@pytest.fixture
-def this_component(this_props):
-    ci = AboutLogo(**this_props)
-    return ci
-
-
-def test_construction(this_component: AboutLogo):
-    assert '../mock/_static/site_logo.png' == this_component.resolved_logo
-    assert '../mock/index' == this_component.resolved_master
-
-
-def test_vdom(this_vdom):
-    assert 'p' == this_vdom.tag
-    assert '../mock/index' == this_vdom.children[0].props['href']
-    logo = '../mock/_static/site_logo.png'
-    assert logo == this_vdom.children[0].children[0].props['src']
-
-
-def test_vdom_nosidebar(this_props):
-    this_props['logo'] = None
-    ci = AboutLogo(**this_props)
-    this_vdom = ci()
-    assert None is this_vdom
-
-
-def test_render(this_html):
-    assert '../mock/index' == this_html.select_one('p.logo a').get('href')
-    assert '../mock/_static/site_logo.png' == this_html.select_one('p.logo img').get('src')
-
-
-def test_wired_render(this_container, html_config, sphinx_config):
-    this_container.register_singleton(html_config, HTMLConfig)
-    this_container.register_singleton(sphinx_config, SphinxConfig)
-    this_vdom = html('<{AboutLogo} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '../mock/index' in rendered
-    assert '../mock/_static/site_logo.png' in rendered
+    story2 = these_stories[2]
+    assert '../mock/index' == story2.html.select_one('p.logo a').get('href')
+    assert '../mock/_static/site_logo.png' == story2.html.select_one('p.logo img').get('src')

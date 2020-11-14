@@ -7,7 +7,11 @@ from themester.themabaster import ThemabasterConfig
 from themester.themabaster.storytime_example import fake_pagecontext
 
 theme_config = ThemabasterConfig()
-html_config = HTMLConfig(favicon='someicon.png')
+html_config = HTMLConfig(
+    css_files=('site_first.css', 'site_second.css',),
+    favicon='themabaster.ico',
+    logo='site_logo.png',
+)
 sphinx_config = SphinxConfig()
 
 

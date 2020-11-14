@@ -10,7 +10,7 @@ from viewdom_wired import component
 from wired_injector.operators import Get
 
 from themester.protocols import ThemeConfig
-from themester.themabaster.sidebars.about_logo import AboutLogo
+from themester.themabaster.sidebars.about.logo import AboutLogo
 
 try:
     from typing import Annotated

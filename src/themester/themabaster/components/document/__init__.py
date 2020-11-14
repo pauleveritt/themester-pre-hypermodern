@@ -41,7 +41,6 @@ class Document:
         # Alabaster wraps the main content in <div class="bodywrapper">
         # if nosidebar is true. Thus, get the main content first, then
         # insert in the two flavors of response.
-        assert (Relbar1, Relbar2)
         main_content = html('''\n
         <{Relbar1}/>
           <div class="body" role="main">

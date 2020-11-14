@@ -1,52 +1,20 @@
-import dataclasses
+from typing import Tuple
 
 import pytest
-from viewdom import html
-from viewdom_wired import render
 
-from themester.protocols import ThemeConfig
-from themester.themabaster.config import ThemabasterConfig
-from themester.themabaster.sidebars.about_description import AboutDescription
+from themester.storytime import Story
+from themester.themabaster.sidebars.about import description
 
 
-@pytest.fixture
-def this_props(theme_config):
-    tp = dict(
-        description=theme_config.description
-    )
-    return tp
+@pytest.mark.parametrize('component_package', (description,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert None is story0.instance.description
+    assert None is story0.vdom
 
+    story1 = these_stories[1]
+    assert 'p' == story1.vdom.tag
+    assert 'Some Project' == story1.vdom.children[0]
 
-@pytest.fixture
-def this_component(this_props):
-    ci = AboutDescription(**this_props)
-    return ci
-
-
-def test_construction(this_component: AboutDescription):
-    assert None is this_component.description
-
-
-def test_vdom(this_vdom):
-    assert None is this_vdom
-
-
-def test_vdom_with_description():
-    ci = AboutDescription('Some Project')
-    local_vdom = ci()
-    assert 'p' == local_vdom.tag
-    assert 'Some Project' == local_vdom.children[0]
-
-
-def test_wired_render(this_container):
-    this_vdom = html('<{AboutDescription} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '' == rendered
-
-
-def test_wired_render_with_description(this_container, theme_config):
-    tc = dataclasses.replace(theme_config, description='Some Description')
-    this_container.register_singleton(tc, ThemeConfig)
-    this_vdom = html('<{AboutDescription} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '<p class="blurb">Some Description</p>' == rendered
+    story2 = these_stories[2]
+    assert '' == str(story2.html)
