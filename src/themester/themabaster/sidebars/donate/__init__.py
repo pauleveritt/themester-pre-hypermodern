@@ -5,9 +5,8 @@ from viewdom import html, VDOM
 from viewdom_wired import component
 from wired_injector.operators import Get
 
-from ..config import ThemabasterConfig
-from ...protocols import ThemeConfig
-from ...sphinx import SphinxConfig
+from ....protocols import ThemeConfig
+from ....sphinx import SphinxConfig
 
 try:
     from typing import Annotated
