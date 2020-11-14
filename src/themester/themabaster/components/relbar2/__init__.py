@@ -36,7 +36,6 @@ class Relbar2:
         self.show_relbar_top = self.show_relbar_bottom or self.show_relbars
 
     def __call__(self) -> VDOM:
-        assert RellinkMarkup
         return html('''\n
 <div class="related top"><{RellinkMarkup} /> </div>        
         ''') if self.show_relbar_top else []

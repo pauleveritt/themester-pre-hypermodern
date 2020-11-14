@@ -14,8 +14,6 @@ from .travis_button import AboutTravisButton
 class About:
 
     def __call__(self) -> VDOM:
-        assert (AboutDescription, AboutGitHubButton, AboutLogo,
-                AboutTravisButton)
         return html('''\n
 <{AboutLogo} />
 <{AboutDescription} />

@@ -13,5 +13,4 @@ class AllView:
     name: str = 'Nullster View'
 
     def __call__(self) -> VDOM:
-        assert HelloWorld
         return html('<div><{HelloWorld} name="Nullster" /></div>')

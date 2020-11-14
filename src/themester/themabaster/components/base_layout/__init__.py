@@ -35,7 +35,6 @@ class BaseLayout:
         self.html_props = dict(lang=self.language) if self.language else dict()
 
     def __call__(self) -> VDOM:
-        assert Body, Head
         return html('''\n
 {self.doctype}
 <html ...{self.html_props}>

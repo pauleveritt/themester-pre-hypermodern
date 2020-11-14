@@ -16,7 +16,6 @@ from ...sidebars.sidebar2 import Sidebar2
 @dataclass(frozen=True)
 class Content:
     def __call__(self) -> VDOM:
-        assert (Document, Sidebar1, Sidebar2)
         return html('''\n
 <{Sidebar1} />
 <div class="document">

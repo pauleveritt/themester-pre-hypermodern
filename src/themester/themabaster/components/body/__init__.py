@@ -16,7 +16,6 @@ from ..header import Header
 @dataclass(frozen=True)
 class Body:
     def __call__(self) -> VDOM:
-        assert (Content, Footer, Header)
         return html('''\n
 <body>
 <{Header} />

@@ -13,7 +13,6 @@ class RootView:
     def __call__(self) -> VDOM:
         # Dang, circular imports
         from .components.base_layout import BaseLayout
-        assert BaseLayout
         return html('<{BaseLayout}><//>')
 
 
@@ -25,5 +24,4 @@ class PageView:
     def __call__(self) -> VDOM:
         # Dang, circular imports
         from .components.base_layout import BaseLayout
-        assert BaseLayout
         return html('<{BaseLayout}><//>')
