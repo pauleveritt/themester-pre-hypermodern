@@ -10,14 +10,12 @@ from typing import Callable, Optional
 from markupsafe import Markup
 from viewdom import VDOM, html
 from viewdom_wired import component
-from wired.dataclasses import injected
 from wired_injector.operators import Get
 
 from themester.sphinx.config import SphinxConfig
 from themester.sphinx.models import PageContext
-from .navigation_extra_links import NavigationExtraLinks
-from ..config import ThemabasterConfig
-from ...protocols import ThemeConfig
+from .extra_links import NavigationExtraLinks
+from ....protocols import ThemeConfig
 
 try:
     from typing import Annotated
@@ -45,7 +43,6 @@ class Navigation:
             ))
 
     def __call__(self) -> VDOM:
-        assert NavigationExtraLinks
         return html('''\n
 <div>
     <h3><a href={self.resolved_pathto}>Table of Contents</a></h3>

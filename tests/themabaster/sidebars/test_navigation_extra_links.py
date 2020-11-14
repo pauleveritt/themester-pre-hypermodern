@@ -1,60 +1,27 @@
+from typing import Tuple
+
 import pytest
-from viewdom import html
-from viewdom_wired import render
 
-from themester.sphinx.models import Link
-from themester.themabaster.sidebars.navigation_extra_links import NavigationExtraLinks
+from themester.storytime import Story
+from themester.themabaster.sidebars.navigation import extra_links
 
 
-@pytest.fixture
-def this_props(theme_config):
-    tp = dict(
-        extra_nav_links=theme_config.extra_nav_links,
-    )
-    return tp
+@pytest.mark.parametrize('component_package', (extra_links,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert None is story0.instance.extra_nav_links
+    assert None is story0.instance.resolved_links
+    assert None is story0.vdom
 
-
-@pytest.fixture
-def this_component(this_props):
-    ci = NavigationExtraLinks(**this_props)
-    return ci
-
-
-def test_construction(this_component: NavigationExtraLinks):
-    assert None is this_component.extra_nav_links
-    assert None is this_component.resolved_links
-
-
-def test_construction_with_links():
-    extra_nav_links = (
-        Link(title='First Link', link='link1.com'),
-        Link(title='Second Link', link='link2.com'),
-    )
-    ci = NavigationExtraLinks(extra_nav_links=extra_nav_links)
-    assert 2 == len(ci.resolved_links)
-
-
-def test_vdom(this_vdom, this_props):
-    assert None is this_vdom
-
-
-def test_vdom_with_links(this_vdom, this_props):
-    extra_nav_links = (
-        Link(title='First Link', link='link1.com'),
-        Link(title='Second Link', link='link2.com'),
-    )
-    ci = NavigationExtraLinks(extra_nav_links=extra_nav_links)
-    local_vdom = ci()
-    assert 'hr' == local_vdom[0].tag
-    assert 'ul' == local_vdom[1].tag
-    li = local_vdom[1].children[0]
+    story1 = these_stories[1]
+    assert 2 == len(story1.instance.resolved_links)
+    assert 'hr' == story1.vdom[0].tag
+    assert 'ul' == story1.vdom[1].tag
+    li = story1.vdom[1].children[0]
     assert 2 == len(li)
     first_a = li[0].children[0]
     assert 'link1.com' == first_a.props['href']
     assert 'First Link' == first_a.children[0]
 
-
-def test_wired_render(this_container):
-    this_vdom = html('<{NavigationExtraLinks} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '' is rendered
+    story2 = these_stories[2]
+    assert '' is str(story2.html)
