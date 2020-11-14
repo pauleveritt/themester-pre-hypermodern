@@ -14,7 +14,7 @@ def all_stories() -> Tuple[Story, ...]:
             show_relbar_top=True,
             show_relbars=True,
         ),
-        other_packages=(rellink_markup,)
+        scannables=(rellink_markup,)
     )
     story1 = Story(
         component=Relbar1,

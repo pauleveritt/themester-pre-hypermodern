@@ -2,14 +2,8 @@
 
 ## Now
 
-- Refactory storytime
-  * Use new functions
-  * Get rid of storytime_example
-  * Move resource tree up to themester/stories.py
-  
 ## Next
 
-- Remove `other_packages` as a knob in storytime
 
 ## Soon
 
@@ -140,3 +134,10 @@
 - Let Storytime "acquire" certain story defaults from a component's parent dirs
 
 - Refactor Sphinx
+
+- Refactory storytime
+  * Use new functions
+  * Get rid of storytime_example
+  * Move resource tree up to themester/stories.py
+  
+- Remove `other_packages` as a knob in storytime

@@ -19,7 +19,7 @@ def all_stories() -> Tuple[Story, ...]:
 
     story1 = Story(
         component=Document,
-        other_packages=(relbar1, relbar2,),
+        scannables=(relbar1, relbar2,),
         usage=html('<{Document} />')
     )
 
