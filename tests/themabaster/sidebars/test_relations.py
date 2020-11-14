@@ -1,10 +1,3 @@
-import pytest
-from viewdom import html
-from viewdom_wired import render
-
-from themester.sphinx import SphinxConfig
-from themester.themabaster.sidebars.relations import Relations
-
 from typing import Tuple
 
 import pytest

@@ -7,7 +7,6 @@ from typing import Callable
 
 from viewdom import VDOM, html
 from viewdom_wired import component
-from wired.dataclasses import injected
 from wired_injector.operators import Get
 
 from themester.sphinx.models import PageContext
