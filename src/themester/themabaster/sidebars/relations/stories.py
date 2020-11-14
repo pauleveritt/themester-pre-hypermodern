@@ -3,29 +3,22 @@ from typing import Tuple
 from viewdom import html
 
 from themester.storytime import Story
-from . import CanonicalLink
+from . import Relations
+from ...stories import sphinx_config, page_context
 
 
 def all_stories() -> Tuple[Story, ...]:
     story0 = Story(
-        component=CanonicalLink,
+        component=Relations,
         props=dict(
-            baseurl='https://somewhere.com/mysite',
-            file_suffix='.html',
-            pagename='somedoc',
+            master_doc=sphinx_config.master_doc,
+            pathto=page_context.pathto,
+            toctree=page_context.toctree,
         ),
     )
     story1 = Story(
-        component=CanonicalLink,
-        props=dict(
-            baseurl=None,
-            file_suffix='.html',
-            pagename='somedoc',
-        ),
-    )
-    story2 = Story(
-        component=CanonicalLink,
-        usage=html('<{CanonicalLink} baseurl="https://somewhere.com/mysite" />')
+        component=Relations,
+        usage=html('<{Relations} />')
     )
 
-    return story0, story1, story2
+    return story0, story1
