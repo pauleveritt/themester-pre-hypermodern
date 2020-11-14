@@ -5,8 +5,7 @@ from viewdom import html
 
 from themester.storytime import Story
 from . import FaviconSet
-from ...stories import theme_config
-from ...storytime_example import fake_pathto
+from ...stories import theme_config, fake_pathto
 
 no_shortcut = dataclasses.replace(theme_config.favicons)
 no_shortcut.shortcut = None

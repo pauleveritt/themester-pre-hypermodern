@@ -36,7 +36,7 @@ def test_stories(these_stories: Tuple[Story, ...]):
     assert 'second' == story1.instance.extrahead[1].props['rel']
 
     story2 = these_stories[2]
-    assert 'About - Python' == story2.html.select_one('title').text
+    assert 'D2 - Python' == story2.html.select_one('title').text
     links = story2.html.select('link')
     assert 17 == len(links)
     assert '../mock/site_first.css' == links[0].attrs['href']

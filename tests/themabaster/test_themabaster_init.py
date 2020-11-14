@@ -1,11 +1,15 @@
 from pathlib import Path
 from typing import Tuple
 
+from bs4 import BeautifulSoup
+
 from themester.protocols import View, ThemeConfig, Root
 from themester.resources import Site
 from themester.sphinx.models import PageContext
+from themester.stories import resource
 from themester.themabaster.components.title import Title
 from themester.themabaster.config import ThemabasterConfig
+from themester.themabaster.stories import page_context
 from themester.themabaster.views import PageView
 from themester.utils import render_view
 
@@ -30,16 +34,15 @@ def test_make_registry(themabaster_registry):
     assert isinstance(view, PageView)
 
 
-def test_render_view(
-        themabaster_registry, themester_site_deep, this_pagecontext,
-):
-    resource = themester_site_deep['d1']
-    html = render_view(
+def test_render_view(themabaster_registry):
+    rendered = render_view(
         themabaster_registry,
+        context=resource,
         resource=resource,
-        singletons=((this_pagecontext, PageContext),)
+        singletons=((page_context, PageContext),)
     )
-    assert '<title>D1 - Themester SiteConfig' in html
+    this_html = BeautifulSoup(rendered, 'html.parser')
+    assert 'D2 - Themester SiteConfig' == this_html.select_one('title').text
 
 
 def test_get_static_resources(themabaster_registry):

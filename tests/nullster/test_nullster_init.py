@@ -7,16 +7,18 @@ from themester import make_registry, nullster
 from themester.nullster.config import NullsterConfig
 from themester.protocols import Root, ThemeConfig
 from themester.resources import Site
+from themester.stories import root
 from themester.utils import render_view
 from themester.views import View
 
 
 @pytest.fixture
-def nullster_registry(themester_site_deep):
+def nullster_registry():
+    from themester.stories import root
     theme_config = NullsterConfig()
     plugins = nullster
     registry = make_registry(
-        root=themester_site_deep,
+        root=root,
         plugins=plugins,
         theme_config=theme_config,
     )
@@ -46,8 +48,8 @@ def test_make_registry(nullster_registry):
     assert 'Nullster View' == view.name
 
 
-def test_render_view(nullster_registry, themester_site_deep):
-    resource = themester_site_deep['d1']
+def test_render_view(nullster_registry):
+    resource = root['d1']
     html = render_view(nullster_registry, resource=resource)
     expected = '<div><h1>Resource: D1</h1><span>Hello Nullster</span></div>'
     assert expected == html

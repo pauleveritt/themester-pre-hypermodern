@@ -3,6 +3,7 @@ from typing import Tuple
 
 import pytest
 
+from themester.stories import root, resource
 from themester.url import relative_uri, find_resource, parents, resource_path, relative_path, relative_static_path, URL
 
 pytest_plugins = [
@@ -70,8 +71,8 @@ def test_relative_uri(base, to, expected, is_mapping, suffix):
         (Path('/f1/f3/d3/'), 'd3'),
     ]
 )
-def test_find_resource(themester_site_deep, path: Path, expected: str):
-    resource = find_resource(themester_site_deep, path)
+def test_find_resource(path: Path, expected: str):
+    resource = find_resource(root, path)
     assert resource.name == expected
 
 
@@ -101,9 +102,9 @@ def test_find_resource(themester_site_deep, path: Path, expected: str):
     )
 )
 def test_parents(
-        themester_site_deep, this_path: Path, expected: Tuple[Tuple[str, str]],
+        this_path: Path, expected: Tuple[Tuple[str, str]],
 ):
-    resource = find_resource(themester_site_deep, this_path)
+    resource = find_resource(root, this_path)
     results = parents(resource)
     result = tuple(
         (
@@ -129,10 +130,8 @@ def test_parents(
             (Path('/f1/f3/d3/'), Path('/f1/f3/d3/')),
     )
 )
-def test_resource_path(
-        themester_site_deep, target_path: Path, expected: str,
-):
-    resource = find_resource(themester_site_deep, target_path)
+def test_resource_path(target_path: Path, expected: str, ):
+    resource = find_resource(root, target_path)
     path = resource_path(resource)
     assert expected == path
 
@@ -156,12 +155,12 @@ def test_resource_path(
     ]
 )
 def test_relative_path(
-        themester_site_deep, current_path: Path, target_path: Path,
+        current_path: Path, target_path: Path,
         expected: Path,
 ):
-    current = find_resource(themester_site_deep, current_path)
-    target = find_resource(themester_site_deep, target_path)
-    result: Path = relative_path(themester_site_deep, current, target)
+    current = find_resource(root, current_path)
+    target = find_resource(root, target_path)
+    result: Path = relative_path(root, current, target)
     assert expected == result
 
 
@@ -175,10 +174,8 @@ def test_relative_path(
         (Path('/'), Path('static/foo.css')),
     ]
 )
-def test_static_relative_path(
-        themester_site_deep, current_path: Path, expected: Path,
-):
-    current = find_resource(themester_site_deep, current_path)
+def test_static_relative_path(current_path: Path, expected: Path):
+    current = find_resource(root, current_path)
     result: Path = relative_static_path(current, Path('/static/foo.css'))
     assert expected == result
 
@@ -186,22 +183,21 @@ def test_static_relative_path(
 @pytest.mark.parametrize(
     'path, static_url',
     [
-        (Path('../foo.css'), '/foo.css'),
-        (Path('foo.css'), '/f1/foo.css'),
-        (Path('f3/foo.css'), '/f1/f3/foo.css'),
-        (Path('../f3/foo.css'), '/f3/foo.css'),
+        (Path('../../foo.css'), '/foo.css'),
+        (Path('../foo.css'), '/f1/foo.css'),
+        (Path('../f3/foo.css'), '/f1/f3/foo.css'),
+        (Path('../../f3/foo.css'), '/f3/foo.css'),
     ]
 )
-def test_factory_static_url(themester_site_deep, path: Path, static_url: str):
-    resource = themester_site_deep['f1']
-    url = URL(root=themester_site_deep, resource=resource)
+def test_factory_static_url(path: Path, static_url: str):
+    url = URL(root=root, resource=resource)
     assert path == url.static_url(static_url)
 
 
-def test_factory_relative_path(themester_site_deep):
-    resource = themester_site_deep['f1']
-    url = URL(root=themester_site_deep, resource=resource)
-    assert url.relative_path(themester_site_deep) == Path('../index.html')
-    assert url.relative_path(themester_site_deep['f1']) == Path('')
-    assert url.relative_path(themester_site_deep['d1']) == Path('../d1.html')
-    assert url.relative_path(themester_site_deep['f1']['f3']) == Path('f3/index.html')
+def test_factory_relative_path():
+    resource = root['f1']
+    url = URL(root=root, resource=resource)
+    assert url.relative_path(root) == Path('../index.html')
+    assert url.relative_path(root['f1']) == Path('')
+    assert url.relative_path(root['d1']) == Path('../d1.html')
+    assert url.relative_path(root['f1']['f3']) == Path('f3/index.html')

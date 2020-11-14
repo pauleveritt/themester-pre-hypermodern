@@ -21,4 +21,4 @@ def test_stories(these_stories: Tuple[Story, ...]):
     assert 'Themabaster - Story Site' == story2.instance.resolved_title
 
     story3 = these_stories[3]
-    assert 'About - XYZ' == story3.html.select_one('title').text
+    assert 'D2 - XYZ' == story3.html.select_one('title').text

@@ -14,7 +14,6 @@ try:
 except ImportError:
     from typing_extensions import Annotated
 
-
 @component()
 @dataclass
 class Title:
@@ -39,3 +38,4 @@ class Title:
 
     def __call__(self) -> VDOM:
         return html('<title>{self.resolved_title}</title>')
+
