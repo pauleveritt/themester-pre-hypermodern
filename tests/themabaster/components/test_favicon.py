@@ -16,4 +16,4 @@ def test_stories(these_stories: Tuple[Story, ...]):
 
     story1 = these_stories[1]
     link = story1.html.select_one('link')
-    assert '../mock/someicon.png' == link.attrs['href']
+    assert '../mock/themabaster.ico' == link.attrs['href']

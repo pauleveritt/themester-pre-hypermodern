@@ -19,7 +19,7 @@ def test_stories(these_stories: Tuple[Story, ...]):
 
     story1 = these_stories[1]
     assert 'EN' == story1.html.select_one('html').get('lang')
-    assert 15 == len(story1.html.select('html head link'))
+    assert 17 == len(story1.html.select('html head link'))
     assert 'html' == doctype(story1.html)
 
     story2 = these_stories[2]

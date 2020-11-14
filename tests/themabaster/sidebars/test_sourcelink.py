@@ -1,41 +1,25 @@
+from typing import Tuple
+
 import pytest
-from viewdom import html
-from viewdom_wired import render
 
-from themester.sphinx import HTMLConfig
-from themester.themabaster.sidebars.sourcelink import SourceLink
+from themester.storytime import Story
+from themester.themabaster.sidebars import sourcelink
+from typing import Tuple
 
+import pytest
 
-@pytest.fixture
-def this_props(this_pagecontext, theme_config):
-    tp = dict(
-        show_sourcelink=True,
-        has_source=True,
-        pathto=this_pagecontext.pathto,
-        sourcename='thispage.md',
-    )
-    return tp
+from themester.storytime import Story
+from themester.themabaster.sidebars import sourcelink
 
 
-@pytest.fixture
-def this_component(this_props):
-    ci = SourceLink(**this_props)
-    return ci
-
-
-def test_construction(this_component: SourceLink):
-    assert '../mock/_sources/thispage.md' == this_component.resolved_pathto
-
-
-def test_vdom(this_vdom, this_props):
-    assert 'div' == this_vdom.tag
-    a = this_vdom.children[1].children[0].children[0]
+@pytest.mark.parametrize('component_package', (sourcelink,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert '../mock/_sources/thispage.md' == story0.instance.resolved_pathto
+    assert 'div' == story0.vdom.tag
+    a = story0.vdom.children[1].children[0].children[0]
     assert 'a' == a.tag
     assert '../mock/_sources/thispage.md' == a.props['href']
 
-
-def test_wired_render(this_container, html_config):
-    this_container.register_singleton(html_config, HTMLConfig)
-    this_vdom = html('<{SourceLink} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '<div' in rendered
+    story1 = these_stories[1]
+    assert '<div' in str(story1.html)

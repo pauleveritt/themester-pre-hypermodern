@@ -1,21 +1,15 @@
+from typing import Tuple
+
 import pytest
-from viewdom import html
-from viewdom_wired import render
 
-from themester.themabaster.sidebars.sidebar1 import Sidebar1
-
-
-@pytest.fixture
-def this_component(this_props):
-    ci = Sidebar1()
-    return ci
+from themester.storytime import Story
+from themester.themabaster.sidebars import sidebar1
 
 
-def test_vdom(this_vdom, this_props):
-    assert [] == this_vdom
+@pytest.mark.parametrize('component_package', (sidebar1,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert [] == story0.vdom
 
-
-def test_wired_render(this_container):
-    this_vdom = html('<{Sidebar1} />')
-    rendered = render(this_vdom, container=this_container)
-    assert '' == rendered
+    story1 = these_stories[1]
+    assert '' == str(story1.html)

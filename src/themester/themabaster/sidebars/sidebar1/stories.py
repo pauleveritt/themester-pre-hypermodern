@@ -3,29 +3,18 @@ from typing import Tuple
 from viewdom import html
 
 from themester.storytime import Story
-from . import CanonicalLink
+from . import Sidebar1
 
 
 def all_stories() -> Tuple[Story, ...]:
     story0 = Story(
-        component=CanonicalLink,
+        component=Sidebar1,
         props=dict(
-            baseurl='https://somewhere.com/mysite',
-            file_suffix='.html',
-            pagename='somedoc',
         ),
     )
     story1 = Story(
-        component=CanonicalLink,
-        props=dict(
-            baseurl=None,
-            file_suffix='.html',
-            pagename='somedoc',
-        ),
-    )
-    story2 = Story(
-        component=CanonicalLink,
-        usage=html('<{CanonicalLink} baseurl="https://somewhere.com/mysite" />')
+        component=Sidebar1,
+        usage=html('<{Sidebar1} />')
     )
 
-    return story0, story1, story2
+    return story0, story1

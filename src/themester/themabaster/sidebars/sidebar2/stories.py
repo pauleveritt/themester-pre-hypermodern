@@ -3,29 +3,28 @@ from typing import Tuple
 from viewdom import html
 
 from themester.storytime import Story
-from . import CanonicalLink
+from . import Sidebar2
+from .. import localtoc, relations, sourcelink, searchbox
+from ...stories import theme_config
 
 
 def all_stories() -> Tuple[Story, ...]:
     story0 = Story(
-        component=CanonicalLink,
+        component=Sidebar2,
         props=dict(
-            baseurl='https://somewhere.com/mysite',
-            file_suffix='.html',
-            pagename='somedoc',
+            sidebars=theme_config.sidebars,
         ),
     )
     story1 = Story(
-        component=CanonicalLink,
+        component=Sidebar2,
         props=dict(
-            baseurl=None,
-            file_suffix='.html',
-            pagename='somedoc',
+            sidebars=tuple(),
         ),
     )
     story2 = Story(
-        component=CanonicalLink,
-        usage=html('<{CanonicalLink} baseurl="https://somewhere.com/mysite" />')
+        component=Sidebar2,
+        scannables=(localtoc, relations, sourcelink, searchbox),
+        usage=html('<{Sidebar2} />')
     )
 
     return story0, story1, story2
