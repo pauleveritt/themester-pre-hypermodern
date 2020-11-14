@@ -1,50 +1,24 @@
+from typing import Tuple
+
 import pytest
-from viewdom import html
-from viewdom_wired import render
 
-from themester.sphinx import SphinxConfig
-from themester.themabaster.sidebars.localtoc import LocalToc
+from themester.storytime import Story
+from themester.themabaster.sidebars import localtoc
 
 
-@pytest.fixture
-def this_props(this_pagecontext, sphinx_config):
-    tp = dict(
-        display_toc=this_pagecontext.display_toc,
-        master_doc=sphinx_config.master_doc,
-        pathto=this_pagecontext.pathto,
-        toc=this_pagecontext.toc,
-    )
-    return tp
+@pytest.mark.parametrize('component_package', (localtoc,))
+def test_stories(these_stories: Tuple[Story, ...]):
+    story0 = these_stories[0]
+    assert '../mock/index' == story0.instance.resolved_pathto
+    assert 'h3' == story0.vdom[0].tag
+    assert 'a' == story0.vdom[0].children[0].tag
+    assert '../mock/index' == story0.vdom[0].children[0].props['href']
+    assert ['Table of Contents'] == story0.vdom[0].children[0].children
+    assert '<li>toc</li>' == str(story0.vdom[1])
 
+    story1 = these_stories[1]
+    assert [] == story1.vdom
 
-@pytest.fixture
-def this_component(this_props):
-    ci = LocalToc(**this_props)
-    return ci
-
-
-def test_construction(this_component: LocalToc):
-    assert '../mock/index' == this_component.resolved_pathto
-
-
-def test_vdom(this_vdom, this_props):
-    assert 'h3' == this_vdom[0].tag
-    assert 'a' == this_vdom[0].children[0].tag
-    assert '../mock/index' == this_vdom[0].children[0].props['href']
-    assert ['Table of Contents'] == this_vdom[0].children[0].children
-    assert '<li>toc</li>' == str(this_vdom[1])
-
-
-def test_vdom_no_display_toc(this_props):
-    this_props['display_toc'] = False
-    ci = LocalToc(**this_props)
-    this_vdom = ci()
-    assert [] == this_vdom
-
-
-def test_wired_render(this_container, sphinx_config):
-    this_container.register_singleton(sphinx_config, SphinxConfig)
-    this_vdom = html('<{LocalToc} />')
-    rendered = render(this_vdom, container=this_container)
+    story2 = these_stories[2]
     expected = '<h3><a href="../mock/index">Table of Contents</a></h3><li>toc</li>'
-    assert expected == rendered
+    assert expected == str(story2.html)

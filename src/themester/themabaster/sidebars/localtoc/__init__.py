@@ -8,7 +8,6 @@ from typing import Callable
 from markupsafe import Markup
 from viewdom import VDOM, html
 from viewdom_wired import component
-from wired.dataclasses import injected
 from wired_injector.operators import Get
 
 from themester.sphinx.config import SphinxConfig
