@@ -3,7 +3,7 @@ from typing import Callable, TypedDict, Iterable, List, Any, Dict
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired_injector.operators import Get, Attr
+from wired_injector.operators import Get
 
 from themester.sphinx.models import PageContext
 
@@ -32,13 +32,11 @@ DEFAULT_LINKS = (
 class Linktags:
     hasdoc: Annotated[
         Callable[[str], bool],
-        Get(PageContext),
-        Attr('hasdoc'),
+        Get(PageContext, attr='hasdoc'),
     ]
     pathto: Annotated[
         Callable[[str, int], str],
-        Get(PageContext),
-        Attr('pathto')
+        Get(PageContext, attr='pathto'),
     ]
     links: Iterable[SemanticLink] = DEFAULT_LINKS
     resolved_links: List[Dict[str, Any]] = field(init=False)

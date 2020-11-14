@@ -36,8 +36,7 @@ class Footer:
     ]
     pathto: Annotated[
         Callable[[str], str],
-        Get(PageContext),
-        Attr('pathto')
+        Get(PageContext, attr='pathto'),
     ]
     show_powered_by: Annotated[
         bool,
@@ -56,8 +55,7 @@ class Footer:
     ]
     sourcename: Annotated[
         str,
-        Get(PageContext),
-        Attr('sourcename'),
+        Get(PageContext, attr='sourcename'),
     ]
     resolved_copyright: str = field(init=False)
     resolved_powered_by: VDOM = field(init=False)

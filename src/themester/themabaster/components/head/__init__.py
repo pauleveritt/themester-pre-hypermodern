@@ -28,8 +28,7 @@ except ImportError:
 class Head:
     pathto: Annotated[
         Callable[[str, int], str],
-        Get(PageContext),
-        Attr('pathto')
+        Get(PageContext, attr='pathto'),
     ]
     extrahead: Optional[Tuple[VDOM, ...]] = None
     charset: str = 'utf-8'

@@ -35,8 +35,7 @@ class CanonicalLink:
     ]
     pagename: Annotated[
         str,
-        Get(PageContext),
-        Attr('pagename')
+        Get(PageContext, attr='pagename'),
     ]
 
     def __post_init__(self):

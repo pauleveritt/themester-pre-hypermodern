@@ -4,7 +4,7 @@ from typing import Optional
 from markupsafe import Markup
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired_injector.operators import Get, Attr
+from wired_injector.operators import Get
 
 from themester.protocols import Resource
 from themester.sphinx import SphinxConfig
@@ -14,18 +14,17 @@ try:
 except ImportError:
     from typing_extensions import Annotated
 
+
 @component()
 @dataclass
 class Title:
     resource_title: Annotated[
         str,
-        Get(Resource),
-        Attr('title'),
+        Get(Resource, attr='title'),
     ]
     site_title: Annotated[
         Optional[str],
-        Get(SphinxConfig),
-        Attr('project'),
+        Get(SphinxConfig, attr='project'),
     ]
     resolved_title: str = field(init=False)
 
@@ -38,4 +37,3 @@ class Title:
 
     def __call__(self) -> VDOM:
         return html('<title>{self.resolved_title}</title>')
-

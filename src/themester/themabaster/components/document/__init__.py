@@ -27,8 +27,7 @@ class Document:
 
     body: Annotated[
         Markup,
-        Get(PageContext),
-        Attr('body'),
+        Get(PageContext, attr='body'),
     ]
     nosidebar: Annotated[
         bool,

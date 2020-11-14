@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 
 from viewdom import html, VDOM
 from viewdom_wired import component
-from wired_injector.operators import Get, Attr
+from wired_injector.operators import Get
 
 from themester.sphinx.models import Link, PageContext
 
@@ -31,13 +31,11 @@ class RellinkMarkup:
 
     previous: Annotated[
         Link,
-        Get(PageContext),
-        Attr('prev'),
+        Get(PageContext, attr='prev'),
     ]
     next: Annotated[
         Link,
-        Get(PageContext),
-        Attr('next'),
+        Get(PageContext, attr='next'),
     ]
     resolved_previous: VDOM = field(init=False)
     resolved_next: VDOM = field(init=False)

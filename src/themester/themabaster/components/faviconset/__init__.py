@@ -33,8 +33,7 @@ class FaviconSet:
     ]
     pathto: Annotated[
         Callable[[str, int], str],
-        Get(PageContext),
-        Attr('pathto'),
+        Get(PageContext, attr='pathto'),
     ]
     shortcut_href: Optional[str] = field(init=False)
     png_href: Optional[str] = field(init=False)
