@@ -4,7 +4,7 @@ from typing import Tuple
 import pytest
 
 from themester.stories import root, resource
-from themester.url import relative_uri, find_resource, parents, resource_path, relative_path, relative_static_path, URL
+from themester.factories.url import relative_uri, find_resource, parents, resource_path, relative_path, relative_static_path, URL
 
 pytest_plugins = [
     'themester.testing.fixtures',

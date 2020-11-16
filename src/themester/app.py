@@ -14,7 +14,7 @@ from venusian import Scanner
 from viewdom_wired import render
 from wired import ServiceRegistry, ServiceContainer
 
-from themester import url
+from themester.factories import url
 from themester.config import ThemesterConfig
 from themester.protocols import View, Resource, Root, ThemeConfig
 

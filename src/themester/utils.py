@@ -10,9 +10,10 @@ from viewdom import html, VDOM
 from viewdom_wired import Component, render, register_component
 from wired import ServiceRegistry
 
+from themester import factories
 from themester.protocols import ThemeConfig, Root, Resource, View
 from themester.resources import Collection
-from themester.url import resource_path
+from themester.factories.url import resource_path
 from themester.views import register_view
 
 Scannable = Any  # Wanted to use Union[str, ModuleType] but PyCharm
@@ -69,6 +70,9 @@ def make_registry(
     # Handle the theme config
     if theme_config is not None:
         registry.register_singleton(theme_config, ThemeConfig)
+
+    # Scan themester factories
+    _scan_target(scanner, factories)
 
     # Handle anything that needs to be scanned
     if isinstance(scannables, Sequence):
