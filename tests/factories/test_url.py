@@ -43,26 +43,6 @@ def test_relative_uri(base, to, expected, is_mapping, suffix):
     assert expected == result
 
 
-# @pytest.mark.parametrize(
-#     'path, expected',
-#     [
-#         ('/', '/'),
-#         ('/f1', '/f1/'),
-#         ('/f1/', '/f1/'),
-#         ('/d1', '/d1/'),
-#         ('/d1/', '/d1/'),
-#         ('/f1/d2', '/f1/d2/'),
-#         ('/f1/d2/', '/f1/d2/'),
-#         ('/f1/f3', '/f1/f3/'),
-#         ('/f1/f3/', '/f1/f3/'),
-#         ('/f1/f3/d3', '/f1/f3/d3/'),
-#         ('/f1/f3/d3/', '/f1/f3/d3/'),
-#     ]
-# )
-# def test_normalize_PurePath(path: str, expected: str):
-#     assert expected == normalize_PurePath(path)
-
-
 @pytest.mark.parametrize(
     'path, expected',
     [

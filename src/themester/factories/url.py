@@ -55,7 +55,9 @@ def relative_path(
 
 
 def relative_static_path(current: Resource, target: PurePath) -> PurePath:
-    # Bail out quickly if we are the root or in the root
+    # TODO This is no longer used, as we inlined the logic below. Need
+    #    to extract the logic below, put it here, and also get rid of
+    #    other usage of relpath.
     current_path = resource_path(current)
     target_path = target
     this_relative_path = relpath(target_path, current_path)
