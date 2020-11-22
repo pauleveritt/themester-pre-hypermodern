@@ -1,10 +1,11 @@
-from pathlib import Path
+from pathlib import Path, PurePath
 from typing import Tuple
 
 import pytest
 
-from themester.stories import root, resource
-from themester.factories.url import relative_uri, find_resource, parents, resource_path, relative_path, relative_static_path, URL
+from themester.factories.url import relative_uri, find_resource, parents, resource_path, relative_path, \
+    relative_static_path, URL
+from themester.stories import root
 
 pytest_plugins = [
     'themester.testing.fixtures',
@@ -131,8 +132,8 @@ def test_parents(
     )
 )
 def test_resource_path(target_path: Path, expected: str, ):
-    resource = find_resource(root, target_path)
-    path = resource_path(resource)
+    r = find_resource(root, target_path)
+    path = resource_path(r)
     assert expected == path
 
 
@@ -167,36 +168,47 @@ def test_relative_path(
 @pytest.mark.parametrize(
     'current_path, expected',
     [
-        (Path('/f1/f3/d3/'), Path('../../../static/foo.css')),
-        (Path('/f1/f3/d3/'), Path('../../../static/foo.css')),
-        (Path('/d1'), Path('../static/foo.css')),
-        (Path('/f1/f3'), Path('../../static/foo.css')),
-        (Path('/'), Path('static/foo.css')),
+        (PurePath('/f1/f3/d3/'), PurePath('../../../static/foo.css')),
+        (PurePath('/f1/f3/d3/'), PurePath('../../../static/foo.css')),
+        (PurePath('/d1'), PurePath('../static/foo.css')),
+        (PurePath('/f1/f3'), PurePath('../../static/foo.css')),
+        (PurePath('/'), PurePath('static/foo.css')),
     ]
 )
-def test_static_relative_path(current_path: Path, expected: Path):
+def test_static_relative_path(current_path: PurePath, expected: PurePath):
     current = find_resource(root, current_path)
-    result: Path = relative_static_path(current, Path('/static/foo.css'))
+    result: Path = relative_static_path(current, PurePath('/static/foo.css'))
     assert expected == result
 
 
-@pytest.mark.parametrize(
-    'path, static_url',
-    [
-        (Path('../../foo.css'), '/foo.css'),
-        (Path('../foo.css'), '/f1/foo.css'),
-        (Path('../f3/foo.css'), '/f1/f3/foo.css'),
-        (Path('../../f3/foo.css'), '/f3/foo.css'),
-    ]
-)
-def test_factory_static_url(path: Path, static_url: str):
-    url = URL(root=root, resource=resource)
-    assert path == url.static_url(static_url)
+def test_factory_static_url_prefix():
+    target = PurePath('foo.css')
+    static_prefix = PurePath('_static/')
+
+    # From the root
+    r = root
+    url = URL(root=root, resource=r, static_prefix=static_prefix)
+    assert PurePath('_static/foo.css') == url.static_url(target)
+
+    # From a document in the root
+    r = root['d1']
+    url = URL(root=root, resource=r, static_prefix=static_prefix)
+    assert PurePath('../_static/foo.css') == url.static_url(target)
+
+    # From a document in a folder in the root
+    r = root
+    url = URL(root=root, resource=r, static_prefix=static_prefix)
+    assert PurePath('_static/foo.css') == url.static_url(target)
+
+    # From much further down
+    r = root['f1']['f3']['d3']
+    url = URL(root=root, resource=r, static_prefix=static_prefix)
+    assert PurePath('../../../_static/foo.css') == url.static_url(target)
 
 
 def test_factory_relative_path():
-    resource = root['f1']
-    url = URL(root=root, resource=resource)
+    r = root['f1']
+    url = URL(root=root, resource=r)
     assert url.relative_path(root) == Path('../index.html')
     assert url.relative_path(root['f1']) == Path('')
     assert url.relative_path(root['d1']) == Path('../d1.html')
