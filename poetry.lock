@@ -168,7 +168,7 @@ unicode_backport = ["unicodedata2"]
 name = "click"
 version = "8.0.3"
 description = "Composable command line interface toolkit"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -179,7 +179,7 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 name = "colorama"
 version = "0.4.4"
 description = "Cross-platform colored terminal text."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -343,7 +343,7 @@ restructuredtext-lint = "*"
 
 [[package]]
 name = "furo"
-version = "2021.11.12"
+version = "2021.11.12.1"
 description = "A clean customisable Sphinx documentation theme."
 category = "dev"
 optional = false
@@ -382,7 +382,7 @@ typing-extensions = {version = ">=3.7.4.3", markers = "python_version < \"3.10\"
 
 [[package]]
 name = "hopscotch"
-version = "0.1.2"
+version = "0.1.3"
 description = "Type-oriented registry with dependency injection."
 category = "main"
 optional = false
@@ -947,34 +947,6 @@ sphinx = "*"
 test = ["pytest", "pytest-cov"]
 
 [[package]]
-name = "sphinx-click"
-version = "3.0.2"
-description = "Sphinx extension that automatically documents click applications"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-click = ">=7.0"
-docutils = "*"
-sphinx = ">=2.0"
-
-[[package]]
-name = "sphinx-rtd-theme"
-version = "1.0.0"
-description = "Read the Docs theme for Sphinx"
-category = "dev"
-optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
-
-[package.dependencies]
-docutils = "<0.18"
-sphinx = ">=1.6"
-
-[package.extras]
-dev = ["transifex-client", "sphinxcontrib-httpdomain", "bump2version"]
-
-[[package]]
 name = "sphinxcontrib-applehelp"
 version = "1.0.2"
 description = "sphinxcontrib-applehelp is a sphinx extension which outputs Apple help books"
@@ -1195,7 +1167,7 @@ tests = ["codecov", "scikit-build", "cmake", "ninja", "pybind11", "pytest", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9.1"
-content-hash = "02932e7bdd465af1cd67d849fcadc459cc6eb6817ec048b51da200ca79361023"
+content-hash = "bc28ba479ea7061fca23303013b9936add802a1a946a807dad027a21943cfe04"
 
 [metadata.files]
 alabaster = [
@@ -1359,8 +1331,8 @@ flake8-rst-docstrings = [
     {file = "flake8_rst_docstrings-0.2.3-py3-none-any.whl", hash = "sha256:565bbb391d7e4d0042924102221e9857ad72929cdd305b26501736ec22c1451a"},
 ]
 furo = [
-    {file = "furo-2021.11.12-py3-none-any.whl", hash = "sha256:36980f8e8ad5060fe678bb301d355488c1a23ac99ff7352408aade4a536837ab"},
-    {file = "furo-2021.11.12.tar.gz", hash = "sha256:2dd8c1f08142d8eaa9614579a9fb5a14dc870cdcaadcf89f58ca1596b43cc472"},
+    {file = "furo-2021.11.12.1-py3-none-any.whl", hash = "sha256:663ec8c5b84a566ffcb4755a72ebbb9c6badc7b3be10300ec0e4fc9368d3daec"},
+    {file = "furo-2021.11.12.1.tar.gz", hash = "sha256:26f1a00c6da12d58afd5b9fafde8c6f636912961c8c2af7e70f4334c36d44f96"},
 ]
 gitdb = [
     {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},
@@ -1371,8 +1343,8 @@ gitpython = [
     {file = "GitPython-3.1.24.tar.gz", hash = "sha256:df83fdf5e684fef7c6ee2c02fc68a5ceb7e7e759d08b694088d0cacb4eba59e5"},
 ]
 hopscotch = [
-    {file = "hopscotch-0.1.2-py3-none-any.whl", hash = "sha256:37f413959e23c6cd11ef1cafb08f6234d2bc9cf1249432472e24dce4feff5bd4"},
-    {file = "hopscotch-0.1.2.tar.gz", hash = "sha256:c8fef5e4af776f0556e8208c842cd2ca2a8313021d1b6852c16272f43edf2c02"},
+    {file = "hopscotch-0.1.3-py3-none-any.whl", hash = "sha256:3060afc632bfee27fe3b86d1f788f1c9448eef3d0596d4eeb4575786f470e36b"},
+    {file = "hopscotch-0.1.3.tar.gz", hash = "sha256:35a530df2f6aa33473c87c05acbaa0817cbfc2ffb49343b0161815f24cd8de74"},
 ]
 identify = [
     {file = "identify-2.3.5-py2.py3-none-any.whl", hash = "sha256:ba945bddb4322394afcf3f703fa68eda08a6acc0f99d9573eb2be940aa7b9bba"},
@@ -1709,14 +1681,6 @@ sphinx = [
 sphinx-autobuild = [
     {file = "sphinx-autobuild-2021.3.14.tar.gz", hash = "sha256:de1ca3b66e271d2b5b5140c35034c89e47f263f2cd5db302c9217065f7443f05"},
     {file = "sphinx_autobuild-2021.3.14-py3-none-any.whl", hash = "sha256:8fe8cbfdb75db04475232f05187c776f46f6e9e04cacf1e49ce81bdac649ccac"},
-]
-sphinx-click = [
-    {file = "sphinx-click-3.0.2.tar.gz", hash = "sha256:29896dd12bfaacb566a8c7af2e2b675d010d69b0c5aad3b52495d4842358b15b"},
-    {file = "sphinx_click-3.0.2-py3-none-any.whl", hash = "sha256:8529a02bea8cd2cd47daba2f71d7935c727c89d70baabec7fca31af49a0c379f"},
-]
-sphinx-rtd-theme = [
-    {file = "sphinx_rtd_theme-1.0.0-py2.py3-none-any.whl", hash = "sha256:4d35a56f4508cfee4c4fb604373ede6feae2a306731d533f409ef5c3496fdbd8"},
-    {file = "sphinx_rtd_theme-1.0.0.tar.gz", hash = "sha256:eec6d497e4c2195fa0e8b2016b337532b8a699a68bcb22a512870e16925c6a5c"},
 ]
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
